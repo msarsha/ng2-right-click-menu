@@ -1,0 +1,25 @@
+{
+  "name": "context-menu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sh-context-menu.main.js",
+  "module": "sh-context-menu.module.js",
+  "jsnext:main": "sh-context-menu.module.js",
+  "types": "sh-context-menu.module.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@angular/common": "^2.4.7",
+    "@angular/compiler": "^2.4.7",
+    "@angular/compiler-cli": "^2.4.7",
+    "@angular/core": "^2.4.7",
+    "@angular/platform-server": "^2.4.8",
+    "angular2-contextmenu": "^0.7.7",
+    "rxjs": "^5.1.1",
+    "typescript": "^2.1.6"
+  }
+}
