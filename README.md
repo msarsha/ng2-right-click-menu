@@ -5,7 +5,7 @@ _Right click context menu for Angular 2+_
 
 
 ### Build
-Clone the repo and run `tsc` to build.
+Clone the repo and run `npm run build` to build.
 
 ## Installation
 

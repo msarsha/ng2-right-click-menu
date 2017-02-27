@@ -1,16 +1,26 @@
 {
-  "name": "context-menu",
-  "version": "1.0.0",
-  "description": "",
-  "main": "sh-context-menu.main.js",
-  "module": "sh-context-menu.module.js",
-  "jsnext:main": "sh-context-menu.module.js",
-  "types": "sh-context-menu.module.d.ts",
+  "name": "ng2-right-click-menu",
+  "version": "0.0.2",
+  "description": "Right click context menu for Angular 2+",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "angular",
+    "angular2",
+    "ng2",
+    "context",
+    "menu",
+    "right",
+    "click",
+    "menu"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msarsha/ng2-right-click-menu"
+  },
+  "author": "Matan Sar-Shalom <smatan84@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@angular/common": "^2.4.7",
@@ -20,6 +30,8 @@
     "@angular/platform-server": "^2.4.8",
     "angular2-contextmenu": "^0.7.7",
     "rxjs": "^5.1.1",
-    "typescript": "^2.1.6"
+    "typescript": "^2.1.6",
+    "@angular/platform-browser": "^2.4.8",
+    "zone.js": "^0.7.7"
   }
 }
