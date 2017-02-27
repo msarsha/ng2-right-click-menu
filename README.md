@@ -10,7 +10,7 @@ Clone the repo and run `tsc` to build.
 ## Installation
 
 - `npm install ng2-right-click-menu`
-- import ShContextMenuModule into your app module
+- import `ShContextMenuModule` into your app module
 
 
 ## How to use
