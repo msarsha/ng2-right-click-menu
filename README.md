@@ -17,7 +17,7 @@ Clone the repo and run `tsc` to build.
 
 Add the `[sh-context]` directive to the desired element and bind an `IShContextMenuItem` array.
 
-Use the `[sh-data-context]` property to inject a context object
+Use the `[sh-data-context]` property to inject a context object of type `any`.
 
 ````html
 <div class="box" [sh-context]="menuItems" [sh-data-context]="dataObject">
