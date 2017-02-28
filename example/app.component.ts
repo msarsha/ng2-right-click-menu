@@ -8,7 +8,7 @@ import { IShContextMenuItem } from 'ng2-right-click-menu';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'Right Click Me';
   items: IShContextMenuItem[];
   dataCtxOne: any;
   dataCtxTwo: any;
