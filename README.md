@@ -3,6 +3,7 @@
 # ng2-right-click-menu
 _Right click context menu for Angular 2+_
 
+__DEMO__ https://msarsha.github.io/ng2-right-click-menu/
 
 ### Build
 Clone the repo and run `npm run build` to build.
