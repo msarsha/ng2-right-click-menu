@@ -1,27 +1,23 @@
-import { ShContextOverlayComponent } from './sh-context-overlay.component';
 import {Directive, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef} from "@angular/core";
 import {IShContextMenuItem} from "./sh-context-item";
 import {ShContextMenuComponent, CtxPosition} from "./sh-context-menu.component";
 
-
 @Directive({
-  selector: '[sh-context]'
+  selector: '[sh-context-sub-menu]'
 })
-export class ShContextMenuDirective {
-  @Input('sh-context') menuItems: IShContextMenuItem[];
+export class ShContextSubMenuDirective {
+  @Input('sh-context-sub-menu') menuItems: IShContextMenuItem[];
   @Input('sh-data-context') dataContext: any;
   ctxComponent: ComponentRef<ShContextMenuComponent>;
-  overlayComponent: ComponentRef<ShContextOverlayComponent>;
 
   constructor(private viewRef: ViewContainerRef,
               private resolver: ComponentFactoryResolver) {
   }
 
-  @HostListener('contextmenu', ['$event'])
-  onClick(event: MouseEvent) {
+  @HostListener('mouseover', ['$event'])
+  onMouseOver(event: MouseEvent) {
     this.closeMenu();
     this.ctxComponent = this.createContextComponent();
-    this.overlayComponent = this.createOverlayComponent();
 
     this.registerBindings();
     this.registerEvents();
@@ -46,15 +42,6 @@ export class ShContextMenuDirective {
     let shContextComponentRef = this.viewRef.createComponent(shContextMenuFactory);
 
     return shContextComponentRef;
-  }
-
-  createOverlayComponent(): ComponentRef<ShContextOverlayComponent> {
-    let shContextOverlayFactory = this.resolver.resolveComponentFactory(ShContextOverlayComponent);
-    let shContextOverlayRef = this.viewRef.createComponent(shContextOverlayFactory);
-
-    shContextOverlayRef.instance.onClick.subscribe(()=> { this.closeMenu()});
-
-    return shContextOverlayRef;
   }
 
   setLocation(event: MouseEvent) {

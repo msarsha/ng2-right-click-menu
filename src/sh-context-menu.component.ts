@@ -9,17 +9,19 @@ import { IShContextMenuItem } from "./sh-context-item";
           <li *ngFor="let item of items"
             [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': isItemVisible(item)}"
             (click)="onClick(item)">
-              <div *ngIf="!item.divider">
+              <div *ngIf="!item.divider && !item.subMenu">
                   {{item.label}}
+              </div>
+              <div *ngIf="item.subMenu" [sh-context-sub-menu]="item.subMenuItems" [sh-data-context]="dataContext">
+                {{item.label}} <span style="float: right;">></span>
               </div>
           </li>
       </ul>
     </div>
-    <div class="sh-context-overlay" (mousedown)="close()"></div>
 `,
   styles: [`
   .sh-context--container{
-  font-family: sans-serif;
+    font-family: sans-serif;
     position: fixed;
     background: #ececec;
     min-width: 150px;
@@ -68,16 +70,6 @@ import { IShContextMenuItem } from "./sh-context-item";
       color: #d0d0d0;
       background: #ececec;
   }
-
-  .sh-context-overlay{
-    position: fixed;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    background-color: transparent;
-   }
 `]
 })
 export class ShContextMenuComponent {
