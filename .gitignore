@@ -2,5 +2,6 @@ node_modules
 .DS_Store
 .idea
 dist
-*.ngfactory.*
-*.ngsummary.*
+*.metadata.json
+compiled
+aot

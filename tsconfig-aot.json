@@ -6,17 +6,18 @@
     "experimentalDecorators": true,
     "strictNullChecks": true,
     "emitDecoratorMetadata": true,
+    "suppressImplicitAnyIndexErrors": true,
     "noImplicitAny": true,
     "module": "es2015",
     "moduleResolution": "node",
-    "paths": {
-      "@angular/core": [
-        "node_modules/@angular/core"
-      ],
-      "rxjs/*": [
-        "node_modules/rxjs/*"
-      ]
-    },
+    // "paths": {
+    //   "@angular/core": [
+    //     "node_modules/@angular/core"
+    //   ],
+    //   "rxjs/*": [
+    //     "node_modules/rxjs/*"
+    //   ]
+    // },
     "rootDir": ".",
     "outDir": "dist",
     "sourceMap": true,
@@ -32,7 +33,7 @@
     "./index.ts"
   ],
   "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "genDir": "compiled"
+    "genDir": "aot"
+    // "skipMetadataEmit": true
   }
 }
