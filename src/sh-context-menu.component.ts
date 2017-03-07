@@ -4,16 +4,21 @@ import { IShContextMenuItem } from "./sh-context-item";
 @Component({
   selector: 'sh-context-menu',
   template: `
-    <div class="sh-context--container" [style.left]="position.left" [style.top]="position.top">
+    <div class="sh-context--container"
+      [style.left]="position.left"
+      [style.top]="position.top">
       <ul>
           <li *ngFor="let item of items"
-            [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': isItemVisible(item)}"
+            [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': !isItemVisible(item)}"
             (click)="onClick(item)">
               <div *ngIf="!item.divider && !item.subMenu">
                   {{item.label}}
               </div>
-              <div *ngIf="item.subMenu" [sh-context-sub-menu]="item.subMenuItems" [sh-data-context]="dataContext">
-                {{item.label}} <span style="float: right;">></span>
+              <div *ngIf="item.subMenu"
+                [sh-context-sub-menu]="item.subMenuItems"
+                [sh-data-context]="dataContext"
+                (closeSubMenu)="close()">
+                  {{item.label}} <span style="float: right;">></span>
               </div>
           </li>
       </ul>
@@ -104,7 +109,7 @@ export class ShContextMenuComponent {
 
   isItemVisible(item: IShContextMenuItem) {
     if (!item.visible)
-      return;
+      return true;
 
     return item.visible(this.dataContext);
   }

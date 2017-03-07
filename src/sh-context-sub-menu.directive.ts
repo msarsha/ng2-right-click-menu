@@ -1,22 +1,25 @@
-import {Directive, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef} from "@angular/core";
-import {IShContextMenuItem} from "./sh-context-item";
-import {ShContextMenuComponent, CtxPosition} from "./sh-context-menu.component";
+import { ShContextMenuDirective } from './sh-context-menu.directive';
+import { Directive, Output, EventEmitter, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
+import { IShContextMenuItem } from "./sh-context-item";
+import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component";
 
 @Directive({
   selector: '[sh-context-sub-menu]'
 })
 export class ShContextSubMenuDirective {
   @Input('sh-context-sub-menu') menuItems: IShContextMenuItem[];
+  @Output() closeSubMenu = new EventEmitter();
   @Input('sh-data-context') dataContext: any;
+
   ctxComponent: ComponentRef<ShContextMenuComponent>;
 
-  constructor(private viewRef: ViewContainerRef,
-              private resolver: ComponentFactoryResolver) {
+  constructor(protected viewRef: ViewContainerRef,
+    protected resolver: ComponentFactoryResolver) {
   }
 
   @HostListener('mouseover', ['$event'])
   onMouseOver(event: MouseEvent) {
-    this.closeMenu();
+    this.closeCurrent();
     this.ctxComponent = this.createContextComponent();
 
     this.registerBindings();
@@ -28,7 +31,7 @@ export class ShContextSubMenuDirective {
 
   registerEvents() {
     this.ctxComponent.instance.onClose.subscribe(() => {
-      this.closeMenu()
+      this.closeSubMenu.emit();
     });
   }
 
@@ -54,6 +57,10 @@ export class ShContextSubMenuDirective {
   }
 
   closeMenu() {
+    this.closeSubMenu.emit();
+  }
+
+  closeCurrent() {
     this.viewRef.clear();
   }
 }
