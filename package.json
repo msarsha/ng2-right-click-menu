@@ -1,12 +1,12 @@
 {
   "name": "ng2-right-click-menu",
-  "version": "0.0.2",
+  "version": "0.0.9",
   "description": "Right click context menu for Angular 2+",
   "main": "index.js",
   "typings": "index.d.ts",
   "module": "index.js",
   "scripts": {
-    "build": "ngc -p tsconfig-aot.json && cp package.json ./dist"
+    "build": "ngc -p tsconfig-aot.json && cp package.json README.md ./dist"
   },
   "keywords": [
     "angular",

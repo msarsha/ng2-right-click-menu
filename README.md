@@ -35,6 +35,8 @@ Use the `[sh-data-context]` property to inject a context object of type `any`.
     onClick?($event: any): void;
     visible?(context: any): boolean;
     disabled?(context: any): boolean;
+    subMenu?: boolean;
+    subMenuItems?: IShContextMenuItem[];Ï
 }
 ````
 
@@ -52,6 +54,19 @@ Example:
       label: 'Edit',
       onClick: this.clickEvent
     },
+    {
+      label: 'Sub Menu',
+      subMenu: true,
+      subMenuItems: [
+        {
+          label: 'Save',
+          onClick: this.clickEvent
+        },
+        {
+          label: 'Edit',
+          onClick: this.clickEvent
+        }]
+    }
     {
       divider: true
     },
@@ -74,6 +89,26 @@ Example:
   clickEvent($event: any){
     console.log('clicked ', $event);
   };
+````
+
+### Sub Menus (v0.0.9)
+
+Setting the `subMenu` property to `true` and the `subMenuItems` property to a `IShContextMenuItem[]` will render a sub menu.
+
+````typescript
+{
+  label: 'Sub Menu',
+  subMenu: true,
+  subMenuItems: [
+    {
+      label: 'Save',
+      onClick: this.clickEvent
+    },
+    {
+      label: 'Edit',
+      onClick: this.clickEvent
+    }]
+}
 ````
 
 #### The `onClick` handler
