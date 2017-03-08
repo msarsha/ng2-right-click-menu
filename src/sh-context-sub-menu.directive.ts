@@ -49,7 +49,8 @@ export class ShContextSubMenuDirective {
   }
 
   setLocation(event: MouseEvent) {
-    const elmRect: ClientRect = this.elmRef.nativeElement.getClientRects()[0];
+    const elmRect: ClientRect =
+      this.elmRef.nativeElement.getClientRects()[0];
 
     let position: CtxPosition = {
       top: elmRect.top + 'px',
