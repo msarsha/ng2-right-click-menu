@@ -13,46 +13,73 @@ export class AppComponent {
   dataCtxOne: any;
   dataCtxTwo: any;
 
-constructor() {
-  this.dataCtxOne = {
-    One: 'One'
-  };
+  constructor() {
+    this.dataCtxOne = {
+      One: 'One'
+    };
 
-  this.dataCtxTwo = {
-    Two: 'Two'
-  };
+    this.dataCtxTwo = {
+      Two: 'Two'
+    };
 
-  this.items = [
-    {
-      label: 'Save',
-      onClick: this.clickEvent
-    },
-    {
-      label: 'Edit',
-      onClick: this.clickEvent
-    },
-    {
-      divider: true
-    },
-    {
-      label: 'Remove',
-      disabled: ctx => {
-        return ctx.Two === 'Two';
+    this.items = [
+      {
+        label: 'Save Me On Your HD',
+        onClick: this.clickEvent
       },
-      onClick: this.clickEvent
-    },
-    {
-      label: 'Hidden',
-      onClick: this.clickEvent,
-      visible: ctx => {
-        return ctx.One === 'One';
+      {
+        label: 'Edit',
+        onClick: this.clickEvent
+      },
+      {
+        label: 'Sub Menu',
+        subMenu: true,
+        subMenuItems: [
+          {
+            label: 'Save',
+            onClick: this.clickEvent
+          },
+          {
+            label: 'Edit',
+            onClick: this.clickEvent
+          },
+          {
+            label: 'Another Sub Menu',
+            subMenu: true,
+            subMenuItems: [
+              {
+                label: 'Save',
+                onClick: this.clickEvent
+              },
+              {
+                label: 'Edit',
+                onClick: this.clickEvent
+              }]
+          }
+        ]
+      },
+      {
+        divider: true
+      },
+      {
+        label: 'Remove',
+        disabled: ctx => {
+          return ctx.Two === 'Two';
+        },
+        onClick: this.clickEvent
+      },
+      {
+        label: 'Hidden',
+        onClick: this.clickEvent,
+        visible: ctx => {
+          return ctx.One === 'One';
+        }
       }
-    }
-  ];
+    ];
 
-}
+  }
 
-  clickEvent($event: any){
+  clickEvent($event: any) {
     console.log('clicked ', $event);
   };
 }
