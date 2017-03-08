@@ -1,5 +1,5 @@
 import { ShContextMenuDirective } from './sh-context-menu.directive';
-import { Directive, Output, EventEmitter, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
+import { Directive, Output, ElementRef, EventEmitter, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
 import { IShContextMenuItem } from "./sh-context-item";
 import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component";
 
@@ -8,13 +8,14 @@ import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component
 })
 export class ShContextSubMenuDirective {
   @Input('sh-context-sub-menu') menuItems: IShContextMenuItem[];
-  @Output() closeSubMenu = new EventEmitter();
   @Input('sh-data-context') dataContext: any;
+  @Output() closeSubMenu = new EventEmitter();
 
   ctxComponent: ComponentRef<ShContextMenuComponent>;
 
-  constructor(protected viewRef: ViewContainerRef,
-    protected resolver: ComponentFactoryResolver) {
+  constructor(private viewRef: ViewContainerRef,
+    private elmRef: ElementRef,
+    private resolver: ComponentFactoryResolver) {
   }
 
   @HostListener('mouseover', ['$event'])
@@ -48,9 +49,11 @@ export class ShContextSubMenuDirective {
   }
 
   setLocation(event: MouseEvent) {
+    const elmRect: ClientRect = this.elmRef.nativeElement.getClientRects()[0];
+
     let position: CtxPosition = {
-      top: event.clientY + 'px',
-      left: event.clientX + 'px'
+      top: elmRect.top + 'px',
+      left: elmRect.left + elmRect.width + 'px'
     };
 
     this.ctxComponent.instance.position = position;

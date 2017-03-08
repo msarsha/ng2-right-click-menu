@@ -9,12 +9,14 @@ import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component
 export class ShContextMenuDirective {
   @Input('sh-context') menuItems: IShContextMenuItem[];
   @Input('sh-data-context') dataContext: any;
+
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;
 
-  constructor(protected viewRef: ViewContainerRef,
-    protected resolver: ComponentFactoryResolver) {
-  }
+  constructor(
+    private viewRef: ViewContainerRef,
+    private resolver: ComponentFactoryResolver
+  ) { }
 
   @HostListener('contextmenu', ['$event'])
   onClick(event: MouseEvent) {
@@ -52,7 +54,6 @@ export class ShContextMenuDirective {
   createOverlayComponent(): ComponentRef<ShContextOverlayComponent> {
     let shContextOverlayFactory = this.resolver.resolveComponentFactory(ShContextOverlayComponent);
     let shContextOverlayRef = this.viewRef.createComponent(shContextOverlayFactory);
-
 
     return shContextOverlayRef;
   }

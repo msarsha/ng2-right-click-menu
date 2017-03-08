@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from "@angular/core";
 import { IShContextMenuItem } from "./sh-context-item";
 
 @Component({
@@ -18,7 +18,7 @@ import { IShContextMenuItem } from "./sh-context-item";
                 [sh-context-sub-menu]="item.subMenuItems"
                 [sh-data-context]="dataContext"
                 (closeSubMenu)="close()">
-                  {{item.label}} <span style="float: right;">></span>
+                  {{item.label}} <span style="float: right;"> > </span>
               </div>
           </li>
       </ul>
@@ -34,6 +34,7 @@ import { IShContextMenuItem } from "./sh-context-item";
     border-radius: 3px;
     box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
     z-index: 100;
+    color: black;
   }
 
   .sh-context--container ul{
