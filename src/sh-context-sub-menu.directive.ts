@@ -53,7 +53,7 @@ export class ShContextSubMenuDirective {
 
     let position: CtxPosition = {
       top: elmRect.top + 'px',
-      left: elmRect.left + elmRect.width + 'px'
+      left: elmRect.left + elmRect.width + 8 + 'px'
     };
 
     this.ctxComponent.instance.position = position;
