@@ -18,7 +18,7 @@ import { IShContextMenuItem } from "./sh-context-item";
                 [sh-context-sub-menu]="item.subMenuItems"
                 [sh-data-context]="dataContext"
                 (closeSubMenu)="close()">
-                  {{item.label}} <span style="float: right;"> > </span>
+                  {{item.label}} <div class="right-arrow"></div>
               </div>
           </li>
       </ul>
@@ -75,6 +75,15 @@ import { IShContextMenuItem } from "./sh-context-item";
       cursor: not-allowed;
       color: #d0d0d0;
       background: #ececec;
+  }
+
+  .right-arrow{
+    float: right;
+    margin-left: 10px;
+    margin-top: 3px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 8px solid black;
   }
 `]
 })

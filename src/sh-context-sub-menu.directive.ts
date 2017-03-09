@@ -1,4 +1,3 @@
-import { ShContextMenuDirective } from './sh-context-menu.directive';
 import { Directive, Output, ElementRef, EventEmitter, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
 import { IShContextMenuItem } from "./sh-context-item";
 import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component";
@@ -25,7 +24,7 @@ export class ShContextSubMenuDirective {
 
     this.registerBindings();
     this.registerEvents();
-    this.setLocation(event);
+    this.setLocation();
 
     return false;
   }
@@ -48,7 +47,7 @@ export class ShContextSubMenuDirective {
     return shContextComponentRef;
   }
 
-  setLocation(event: MouseEvent) {
+  setLocation() {
     const elmRect: ClientRect =
       this.elmRef.nativeElement.getClientRects()[0];
 
