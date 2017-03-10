@@ -1,6 +1,7 @@
 import { Directive, Output, ElementRef, EventEmitter, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
+
 import { IShContextMenuItem } from "./sh-context-item";
-import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component";
+import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
 
 @Directive({
   selector: '[sh-context-sub-menu]'
@@ -51,7 +52,7 @@ export class ShContextSubMenuDirective {
     const elmRect: ClientRect =
       this.elmRef.nativeElement.getClientRects()[0];
 
-    let position: CtxPosition = {
+    let position: ShContextPosition = {
       top: elmRect.top + 'px',
       left: elmRect.left + elmRect.width + 'px'
     };

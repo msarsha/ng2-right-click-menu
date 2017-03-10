@@ -1,14 +1,18 @@
+import { Directive, Input, HostListener, ViewContainerRef, OnInit, ComponentFactoryResolver, ComponentRef } from "@angular/core";
+
 import { ShContextOverlayComponent } from './sh-context-overlay.component';
-import { Directive, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
 import { IShContextMenuItem } from "./sh-context-item";
-import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component";
+import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
+import { IShContextOptions } from './sh-context-options';
+import { ShContextDefaultOptions } from './sh-context-default-options';
 
 @Directive({
   selector: '[sh-context]'
 })
-export class ShContextMenuDirective {
+export class ShContextMenuDirective implements OnInit {
   @Input('sh-context') menuItems: IShContextMenuItem[];
   @Input('sh-data-context') dataContext: any;
+  @Input('sh-options') options: IShContextOptions;
 
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;
@@ -17,6 +21,10 @@ export class ShContextMenuDirective {
     private viewRef: ViewContainerRef,
     private resolver: ComponentFactoryResolver
   ) { }
+
+  ngOnInit(): void {
+    this.options = Object.assign({}, ShContextDefaultOptions, this.options);
+  }
 
   @HostListener('contextmenu', ['$event'])
   onClick(event: MouseEvent) {
@@ -59,7 +67,7 @@ export class ShContextMenuDirective {
   }
 
   setLocation(event: MouseEvent) {
-    let position: CtxPosition = {
+    let position: ShContextPosition = {
       top: event.clientY + 'px',
       left: event.clientX + 'px'
     };

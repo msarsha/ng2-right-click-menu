@@ -1,5 +1,11 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation } from "@angular/core";
+
 import { IShContextMenuItem } from "./sh-context-item";
+
+export interface ShContextPosition {
+  top: string;
+  left: string;
+}
 
 @Component({
   selector: 'sh-context-menu',
@@ -88,7 +94,7 @@ import { IShContextMenuItem } from "./sh-context-item";
 `]
 })
 export class ShContextMenuComponent {
-  @Input() position: CtxPosition;
+  @Input() position: ShContextPosition;
   @Input() items: IShContextMenuItem[];
   @Input() dataContext: any;
   @Output() onClose = new EventEmitter();
@@ -123,9 +129,4 @@ export class ShContextMenuComponent {
 
     return item.visible(this.dataContext);
   }
-}
-
-export interface CtxPosition {
-  top: string;
-  left: string;
 }
