@@ -1,18 +1,22 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from "@angular/core";
+import { CtxPosition } from './../dist/src/sh-context-menu.component.d';
+import { ShContextService } from './sh-context-service';
+import { IShContextOptions } from './sh-context-options';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation, OnInit, ElementRef, AfterViewInit, ViewChild, AfterContentInit } from "@angular/core";
 
 import { IShContextMenuItem } from "./sh-context-item";
 
 export interface ShContextPosition {
-  top: string;
-  left: string;
+  top: number;
+  left: number;
 }
 
 @Component({
   selector: 'sh-context-menu',
   template: `
-    <div class="sh-context--container"
-      [style.left]="position.left"
-      [style.top]="position.top">
+    <div #childRef class="sh-context--container"
+      [style.left]="position.left + 'px'"
+      [style.top]="position.top + 'px'"
+      [style.direction]="(options.rtl ? 'rtl' : 'ltr' )">
       <ul>
           <li *ngFor="let item of items"
             [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': !isItemVisible(item)}"
@@ -24,7 +28,7 @@ export interface ShContextPosition {
                 [sh-context-sub-menu]="item.subMenuItems"
                 [sh-data-context]="dataContext"
                 (closeSubMenu)="close()">
-                  {{item.label}} <div class="right-arrow"></div>
+                  {{item.label}} <div [ngClass]="{'right-arrow': !options.rtl, 'left-arrow': options.rtl}"></div>
               </div>
           </li>
       </ul>
@@ -91,13 +95,39 @@ export interface ShContextPosition {
     border-bottom: 6px solid transparent;
     border-left: 8px solid black;
   }
+
+  .left-arrow{
+    float: left;
+    margin-right: 10px;
+    margin-top: 3px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 8px solid black;
+  }
 `]
 })
-export class ShContextMenuComponent {
+export class ShContextMenuComponent implements OnInit, AfterContentInit {
   @Input() position: ShContextPosition;
   @Input() items: IShContextMenuItem[];
   @Input() dataContext: any;
   @Output() onClose = new EventEmitter();
+
+  options: IShContextOptions;
+
+  @ViewChild('childRef') childRef: ElementRef;
+
+  constructor(
+    private ctxService: ShContextService
+  ) { }
+
+  ngOnInit(): void {
+    this.options = this.ctxService.getOptions();
+  }
+
+  ngAfterContentInit(): void {
+    if (this.options.rtl)
+      this.setRtlLocation();
+  }
 
   close() {
     this.onClose.emit();
@@ -128,5 +158,12 @@ export class ShContextMenuComponent {
       return true;
 
     return item.visible(this.dataContext);
+  }
+
+  setRtlLocation() {
+    const elmRect: ClientRect =
+      this.childRef.nativeElement.getClientRects()[0];
+
+    this.position.left = this.position.left - elmRect.width;
   }
 }

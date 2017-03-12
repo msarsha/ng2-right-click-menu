@@ -1,4 +1,5 @@
-import { Directive, Input, HostListener, ViewContainerRef, OnInit, ComponentFactoryResolver, ComponentRef } from "@angular/core";
+import { ShContextService } from './sh-context-service';
+import { Directive, Input, HostListener, ViewContainerRef, OnInit, ComponentFactoryResolver, ComponentRef, ElementRef } from "@angular/core";
 
 import { ShContextOverlayComponent } from './sh-context-overlay.component';
 import { IShContextMenuItem } from "./sh-context-item";
@@ -9,7 +10,7 @@ import { ShContextDefaultOptions } from './sh-context-default-options';
 @Directive({
   selector: '[sh-context]'
 })
-export class ShContextMenuDirective implements OnInit {
+export class ShContextMenuDirective {
   @Input('sh-context') menuItems: IShContextMenuItem[];
   @Input('sh-data-context') dataContext: any;
   @Input('sh-options') options: IShContextOptions;
@@ -19,15 +20,14 @@ export class ShContextMenuDirective implements OnInit {
 
   constructor(
     private viewRef: ViewContainerRef,
-    private resolver: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    private ctxService: ShContextService
   ) { }
-
-  ngOnInit(): void {
-    this.options = Object.assign({}, ShContextDefaultOptions, this.options);
-  }
 
   @HostListener('contextmenu', ['$event'])
   onClick(event: MouseEvent) {
+    this.options = this.ctxService.setOptions(this.options);
+
     this.closeMenu();
     this.ctxComponent = this.createContextComponent();
     this.overlayComponent = this.createOverlayComponent();
@@ -67,9 +67,11 @@ export class ShContextMenuDirective implements OnInit {
   }
 
   setLocation(event: MouseEvent) {
+    let { clientX, clientY } = event;
+
     let position: ShContextPosition = {
-      top: event.clientY + 'px',
-      left: event.clientX + 'px'
+      top: clientY,
+      left: clientX
     };
 
     this.ctxComponent.instance.position = position;
