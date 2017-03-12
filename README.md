@@ -91,6 +91,24 @@ Example:
   };
 ````
 
+### Options Object (v0.0.10)
+
+````html
+<div [sh-options]="options"></div>
+````
+
+````typescript
+  options: IShContextOptions = {
+    // set options
+  }
+````
+
+The options object is of type `IShContextOptions` and currently support the following options:
+
+Options | Type | Default | Description
+:---:|:---:|:---:|:---|
+rtl|boolen|false|right to left support
+
 ### Sub Menus (v0.0.9)
 
 Setting the `subMenu` property to `true` and the `subMenuItems` property to a `IShContextMenuItem[]` will render a sub menu.

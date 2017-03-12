@@ -1,7 +1,11 @@
+import { ShContextService } from './sh-context-service';
+import { Directive, Input, HostListener, ViewContainerRef, OnInit, ComponentFactoryResolver, ComponentRef, ElementRef } from "@angular/core";
+
 import { ShContextOverlayComponent } from './sh-context-overlay.component';
-import { Directive, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
 import { IShContextMenuItem } from "./sh-context-item";
-import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component";
+import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
+import { IShContextOptions } from './sh-context-options';
+import { ShContextDefaultOptions } from './sh-context-default-options';
 
 @Directive({
   selector: '[sh-context]'
@@ -9,17 +13,21 @@ import { ShContextMenuComponent, CtxPosition } from "./sh-context-menu.component
 export class ShContextMenuDirective {
   @Input('sh-context') menuItems: IShContextMenuItem[];
   @Input('sh-data-context') dataContext: any;
+  @Input('sh-options') options: IShContextOptions;
 
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;
 
   constructor(
     private viewRef: ViewContainerRef,
-    private resolver: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    private ctxService: ShContextService
   ) { }
 
   @HostListener('contextmenu', ['$event'])
   onClick(event: MouseEvent) {
+    this.options = this.ctxService.setOptions(this.options);
+
     this.closeMenu();
     this.ctxComponent = this.createContextComponent();
     this.overlayComponent = this.createOverlayComponent();
@@ -59,9 +67,11 @@ export class ShContextMenuDirective {
   }
 
   setLocation(event: MouseEvent) {
-    let position: CtxPosition = {
-      top: event.clientY + 'px',
-      left: event.clientX + 'px'
+    let { clientX, clientY } = event;
+
+    let position: ShContextPosition = {
+      top: clientY,
+      left: clientX
     };
 
     this.ctxComponent.instance.position = position;

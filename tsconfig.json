@@ -27,12 +27,5 @@
       "es2015",
       "dom"
     ]
-  },
-  "files": [
-    "./index.ts"
-  ],
-  "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "genDir": "compiled"
   }
 }
