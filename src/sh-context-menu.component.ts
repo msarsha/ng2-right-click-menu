@@ -1,4 +1,3 @@
-import { CtxPosition } from './../dist/src/sh-context-menu.component.d';
 import { ShContextService } from './sh-context-service';
 import { IShContextOptions } from './sh-context-options';
 import { Component, Input, Output, EventEmitter, ViewEncapsulation, OnInit, ElementRef, AfterViewInit, ViewChild, AfterContentInit } from "@angular/core";
