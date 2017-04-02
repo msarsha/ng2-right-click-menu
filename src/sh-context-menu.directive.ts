@@ -5,7 +5,6 @@ import { ShContextOverlayComponent } from './sh-context-overlay.component';
 import { IShContextMenuItem } from "./sh-context-item";
 import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
 import { IShContextOptions } from './sh-context-options';
-import { ShContextDefaultOptions } from './sh-context-default-options';
 
 @Directive({
   selector: '[sh-context]'
