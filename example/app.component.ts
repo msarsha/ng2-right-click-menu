@@ -1,17 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
-import { IShContextMenuItem } from 'ng2-right-click-menu';
+import { IShContextMenuItem, IShContextOptions } from 'ng2-right-click-menu';
+
+// import { IShContextMenuItem } from '../../../context-menu/src/sh-context-item';
+// import { IShContextOptions } from '../../../context-menu/src/sh-context-options';
 
 @Component({
   selector: 'app-root',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'Right Click Me';
+  titleRtl = 'Right Click Me (RTL)';
   items: IShContextMenuItem[];
+  itemsRtl: IShContextMenuItem[];
   dataCtxOne: any;
   dataCtxTwo: any;
+  options: IShContextOptions;
 
   constructor() {
     this.dataCtxOne = {
@@ -24,7 +31,7 @@ export class AppComponent {
 
     this.items = [
       {
-        label: 'Save Me On Your HD',
+        label: '<i class="fa fa-floppy-o menu-icon"></i> Save Me On Your HD',
         onClick: this.clickEvent
       },
       {
@@ -32,7 +39,7 @@ export class AppComponent {
         onClick: this.clickEvent
       },
       {
-        label: 'Sub Menu',
+        label: '<i class="fa fa-home"></i> <b>Sub</b> Menu',
         subMenu: true,
         subMenuItems: [
           {
@@ -77,6 +84,48 @@ export class AppComponent {
       }
     ];
 
+    this.itemsRtl = [
+      {
+        label: 'שמור',
+        onClick: this.clickEvent
+      },
+      {
+        label: 'ערוך',
+        onClick: this.clickEvent
+      },
+      {
+        label: 'תפריט נוסף',
+        subMenu: true,
+        subMenuItems: [
+          {
+            label: 'שמור',
+            onClick: this.clickEvent
+          },
+          {
+            label: 'ערוך',
+            onClick: this.clickEvent
+          },
+          {
+            label: 'עוד תפריט נוסף',
+            subMenu: true,
+            subMenuItems: [
+              {
+                label: 'שמור',
+                onClick: this.clickEvent
+              },
+              {
+                label: 'ערוך',
+                onClick: this.clickEvent
+              }]
+          }
+        ]
+      }
+    ];
+
+
+    this.options = {
+      rtl: true
+    };
   }
 
   clickEvent($event: any) {
