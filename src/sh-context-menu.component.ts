@@ -20,14 +20,14 @@ export interface ShContextPosition {
           <li *ngFor="let item of items"
             [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': !isItemVisible(item)}"
             (click)="onClick(item)">
-              <div *ngIf="!item.divider && !item.subMenu">
-                  {{item.label}}
+              <div *ngIf="!item.divider && !item.subMenu" [sh-html]="item.label">
               </div>
               <div *ngIf="item.subMenu"
                 [sh-context-sub-menu]="item.subMenuItems"
                 [sh-data-context]="dataContext"
-                (closeSubMenu)="close()">
-                  {{item.label}} <div [ngClass]="{'right-arrow': !options.rtl, 'left-arrow': options.rtl}"></div>
+                (closeSubMenu)="close()"
+                [sh-html]="item.label">
+               <div [ngClass]="{'right-arrow': !options.rtl, 'left-arrow': options.rtl}"></div>
               </div>
           </li>
       </ul>
