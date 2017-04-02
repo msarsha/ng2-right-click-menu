@@ -30,7 +30,7 @@ Use the `[sh-data-context]` property to inject a context object of type `any`.
 
 ````typescript
   interface IShContextMenuItem {
-    label?: string;
+    label?: string; // as of version 0.0.11 this property is rendered as HTML
     divider?: boolean;
     onClick?($event: any): void;
     visible?(context: any): boolean;
@@ -47,7 +47,7 @@ Example:
   
   this.items = [
     {
-      label: 'Save',
+      label: '<span class="menu-icon">Save</span>',
       onClick: this.clickEvent
     },
     {
@@ -55,7 +55,7 @@ Example:
       onClick: this.clickEvent
     },
     {
-      label: 'Sub Menu',
+      label: '<b>Sub</b> Menu',
       subMenu: true,
       subMenuItems: [
         {
