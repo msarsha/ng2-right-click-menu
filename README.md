@@ -107,7 +107,7 @@ The options object is of type `IShContextOptions` and currently support the foll
 
 Options | Type | Default | Description
 :---:|:---:|:---:|:---|
-rtl|boolen|false|right to left support
+rtl|boolean|false|right to left support
 
 ### Sub Menus (v0.0.9)
 
@@ -151,4 +151,4 @@ And the `dataContext` is the object used on the `[sh-data-context]` binding.
 
 Both get injected with the object used on the `[sh-data-context]` binding
 
-And should return a `boolen` to indicate if the current `IShContextMenuItem` is disabled or visible.
+And should return a `boolean` to indicate if the current `IShContextMenuItem` is disabled or visible.
