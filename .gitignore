@@ -5,3 +5,6 @@ dist
 *.metadata.json
 compiled
 aot
+example
+npm-debug.log
+.vscode
