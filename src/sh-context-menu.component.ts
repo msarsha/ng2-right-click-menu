@@ -13,6 +13,7 @@ export interface ShContextPosition {
   selector: 'sh-context-menu',
   template: `
     <div #childRef class="sh-context--container"
+      [class.dark]="options.theme == 'dark'"
       [style.left]="position.left + 'px'"
       [style.top]="position.top + 'px'"
       [style.direction]="(options.rtl ? 'rtl' : 'ltr' )">
@@ -21,7 +22,7 @@ export interface ShContextPosition {
             [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': !isItemVisible(item)}"
             (click)="onClick(item)">
               <div *ngIf="!item.divider && !item.subMenu" [sh-html]="item.label">
-              </div>
+              </div> 
               <div *ngIf="item.subMenu"
                 [sh-context-sub-menu]="item.subMenuItems"
                 [sh-data-context]="dataContext"
@@ -44,8 +45,13 @@ export interface ShContextPosition {
     box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
     z-index: 100;
     color: black;
-  }
 
+    
+  }
+  .dark{
+      background:#383737 !important;
+      color:white !important;
+    }
   .sh-context--container ul{
     list-style: none;
     padding: 5px 0;
@@ -61,7 +67,6 @@ export interface ShContextPosition {
       height: 1px;
       margin: 1px 1px 8px 1px;
       overflow: hidden;
-      background-color: #ececec;
       border-bottom: 1px solid #d0d0d0;
       line-height: 10px;
     }
@@ -71,7 +76,12 @@ export interface ShContextPosition {
       background: #4b8bec;
       color: white;
   }
-
+ 
+   .sh-context--container.dark ul li.sh-menu-item:hover{
+      cursor: pointer;
+      background: #4b8bec;
+      color: white;
+  }
   .sh-context--container ul li.sh-menu-disabled{
       color: #d0d0d0;
    }

@@ -1,5 +1,6 @@
 import { IShContextOptions } from './sh-context-options';
 
 export const ShContextDefaultOptions: IShContextOptions = {
-  rtl: false
+  rtl: false,
+  theme:'light'
 };
