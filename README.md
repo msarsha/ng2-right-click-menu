@@ -102,6 +102,7 @@ The options object is of type `IShContextOptions` and currently support the foll
 Options | Type | Default | Description
 :---:|:---:|:---:|:---|
 rtl|boolean|false|right to left support
+theme|string|light|menu color theme
 
 ### Sub Menus (v0.0.9)
 
