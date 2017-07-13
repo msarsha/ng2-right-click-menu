@@ -58,12 +58,17 @@ export class ShContextSubMenuDirective implements OnInit {
   }
 
   setLocation() {
-    const { top, left, width } =
-      this.elmRef.nativeElement.getClientRects()[0];
+    const native = this.elmRef.nativeElement;
+    const { width } =
+      native.getClientRects()[0];
 
-    let position: ShContextPosition = {
-      top: top,
-      left: this.options.rtl ? left : left + width
+    const offsPar = native.offsetParent;
+    const x = offsPar.offsetLeft;
+    const y = offsPar.offsetTop + native.offsetTop;
+
+    let position = {
+      top: y,
+      left: this.options.rtl ? x : x + width
     };
 
     this.ctxComponent.instance.position = position;

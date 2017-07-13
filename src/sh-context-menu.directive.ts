@@ -66,11 +66,20 @@ export class ShContextMenuDirective {
   }
 
   setLocation(event: MouseEvent) {
-    let { clientX, clientY } = event;
+    let htmlElem: HTMLElement|null = <HTMLElement>event.srcElement;
+    let x, y: number;
+
+    if (htmlElem) {
+      x = htmlElem.offsetLeft + event.offsetX;
+      y = htmlElem.offsetTop + event.offsetY;
+    } else {
+      x = event.clientX;
+      y = event.clientY;
+    }
 
     let position: ShContextPosition = {
-      top: clientY,
-      left: clientX
+      top: y,
+      left: x
     };
 
     this.ctxComponent.instance.position = position;
