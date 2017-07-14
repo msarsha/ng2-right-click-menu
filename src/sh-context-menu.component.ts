@@ -37,7 +37,7 @@ export interface ShContextPosition {
   styles: [`
   .sh-context--container{
     font-family: sans-serif;
-    position: fixed;
+    position: absolute;
     background: #ececec;
     min-width: 150px;
     border: 1px solid rgba(0,0,0,0.2);

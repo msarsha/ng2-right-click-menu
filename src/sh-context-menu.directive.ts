@@ -5,6 +5,7 @@ import { ShContextOverlayComponent } from './sh-context-overlay.component';
 import { IShContextMenuItem } from "./sh-context-item";
 import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
 import { IShContextOptions } from './sh-context-options';
+import { ShContextMenuCoordinateCalculator } from "./sh-coordinate-calculator";
 
 @Directive({
   selector: '[sh-context]'
@@ -16,6 +17,8 @@ export class ShContextMenuDirective {
 
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;
+  coordinateCalculator = new ShContextMenuCoordinateCalculator();
+
 
   constructor(
     private viewRef: ViewContainerRef,
@@ -66,26 +69,15 @@ export class ShContextMenuDirective {
   }
 
   setLocation(event: MouseEvent) {
-    let htmlElem: HTMLElement|null = <HTMLElement>event.srcElement;
-    let x, y: number;
+    let hostElement: HTMLElement = this.viewRef.element.nativeElement;
+    // console.log("The host element is: ", hostElement);
 
-    if (htmlElem) {
-      x = htmlElem.offsetLeft + event.offsetX;
-      y = htmlElem.offsetTop + event.offsetY;
-    } else {
-      x = event.clientX;
-      y = event.clientY;
-    }
-
-    let position: ShContextPosition = {
-      top: y,
-      left: x
-    };
-
+    let position: ShContextPosition = this.coordinateCalculator.calculate( hostElement, event );
     this.ctxComponent.instance.position = position;
   }
 
   closeMenu() {
     this.viewRef.clear();
   }
+
 }
