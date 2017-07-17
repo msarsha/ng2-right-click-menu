@@ -2,6 +2,7 @@ import { ShContextPosition } from "./sh-context-menu.component";
 
 export class ShContextMenuCoordinateCalculator {
 
+  // calculate position for menu
   calculate( hostElement: HTMLElement, event: MouseEvent ): ShContextPosition {
     let containerElem: HTMLElement|null = this.getContainerElement( hostElement );
 
@@ -32,6 +33,24 @@ export class ShContextMenuCoordinateCalculator {
     }
 
     return { left: x, top: y };
+  }
+
+  // calculate position for sub menu
+  calculateSub( element: HTMLElement, isRtl: boolean ): ShContextPosition {
+    const { width } = element.getClientRects()[0];
+
+    let y0 = 0;
+    let containerElem: HTMLElement|null = this.getContainerElement( element );
+
+    if ( containerElem ) {
+      let rect: ClientRect = containerElem.getClientRects()[ 0 ];
+      y0 = rect.top;
+    }
+
+    let rect1 = element.getClientRects()[0];
+    let y = rect1.top - y0;
+
+    return { left: isRtl ? 0 : width, top: y };
   }
 
   // Get the top container element which is used as base for

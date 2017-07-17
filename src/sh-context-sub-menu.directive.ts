@@ -4,6 +4,7 @@ import { Directive, Output, ElementRef, EventEmitter, Input, HostListener, ViewC
 import { IShContextMenuItem } from "./sh-context-item";
 import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
 import { ShContextService } from "./sh-context-service";
+import { ShContextMenuCoordinateCalculator } from "./sh-coordinate-calculator";
 
 @Directive({
   selector: '[sh-context-sub-menu]'
@@ -15,6 +16,7 @@ export class ShContextSubMenuDirective implements OnInit {
 
   options: IShContextOptions;
   ctxComponent: ComponentRef<ShContextMenuComponent>;
+  coordinateCalculator = new ShContextMenuCoordinateCalculator();
 
   constructor(
     private viewRef: ViewContainerRef,
@@ -59,19 +61,8 @@ export class ShContextSubMenuDirective implements OnInit {
 
   setLocation() {
     const native = this.elmRef.nativeElement;
-    const { width } =
-      native.getClientRects()[0];
-
-    const offsPar = native.offsetParent;
-    const x = offsPar.offsetLeft;
-    const y = offsPar.offsetTop + native.offsetTop;
-
-    let position = {
-      top: y,
-      left: this.options.rtl ? x : x + width
-    };
-
-    this.ctxComponent.instance.position = position;
+    let pos = this.coordinateCalculator.calculateSub(native, this.options.rtl ? true : false);
+    this.ctxComponent.instance.position = pos;
   }
 
   closeMenu() {
