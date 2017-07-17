@@ -2,61 +2,27 @@ import { ShContextPosition } from "./sh-context-menu.component";
 
 export class ShContextMenuCoordinateCalculator {
 
+  private x0: number;
+  private y0: number;
+  private xc: number;
+  private yc: number;
+  private x: number;
+  private y: number;
+
   // calculate position for menu
   calculate( hostElement: HTMLElement, event: MouseEvent ): ShContextPosition {
-    let containerElem: HTMLElement|null = this.getContainerElement( hostElement );
+    const clickedElement: Element = <Element>event.srcElement;
 
-    let x0 = 0, y0 = 0;
+    // result goes to this.x0, this.y0
+    this.calculateContainerOrigin( hostElement );
 
-    if ( containerElem ) {
-      let rect: ClientRect = containerElem.getClientRects()[ 0 ];
-      x0 = rect.left;
-      y0 = rect.top;
-    }
+    // result goes to this.xc, this.yc
+    this.calculateLocalOrigin( clickedElement );
 
-    let htmlElem: HTMLElement|null = <HTMLElement>event.srcElement;
+    // result goes to this.x, this.y
+    this.calculatePosition( event );
 
-    let xc, yc;
-
-    let refElem: Element;
-
-    if ( event.srcElement instanceof SVGElement ) {
-      // SVG element
-      // then offset from event is relative to owner svg
-      let svg: SVGElement = event.srcElement;
-      refElem = svg.ownerSVGElement;
-    } else {
-      // normal HTML element
-      // then offset is relative to same element
-      refElem = htmlElem;
-    }
-
-    let myRect: ClientRect = refElem.getClientRects()[ 0 ];
-    xc = myRect.left;
-    yc = myRect.top;
-
-
-    let x, y: number;
-
-    console.log("host elem ", hostElement);
-    console.log("html elem ", htmlElem);
-    console.log("calc x0 y0 ", x0, y0);
-    console.log("calc xc yc ", xc, yc);
-    console.log("event.offsetX/Y ", event.offsetX, event.offsetY);
-
-    if (htmlElem) {
-      x = xc - x0 + event.offsetX;
-      y = yc - y0 + event.offsetY;
-    } else {
-      console.warn("using fallback for position calculation.")
-      x = event.clientX;
-      y = event.clientY;
-    }
-
-    console.log("x y ", x, y);
-    console.log("---------------");
-
-    return { left: x, top: y };
+    return { left: this.x, top: this.y };
   }
 
   // calculate position for sub menu
@@ -106,4 +72,48 @@ export class ShContextMenuCoordinateCalculator {
     return ( style && style.position !== "static" );
   }
 
+  // Calculate the origin coordinates. That's the top left corner of the
+  // container element which is used for absolute positioning.
+  // Results go to "this.x0" and "this.y0"
+  private calculateContainerOrigin( hostElement: HTMLElement ): void {
+    let containerElem: HTMLElement|null = this.getContainerElement( hostElement );
+    if ( containerElem ) {
+      let rect: ClientRect = containerElem.getClientRects()[ 0 ];
+      this.x0 = rect.left;
+      this.y0 = rect.top;
+    } else {
+      this.x0 = 0;
+      this.y0 = 0;
+    }
+  }
+
+  // Calculate origin of the clicked element.
+  // In case of a svg element it is relative to the svg owner element.
+  private calculateLocalOrigin( clickedElement: Element ) {
+    let refElem: Element;
+
+    if ( this.isSvgElement(clickedElement) ) {
+      // SVG element
+      // then offset from event is relative to owner svg
+      const svg: SVGElement = <SVGElement>clickedElement;
+      refElem = svg.ownerSVGElement;
+    } else {
+      // normal HTML element
+      // then offset is relative to same element
+      refElem = clickedElement;
+    }
+
+    let myRect: ClientRect = refElem.getClientRects()[ 0 ];
+    this.xc = myRect.left;
+    this.yc = myRect.top;
+  }
+
+  private isSvgElement( element: Element ): boolean {
+    return ( element instanceof SVGElement );
+  }
+
+  private calculatePosition( event: MouseEvent ) {
+    this.x = this.xc - this.x0 + event.offsetX;
+    this.y = this.yc - this.y0 + event.offsetY;
+  }
 }
