@@ -70,8 +70,6 @@ export class ShContextMenuDirective {
 
   setLocation(event: MouseEvent) {
     let hostElement: HTMLElement = this.viewRef.element.nativeElement;
-    // console.log("The host element is: ", hostElement);
-
     let position: ShContextPosition = this.coordinateCalculator.calculate( hostElement, event );
     this.ctxComponent.instance.position = position;
   }

@@ -10,7 +10,6 @@ export class ShContextMenuCoordinateCalculator {
 
     if ( containerElem ) {
       let rect: ClientRect = containerElem.getClientRects()[ 0 ];
-      // console.log("parent's client rect: ", rect);
       x0 = rect.left;
       y0 = rect.top;
     }
@@ -18,7 +17,6 @@ export class ShContextMenuCoordinateCalculator {
     let htmlElem: HTMLElement|null = <HTMLElement>event.srcElement;
 
     let myRect: ClientRect = htmlElem.getClientRects()[ 0 ];
-    // console.log("our client rect: ", myRect);
     let xc = myRect.left;
     let yc = myRect.top;
 
@@ -79,17 +77,7 @@ export class ShContextMenuCoordinateCalculator {
   // is other than "static".
   private isRelevantContainer( act: HTMLElement ): boolean {
     let style = getComputedStyle( act );
-    // console.log("Style of ", act);
-    // console.log("is ", style);
-
-    if ( style ) {
-      let pos = style.position;
-      // console.log("position = ", pos);
-
-      return (pos !== "static");
-    }
-
-    return false;
+    return ( style && style.position !== "static" );
   }
 
 }
