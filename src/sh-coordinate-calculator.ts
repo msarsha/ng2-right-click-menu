@@ -16,19 +16,45 @@ export class ShContextMenuCoordinateCalculator {
 
     let htmlElem: HTMLElement|null = <HTMLElement>event.srcElement;
 
-    let myRect: ClientRect = htmlElem.getClientRects()[ 0 ];
-    let xc = myRect.left;
-    let yc = myRect.top;
+    let xc, yc;
+
+    let refElem: Element;
+
+    if ( event.srcElement instanceof SVGElement ) {
+      // SVG element
+      // then offset from event is relative to owner svg
+      let svg: SVGElement = event.srcElement;
+      refElem = svg.ownerSVGElement;
+    } else {
+      // normal HTML element
+      // then offset is relative to same element
+      refElem = htmlElem;
+    }
+
+    let myRect: ClientRect = refElem.getClientRects()[ 0 ];
+    xc = myRect.left;
+    yc = myRect.top;
+
 
     let x, y: number;
+
+    console.log("host elem ", hostElement);
+    console.log("html elem ", htmlElem);
+    console.log("calc x0 y0 ", x0, y0);
+    console.log("calc xc yc ", xc, yc);
+    console.log("event.offsetX/Y ", event.offsetX, event.offsetY);
 
     if (htmlElem) {
       x = xc - x0 + event.offsetX;
       y = yc - y0 + event.offsetY;
     } else {
+      console.warn("using fallback for position calculation.")
       x = event.clientX;
       y = event.clientY;
     }
+
+    console.log("x y ", x, y);
+    console.log("---------------");
 
     return { left: x, top: y };
   }
