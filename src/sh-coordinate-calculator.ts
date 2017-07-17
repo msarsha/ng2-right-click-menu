@@ -27,20 +27,29 @@ export class ShContextMenuCoordinateCalculator {
 
   // calculate position for sub menu
   calculateSub( element: HTMLElement, isRtl: boolean ): ShContextPosition {
-    const { width } = element.getClientRects()[0];
+    // result goes to this.x0, this.y0
+    this.calculateContainerOrigin( element );
 
-    let y0 = 0;
-    let containerElem: HTMLElement|null = this.getContainerElement( element );
+    let rect = element.getClientRects()[0];
+    let x = isRtl ? 0 : rect.width;
+    let y = rect.top - this.y0;
 
+    return { left: x, top: y };
+  }
+
+  // Calculate the origin coordinates. That's the top left corner of the
+  // container element which is used for absolute positioning.
+  // Results go to "this.x0" and "this.y0"
+  private calculateContainerOrigin( hostElement: HTMLElement ): void {
+    let containerElem: HTMLElement|null = this.getContainerElement( hostElement );
     if ( containerElem ) {
       let rect: ClientRect = containerElem.getClientRects()[ 0 ];
-      y0 = rect.top;
+      this.x0 = rect.left;
+      this.y0 = rect.top;
+    } else {
+      this.x0 = 0;
+      this.y0 = 0;
     }
-
-    let rect1 = element.getClientRects()[0];
-    let y = rect1.top - y0;
-
-    return { left: isRtl ? 0 : width, top: y };
   }
 
   // Get the top container element which is used as base for
@@ -70,21 +79,6 @@ export class ShContextMenuCoordinateCalculator {
   private isRelevantContainer( act: HTMLElement ): boolean {
     let style = getComputedStyle( act );
     return ( style && style.position !== "static" );
-  }
-
-  // Calculate the origin coordinates. That's the top left corner of the
-  // container element which is used for absolute positioning.
-  // Results go to "this.x0" and "this.y0"
-  private calculateContainerOrigin( hostElement: HTMLElement ): void {
-    let containerElem: HTMLElement|null = this.getContainerElement( hostElement );
-    if ( containerElem ) {
-      let rect: ClientRect = containerElem.getClientRects()[ 0 ];
-      this.x0 = rect.left;
-      this.y0 = rect.top;
-    } else {
-      this.x0 = 0;
-      this.y0 = 0;
-    }
   }
 
   // Calculate origin of the clicked element.
