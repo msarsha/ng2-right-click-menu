@@ -3,7 +3,7 @@
 optional id field [dc0d5b1](https://github.com/msarsha/ng2-right-click-menu/commit/dc0d5b15605fa00ef78ffecc8e93d6744c0e1012)
 
 
-### 0.0.12
+### 0.0.12 (current version)
 
 dark theme [e492d54](https://github.com/msarsha/ng2-right-click-menu/commit/e492d54a95081b4c6ddcc6b903193dae6c20806b)
 
