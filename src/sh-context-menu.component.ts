@@ -1,6 +1,6 @@
 import { ShContextService } from './sh-context-service';
 import { IShContextOptions } from './sh-context-options';
-import { Component, Input, Output, EventEmitter, ViewEncapsulation, OnInit, ElementRef, AfterViewInit, ViewChild, AfterContentInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit } from "@angular/core";
 
 import { IShContextMenuItem } from "./sh-context-item";
 
@@ -37,7 +37,7 @@ export interface ShContextPosition {
   styles: [`
   .sh-context--container{
     font-family: sans-serif;
-    position: fixed;
+    position: absolute;
     background: #ececec;
     min-width: 150px;
     border: 1px solid rgba(0,0,0,0.2);

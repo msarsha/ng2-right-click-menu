@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   template: `<div class="sh-context-overlay" (mousedown)="onClick.emit()"></div>`,
   styles: [`
     .sh-context-overlay{
-      position: fixed;
+      position: absolute;
       top:0;
       bottom: 0;
       left: 0;
