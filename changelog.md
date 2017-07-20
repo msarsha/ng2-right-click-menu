@@ -14,6 +14,7 @@ label as html [f14c13d](https://github.com/msarsha/ng2-right-click-menu/commit/f
 ### 0.0.10
 
 options object [8cee919](https://github.com/msarsha/ng2-right-click-menu/commit/8cee91914e65e82ca91a2d15190c50049ddef64f)
+
 rtl support [8cee919](https://github.com/msarsha/ng2-right-click-menu/commit/8cee91914e65e82ca91a2d15190c50049ddef64f)
 
 ### 0.0.9
