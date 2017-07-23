@@ -7,4 +7,5 @@ export interface IShContextMenuItem {
   disabled?(context: any): boolean;
   subMenu?: boolean;
   subMenuItems?: IShContextMenuItem[];
+  data?:any;
 }
