@@ -1,9 +1,14 @@
-### 0.0.13 (future release)
+### 0.0.14 (future version)
+
+
+### 0.0.13 (current version)
 
 optional id field [dc0d5b1](https://github.com/msarsha/ng2-right-click-menu/commit/dc0d5b15605fa00ef78ffecc8e93d6744c0e1012)
 
+optional data field [acb1bc2](https://github.com/msarsha/ng2-right-click-menu/commit/acb1bc29ecc96a5f5dd071fcdb07a9ceee066c7e)
 
-### 0.0.12 (current version)
+
+### 0.0.12
 
 dark theme [e492d54](https://github.com/msarsha/ng2-right-click-menu/commit/e492d54a95081b4c6ddcc6b903193dae6c20806b)
 
