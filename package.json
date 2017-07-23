@@ -1,6 +1,6 @@
 {
   "name": "ng2-right-click-menu",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Right click context menu for Angular 2+",
   "main": "index.js",
   "typings": "index.d.ts",
