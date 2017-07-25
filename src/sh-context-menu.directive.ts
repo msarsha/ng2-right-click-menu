@@ -1,10 +1,20 @@
-import { ShContextService } from './sh-context-service';
-import { Directive, Input, HostListener, ViewContainerRef, OnInit, ComponentFactoryResolver, ComponentRef, ElementRef } from "@angular/core";
+import {ShContextService} from './sh-context-service';
+import {
+  Directive,
+  Input,
+  HostListener,
+  ViewContainerRef,
+  OnInit,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef
+} from "@angular/core";
 
-import { ShContextOverlayComponent } from './sh-context-overlay.component';
-import { IShContextMenuItem } from "./sh-context-item";
-import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
-import { IShContextOptions } from './sh-context-options';
+import {ShContextOverlayComponent} from './sh-context-overlay.component';
+import {IShContextMenuItem} from "./sh-context-item";
+import {ShContextMenuComponent, ShContextPosition} from "./sh-context-menu.component";
+import {IShContextOptions} from './sh-context-options';
+import {InjectionService} from "./injector.service";
 
 @Directive({
   selector: '[sh-context]'
@@ -17,11 +27,11 @@ export class ShContextMenuDirective {
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;
 
-  constructor(
-    private viewRef: ViewContainerRef,
-    private resolver: ComponentFactoryResolver,
-    private ctxService: ShContextService
-  ) { }
+  constructor(private viewRef: ViewContainerRef,
+              private resolver: ComponentFactoryResolver,
+              private ctxService: ShContextService,
+              private injectionService: InjectionService) {
+  }
 
   @HostListener('contextmenu', ['$event'])
   onClick(event: MouseEvent) {
@@ -43,7 +53,9 @@ export class ShContextMenuDirective {
       this.closeMenu()
     });
 
-    this.overlayComponent.instance.onClick.subscribe(() => { this.closeMenu() });
+    this.overlayComponent.instance.onClick.subscribe(() => {
+      this.closeMenu()
+    });
   }
 
   registerBindings() {
@@ -59,14 +71,13 @@ export class ShContextMenuDirective {
   }
 
   createOverlayComponent(): ComponentRef<ShContextOverlayComponent> {
-    let shContextOverlayFactory = this.resolver.resolveComponentFactory(ShContextOverlayComponent);
-    let shContextOverlayRef = this.viewRef.createComponent(shContextOverlayFactory);
+    let shContextOverlayRef = this.injectionService.appendComponent(ShContextOverlayComponent);
 
     return shContextOverlayRef;
   }
 
   setLocation(event: MouseEvent) {
-    let { clientX, clientY } = event;
+    let {clientX, clientY} = event;
 
     let position: ShContextPosition = {
       top: clientY,
@@ -78,5 +89,7 @@ export class ShContextMenuDirective {
 
   closeMenu() {
     this.viewRef.clear();
+    if (this.overlayComponent)
+      this.overlayComponent.destroy();
   }
 }
