@@ -30,7 +30,7 @@ Use the `[sh-data-context]` property to inject a context object of type `any`.
     visible?(context: any): boolean;
     disabled?(context: any): boolean;
     subMenu?: boolean;
-    subMenuItems?: IShContextMenuItem[];Ï
+    subMenuItems?: IShContextMenuItem[];
 }
 ````
 
