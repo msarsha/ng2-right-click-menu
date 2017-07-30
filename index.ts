@@ -1,2 +1,2 @@
 export { ShContextMenuModule } from './src/sh-context-menu.module';
-export { IShContextMenuItem, IShContextOptions } from './src/sh-context-menu.models';
+export { IShContextMenuItem, IShContextOptions, BeforeMenuEvent } from './src/sh-context-menu.models';

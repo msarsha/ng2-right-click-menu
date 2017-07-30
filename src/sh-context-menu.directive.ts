@@ -6,7 +6,7 @@ import {
 
 import {ShContextOverlayComponent} from './sh-context-overlay.component';
 import {ShContextMenuComponent} from "./sh-context-menu.component";
-import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import {BeforeMenuEvent, IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
 
 @Directive({
   selector: '[sh-context]'
@@ -16,7 +16,7 @@ export class ShContextMenuDirective {
   @Input('sh-data-context') dataContext: any;
   @Input('sh-options') options: IShContextOptions;
 
-  @Output('onBeforeMenuOpen') onBeforeMenuOpen = new EventEmitter();
+  @Output('onBeforeMenuOpen') onBeforeMenuOpen = new EventEmitter<BeforeMenuEvent>();
 
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;

@@ -1,6 +1,6 @@
 export const ShContextDefaultOptions: IShContextOptions = {
   rtl: false,
-  theme:'light'
+  theme: 'light'
 };
 
 export interface IShContextMenuItem {
@@ -12,10 +12,16 @@ export interface IShContextMenuItem {
   disabled?(context: any): boolean;
   subMenu?: boolean;
   subMenuItems?: IShContextMenuItem[];
-  data?:any;
+  data?: any;
 }
 
 export interface IShContextOptions {
   rtl?: boolean;
   theme?: 'light' | 'dark'
-};
+}
+
+export interface BeforeMenuEvent {
+  event: MouseEvent;
+  items: IShContextMenuItem[];
+  open(items?: IShContextMenuItem[]): void;
+}
