@@ -1,10 +1,13 @@
-import { ShContextService } from './sh-context-service';
-import { Directive, Input, HostListener, ViewContainerRef, OnInit, ComponentFactoryResolver, ComponentRef, ElementRef } from "@angular/core";
+import {ShContextService} from './sh-context-service';
+import {
+  Directive, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef,
+  Output, EventEmitter
+} from "@angular/core";
 
-import { ShContextOverlayComponent } from './sh-context-overlay.component';
-import { IShContextMenuItem } from "./sh-context-item";
-import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
-import { IShContextOptions } from './sh-context-options';
+import {ShContextOverlayComponent} from './sh-context-overlay.component';
+import {IShContextMenuItem} from "./sh-context-item";
+import {ShContextMenuComponent, ShContextPosition} from "./sh-context-menu.component";
+import {IShContextOptions} from './sh-context-options';
 
 @Directive({
   selector: '[sh-context]'
@@ -14,28 +17,43 @@ export class ShContextMenuDirective {
   @Input('sh-data-context') dataContext: any;
   @Input('sh-options') options: IShContextOptions;
 
+  @Output('onBeforeMenuOpen') onBeforeMenuOpen = new EventEmitter();
+
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;
+  modifiedMenuItems: IShContextMenuItem[];
 
-  constructor(
-    private viewRef: ViewContainerRef,
-    private resolver: ComponentFactoryResolver,
-    private ctxService: ShContextService
-  ) { }
+  constructor(private viewRef: ViewContainerRef,
+              private resolver: ComponentFactoryResolver,
+              private ctxService: ShContextService) {
+  }
 
   @HostListener('contextmenu', ['$event'])
   onClick(event: MouseEvent) {
     this.options = this.ctxService.setOptions(this.options);
 
     this.closeMenu();
+
+    if (this.onBeforeMenuOpen.observers.length > 0) {
+      this.onBeforeMenuOpen.emit({
+        event: event,
+        items: this.menuItems,
+        open: (modifiedItems: IShContextMenuItem[] = this.menuItems) => this.createMenu(event, modifiedItems)
+      });
+    } else {
+      this.createMenu(event);
+    }
+
+    return false;
+  }
+
+  private createMenu(event: MouseEvent, items: IShContextMenuItem[] = this.menuItems) {
     this.ctxComponent = this.createContextComponent();
     this.overlayComponent = this.createOverlayComponent();
 
-    this.registerBindings();
+    this.registerBindings(items);
     this.registerEvents();
     this.setLocation(event);
-
-    return false;
   }
 
   registerEvents() {
@@ -43,37 +61,33 @@ export class ShContextMenuDirective {
       this.closeMenu()
     });
 
-    this.overlayComponent.instance.onClick.subscribe(() => { this.closeMenu() });
+    this.overlayComponent.instance.onClick.subscribe(() => {
+      this.closeMenu()
+    });
   }
 
-  registerBindings() {
-    this.ctxComponent.instance.items = this.menuItems;
+  registerBindings(menuItems: IShContextMenuItem[]) {
+    this.ctxComponent.instance.items = menuItems;
     this.ctxComponent.instance.dataContext = this.dataContext;
   }
 
   createContextComponent(): ComponentRef<ShContextMenuComponent> {
     let shContextMenuFactory = this.resolver.resolveComponentFactory(ShContextMenuComponent);
-    let shContextComponentRef = this.viewRef.createComponent(shContextMenuFactory);
-
-    return shContextComponentRef;
+    return this.viewRef.createComponent(shContextMenuFactory);
   }
 
   createOverlayComponent(): ComponentRef<ShContextOverlayComponent> {
     let shContextOverlayFactory = this.resolver.resolveComponentFactory(ShContextOverlayComponent);
-    let shContextOverlayRef = this.viewRef.createComponent(shContextOverlayFactory);
-
-    return shContextOverlayRef;
+    return this.viewRef.createComponent(shContextOverlayFactory);
   }
 
   setLocation(event: MouseEvent) {
-    let { clientX, clientY } = event;
+    let {clientX, clientY} = event;
 
-    let position: ShContextPosition = {
+    this.ctxComponent.instance.position = {
       top: clientY,
       left: clientX
     };
-
-    this.ctxComponent.instance.position = position;
   }
 
   closeMenu() {
