@@ -5,9 +5,8 @@ import {
 } from "@angular/core";
 
 import {ShContextOverlayComponent} from './sh-context-overlay.component';
-import {IShContextMenuItem} from "./sh-context-item";
-import {ShContextMenuComponent, ShContextPosition} from "./sh-context-menu.component";
-import {IShContextOptions} from './sh-context-options';
+import {ShContextMenuComponent} from "./sh-context-menu.component";
+import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
 
 @Directive({
   selector: '[sh-context]'
@@ -21,7 +20,6 @@ export class ShContextMenuDirective {
 
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;
-  modifiedMenuItems: IShContextMenuItem[];
 
   constructor(private viewRef: ViewContainerRef,
               private resolver: ComponentFactoryResolver,

@@ -1,7 +1,6 @@
 import { Injectable, NgModule } from '@angular/core';
+import {IShContextOptions, ShContextDefaultOptions} from "./sh-context-menu.models";
 
-import { ShContextDefaultOptions } from './sh-context-default-options';
-import { IShContextOptions } from './sh-context-options';
 
 @Injectable()
 export class ShContextService {

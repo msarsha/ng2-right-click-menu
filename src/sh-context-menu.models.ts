@@ -1,3 +1,8 @@
+export const ShContextDefaultOptions: IShContextOptions = {
+  rtl: false,
+  theme:'light'
+};
+
 export interface IShContextMenuItem {
   label?: string;
   id?: string;
@@ -9,3 +14,8 @@ export interface IShContextMenuItem {
   subMenuItems?: IShContextMenuItem[];
   data?:any;
 }
+
+export interface IShContextOptions {
+  rtl?: boolean;
+  theme?: 'light' | 'dark'
+};
