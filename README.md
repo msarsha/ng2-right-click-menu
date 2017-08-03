@@ -85,6 +85,35 @@ Example:
   };
 ````
 
+### onBeforeMenuOpen (v0.0.14)
+
+The `onBeforeMenuOpen` event can be used to cancel the menu from opening and allow to modify the menu items that will be display by the current event.
+
+The `open()` callback is used to continue the context menu event and can be injected with the new modified `IShContextMenuItem` items array. (optional. if items array is not provided the original array defined by `[sh-context]` will be used.)
+
+````html
+<div (onBeforeMenuOpen)="onBefore($event)" [sh-context]="items" [sh-data-context]="dataCtxOne">
+  Click Me !
+</div>
+````
+
+component:
+
+````typescript
+onBefore = (event: BeforeMenuEvent) => {
+    event.open([new items]);
+  };
+````
+
+`BeforeMenuEvent` interface:
+````typescript
+interface BeforeMenuEvent {
+  event: MouseEvent;
+  items: IShContextMenuItem[];
+  open(items?: IShContextMenuItem[]): void;
+}
+````
+
 ### Options Object (v0.0.10)
 
 ````html

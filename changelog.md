@@ -1,5 +1,7 @@
 ### 0.0.14 (future version)
 
+onBeforeMenuOpen event [#47d4a19](https://github.com/msarsha/ng2-right-click-menu/pull/27/commits/47d4a19233ddc39f3b8f70330cf991a91faf2a06)
+
 
 ### 0.0.13 (current version)
 

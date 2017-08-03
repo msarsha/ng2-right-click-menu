@@ -1,9 +1,8 @@
-import { IShContextOptions } from './sh-context-options';
 import { Directive, Output, ElementRef, EventEmitter, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef, OnInit } from "@angular/core";
 
-import { IShContextMenuItem } from "./sh-context-item";
 import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
 import { ShContextService } from "./sh-context-service";
+import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
 
 @Directive({
   selector: '[sh-context-sub-menu]'
