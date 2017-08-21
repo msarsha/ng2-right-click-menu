@@ -31,7 +31,6 @@
     "@angular/core": "^2.4.7",
     "@angular/platform-browser": "^2.4.8",
     "@angular/platform-server": "^2.4.8",
-    "angular2-contextmenu": "^0.7.7",
     "rollup": "^0.41.4",
     "rxjs": "^5.1.1",
     "typescript": "^2.2.1",
