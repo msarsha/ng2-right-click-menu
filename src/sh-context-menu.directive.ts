@@ -7,14 +7,13 @@ import {
   OnInit,
   ComponentFactoryResolver,
   ComponentRef,
-  ElementRef
+  ElementRef, Output, EventEmitter
 } from "@angular/core";
 
 import {ShContextOverlayComponent} from './sh-context-overlay.component';
-import {IShContextMenuItem} from "./sh-context-item";
-import {ShContextMenuComponent, ShContextPosition} from "./sh-context-menu.component";
-import {IShContextOptions} from './sh-context-options';
+import {ShContextMenuComponent} from "./sh-context-menu.component";
 import {InjectionService} from "./injector.service";
+import {BeforeMenuEvent, IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
 
 @Directive({
   selector: '[sh-context]'
