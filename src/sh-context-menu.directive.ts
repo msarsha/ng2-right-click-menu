@@ -1,12 +1,20 @@
 import {ShContextService} from './sh-context-service';
 import {
-  Directive, Input, HostListener, ViewContainerRef, ComponentFactoryResolver, ComponentRef,
-  Output, EventEmitter
+  Directive,
+  Input,
+  HostListener,
+  ViewContainerRef,
+  OnInit,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef
 } from "@angular/core";
 
 import {ShContextOverlayComponent} from './sh-context-overlay.component';
-import {ShContextMenuComponent} from "./sh-context-menu.component";
-import {BeforeMenuEvent, IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import {IShContextMenuItem} from "./sh-context-item";
+import {ShContextMenuComponent, ShContextPosition} from "./sh-context-menu.component";
+import {IShContextOptions} from './sh-context-options';
+import {InjectionService} from "./injector.service";
 
 @Directive({
   selector: '[sh-context]'
@@ -23,7 +31,8 @@ export class ShContextMenuDirective {
 
   constructor(private viewRef: ViewContainerRef,
               private resolver: ComponentFactoryResolver,
-              private ctxService: ShContextService) {
+              private ctxService: ShContextService,
+              private injectionService: InjectionService) {
   }
 
   @HostListener('contextmenu', ['$event'])
@@ -75,8 +84,9 @@ export class ShContextMenuDirective {
   }
 
   createOverlayComponent(): ComponentRef<ShContextOverlayComponent> {
-    let shContextOverlayFactory = this.resolver.resolveComponentFactory(ShContextOverlayComponent);
-    return this.viewRef.createComponent(shContextOverlayFactory);
+    let shContextOverlayRef = this.injectionService.appendComponent(ShContextOverlayComponent);
+
+    return shContextOverlayRef;
   }
 
   setLocation(event: MouseEvent) {
@@ -90,5 +100,7 @@ export class ShContextMenuDirective {
 
   closeMenu() {
     this.viewRef.clear();
+    if (this.overlayComponent)
+      this.overlayComponent.destroy();
   }
 }
