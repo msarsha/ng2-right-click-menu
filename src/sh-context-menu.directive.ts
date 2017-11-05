@@ -35,6 +35,10 @@ export class ShContextMenuDirective {
 
     this.closeMenu();
 
+    if ( this.contextMenuIsEmpty() ) {
+      return;
+    }
+
     if (this.onBeforeMenuOpen.observers.length > 0) {
       this.onBeforeMenuOpen.emit({
         event: event,
@@ -95,5 +99,9 @@ export class ShContextMenuDirective {
 
     if (this.overlayComponent)
       this.overlayComponent.destroy();
+  }
+
+  private contextMenuIsEmpty(): boolean {
+    return !this.menuItems || this.menuItems.length === 0;
   }
 }

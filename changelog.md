@@ -1,11 +1,14 @@
-### 0.0.14 (future version)
+### 0.0.15 (future version)
+
+
+### 0.0.14 (current version)
 
 onBeforeMenuOpen event [#47d4a19](https://github.com/msarsha/ng2-right-click-menu/pull/27/commits/47d4a19233ddc39f3b8f70330cf991a91faf2a06)
 
 overlay attached to body [#7a0e3c9](https://github.com/msarsha/ng2-right-click-menu/commit/7a0e3c9ebca3be665c93e4f25975dda9d2bf5ec3)
 
 
-### 0.0.13 (current version)
+### 0.0.13
 
 optional id field [dc0d5b1](https://github.com/msarsha/ng2-right-click-menu/commit/dc0d5b15605fa00ef78ffecc8e93d6744c0e1012)
 
