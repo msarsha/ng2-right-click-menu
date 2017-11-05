@@ -3,11 +3,8 @@ import {
   Directive,
   Input,
   HostListener,
-  ViewContainerRef,
-  OnInit,
-  ComponentFactoryResolver,
   ComponentRef,
-  ElementRef, Output, EventEmitter
+  Output, EventEmitter
 } from "@angular/core";
 
 import {ShContextOverlayComponent} from './sh-context-overlay.component';
@@ -28,9 +25,7 @@ export class ShContextMenuDirective {
   ctxComponent: ComponentRef<ShContextMenuComponent>;
   overlayComponent: ComponentRef<ShContextOverlayComponent>;
 
-  constructor(private viewRef: ViewContainerRef,
-              private resolver: ComponentFactoryResolver,
-              private ctxService: ShContextService,
+  constructor(private ctxService: ShContextService,
               private injectionService: InjectionService) {
   }
 
@@ -54,8 +49,8 @@ export class ShContextMenuDirective {
   }
 
   private createMenu(event: MouseEvent, items: IShContextMenuItem[] = this.menuItems) {
-    this.ctxComponent = this.createContextComponent();
     this.overlayComponent = this.createOverlayComponent();
+    this.ctxComponent = this.createContextComponent();
 
     this.registerBindings(items);
     this.registerEvents();
@@ -78,14 +73,11 @@ export class ShContextMenuDirective {
   }
 
   createContextComponent(): ComponentRef<ShContextMenuComponent> {
-    let shContextMenuFactory = this.resolver.resolveComponentFactory(ShContextMenuComponent);
-    return this.viewRef.createComponent(shContextMenuFactory);
+    return this.injectionService.appendComponent(ShContextMenuComponent);
   }
 
   createOverlayComponent(): ComponentRef<ShContextOverlayComponent> {
-    let shContextOverlayRef = this.injectionService.appendComponent(ShContextOverlayComponent);
-
-    return shContextOverlayRef;
+    return this.injectionService.appendComponent(ShContextOverlayComponent);
   }
 
   setLocation(event: MouseEvent) {
@@ -98,7 +90,9 @@ export class ShContextMenuDirective {
   }
 
   closeMenu() {
-    this.viewRef.clear();
+    if (this.ctxComponent)
+      this.ctxComponent.destroy();
+
     if (this.overlayComponent)
       this.overlayComponent.destroy();
   }
