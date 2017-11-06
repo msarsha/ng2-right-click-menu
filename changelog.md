@@ -1,8 +1,8 @@
-### 0.0.15 (future version)
+### 0.0.15 (current version)
 
 attach component to app root [#b6cf80e](https://github.com/msarsha/ng2-right-click-menu/commit/b6cf80e8b09778d4058815324e57447ce8bf8fe9)
 
-### 0.0.14 (current version)
+### 0.0.14 
 
 onBeforeMenuOpen event [#47d4a19](https://github.com/msarsha/ng2-right-click-menu/pull/27/commits/47d4a19233ddc39f3b8f70330cf991a91faf2a06)
 
