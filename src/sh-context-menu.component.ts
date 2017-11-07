@@ -41,7 +41,7 @@ export interface ShContextPosition {
     border: 1px solid rgba(0,0,0,0.2);
     border-radius: 3px;
     box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
-    z-index: 100;
+    z-index: 9999;
     color: black;
 
     
