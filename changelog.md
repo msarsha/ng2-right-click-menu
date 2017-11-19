@@ -2,6 +2,8 @@
 
 z-index increased to bring menu to foreground [#fc09e66](https://github.com/msarsha/ng2-right-click-menu/commit/fc09e6687ce7ca376708386b8841d5336b3ac82a)
 
+extracting rootComponents from applicationRef [#0c4d204](https://github.com/msarsha/ng2-right-click-menu/commit/0c4d204845483095a3307dc7733bd28f16171278)
+
 ### 0.0.15
 
 attach component to app root [#b6cf80e](https://github.com/msarsha/ng2-right-click-menu/commit/b6cf80e8b09778d4058815324e57447ce8bf8fe9)
