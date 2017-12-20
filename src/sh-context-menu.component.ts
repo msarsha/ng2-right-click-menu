@@ -1,5 +1,5 @@
 import { ShContextService } from './sh-context-service';
-import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit, AfterViewInit } from "@angular/core";
 import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
 
 export interface ShContextPosition {
@@ -113,7 +113,7 @@ export interface ShContextPosition {
   }
 `]
 })
-export class ShContextMenuComponent implements OnInit, AfterContentInit {
+export class ShContextMenuComponent implements OnInit, AfterContentInit, AfterViewInit {
   @Input() position: ShContextPosition;
   @Input() items: IShContextMenuItem[];
   @Input() dataContext: any;
@@ -129,11 +129,20 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
 
   ngOnInit(): void {
     this.options = this.ctxService.getOptions();
+
+    // this.printPosition("init");
   }
 
   ngAfterContentInit(): void {
+    // this.printPosition("aftercontent");
+
     if (this.options.rtl)
       this.setRtlLocation();
+  }
+
+  ngAfterViewInit(): void {
+    this.printPosition("afterviewinit");
+    this.catchPosition();
   }
 
   close() {
@@ -172,5 +181,32 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
       this.childRef.nativeElement.getClientRects()[0];
 
     this.position.left = this.position.left - elmRect.width;
+  }
+
+  private printPosition( id: string) {
+    console.log( id );
+    console.log( "menu pos: " + this.childRef.nativeElement.offsetLeft + " / " + this.childRef.nativeElement.offsetTop );
+    console.log( "menu size: " + this.childRef.nativeElement.offsetWidth + " x " + this.childRef.nativeElement.offsetHeight );
+  }
+
+  private catchPosition() {
+    const nat = this.childRef.nativeElement;
+    let x = nat.offsetLeft;
+    let y = nat.offsetTop;
+    let w = nat.offsetWidth;
+    let h = nat.offsetHeight;
+
+    let y2 = y + h;
+    let maxy = window.innerHeight-1;
+
+    if ( y2 > maxy ) {
+      const diff = y2 - maxy;
+      setTimeout( () => {
+        this.position.top -= diff;
+      }, 0);
+
+    }
+
+
   }
 }
