@@ -1,6 +1,7 @@
+import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit, AfterViewInit } from "@angular/core";
+import { IShContextMenuItem, IShContextOptions } from "./sh-context-menu.models";
 import { ShContextService } from './sh-context-service';
-import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit } from "@angular/core";
-import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import { ShMenuPositioner } from "./menu-positioner/sh-menu-positioner";
 
 export interface ShContextPosition {
   top: number;
@@ -43,8 +44,6 @@ export interface ShContextPosition {
     box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
     z-index: 9999;
     color: black;
-
-    
   }
   .dark{
       background:#383737 !important;
@@ -111,9 +110,12 @@ export interface ShContextPosition {
     border-bottom: 6px solid transparent;
     border-right: 8px solid black;
   }
-`]
+`],
+  providers: [
+    ShMenuPositioner
+  ]
 })
-export class ShContextMenuComponent implements OnInit, AfterContentInit {
+export class ShContextMenuComponent implements OnInit, AfterContentInit, AfterViewInit {
   @Input() position: ShContextPosition;
   @Input() items: IShContextMenuItem[];
   @Input() dataContext: any;
@@ -124,7 +126,8 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
   @ViewChild('childRef') childRef: ElementRef;
 
   constructor(
-    private ctxService: ShContextService
+    private ctxService: ShContextService,
+    private menuPositioner: ShMenuPositioner
   ) { }
 
   ngOnInit(): void {
@@ -134,6 +137,10 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
     if (this.options.rtl)
       this.setRtlLocation();
+  }
+
+  ngAfterViewInit(): void {
+    this.catchPosition();
   }
 
   close() {
@@ -172,5 +179,9 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
       this.childRef.nativeElement.getClientRects()[0];
 
     this.position.left = this.position.left - elmRect.width;
+  }
+
+  private catchPosition() {
+    this.menuPositioner.correctPosition( this, this.childRef );
   }
 }
