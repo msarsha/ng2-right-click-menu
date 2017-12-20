@@ -1,6 +1,7 @@
-import { ShContextService } from './sh-context-service';
 import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit, AfterViewInit } from "@angular/core";
-import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import { IShContextMenuItem, IShContextOptions } from "./sh-context-menu.models";
+import { ShContextService } from './sh-context-service';
+import { ShMenuPositioner } from "./menu-positioner/sh-menu-positioner";
 
 export interface ShContextPosition {
   top: number;
@@ -43,8 +44,6 @@ export interface ShContextPosition {
     box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
     z-index: 9999;
     color: black;
-
-    
   }
   .dark{
       background:#383737 !important;
@@ -111,7 +110,10 @@ export interface ShContextPosition {
     border-bottom: 6px solid transparent;
     border-right: 8px solid black;
   }
-`]
+`],
+  providers: [
+    ShMenuPositioner
+  ]
 })
 export class ShContextMenuComponent implements OnInit, AfterContentInit, AfterViewInit {
   @Input() position: ShContextPosition;
@@ -124,24 +126,20 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit, AfterVi
   @ViewChild('childRef') childRef: ElementRef;
 
   constructor(
-    private ctxService: ShContextService
+    private ctxService: ShContextService,
+    private menuPositioner: ShMenuPositioner
   ) { }
 
   ngOnInit(): void {
     this.options = this.ctxService.getOptions();
-
-    // this.printPosition("init");
   }
 
   ngAfterContentInit(): void {
-    // this.printPosition("aftercontent");
-
     if (this.options.rtl)
       this.setRtlLocation();
   }
 
   ngAfterViewInit(): void {
-    this.printPosition("afterviewinit");
     this.catchPosition();
   }
 
@@ -183,30 +181,7 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit, AfterVi
     this.position.left = this.position.left - elmRect.width;
   }
 
-  private printPosition( id: string) {
-    console.log( id );
-    console.log( "menu pos: " + this.childRef.nativeElement.offsetLeft + " / " + this.childRef.nativeElement.offsetTop );
-    console.log( "menu size: " + this.childRef.nativeElement.offsetWidth + " x " + this.childRef.nativeElement.offsetHeight );
-  }
-
   private catchPosition() {
-    const nat = this.childRef.nativeElement;
-    let x = nat.offsetLeft;
-    let y = nat.offsetTop;
-    let w = nat.offsetWidth;
-    let h = nat.offsetHeight;
-
-    let y2 = y + h;
-    let maxy = window.innerHeight-1;
-
-    if ( y2 > maxy ) {
-      const diff = y2 - maxy;
-      setTimeout( () => {
-        this.position.top -= diff;
-      }, 0);
-
-    }
-
-
+    this.menuPositioner.correctPosition( this, this.childRef );
   }
 }
