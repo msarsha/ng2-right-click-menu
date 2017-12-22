@@ -2,7 +2,7 @@ import { Directive, Output, ElementRef, EventEmitter, Input, HostListener, ViewC
 
 import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
 import { ShContextService } from "./sh-context-service";
-import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import { IShContextMenuItem, IShContextOptions } from "./sh-context-menu.models";
 
 @Directive({
   selector: '[sh-context-sub-menu]'
@@ -10,6 +10,7 @@ import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
 export class ShContextSubMenuDirective implements OnInit {
   @Input('sh-context-sub-menu') menuItems: IShContextMenuItem[];
   @Input('sh-data-context') dataContext: any;
+  @Input('sh-host-comp') hostComp: ShContextMenuComponent;
   @Output() closeSubMenu = new EventEmitter();
 
   options: IShContextOptions;
@@ -28,33 +29,14 @@ export class ShContextSubMenuDirective implements OnInit {
 
   @HostListener('mouseenter', ['$event'])
   onMouseEnter( event: MouseEvent) {
-    console.log( "enter" );
-    this.closeCurrent();
+    this.hostComp.closeCurrentlyOpenedSubMenu();
     this.ctxComponent = this.createContextComponent();
 
     this.registerBindings();
     this.registerEvents();
     this.setLocation();
 
-    let comp = this.ctxComponent.instance;
-    console.log( "subcomp created, pos=" + comp.position.left + "/" + comp.position.top );
-
-    return false;
-  }
-
-  @HostListener('mouseleave', ['$event'])
-  onMouseLeave( event: MouseEvent) {
-    console.log( "leave" );
-
-    setTimeout( () => this.onLeaveDelayed(), 50 );
-
-
-    // this.closeCurrent();
-    // this.ctxComponent = this.createContextComponent();
-    //
-    // this.registerBindings();
-    // this.registerEvents();
-    // this.setLocation();
+    this.hostComp.setCurrentlyOpenedSubMenu( this );
 
     return false;
   }
@@ -97,17 +79,4 @@ export class ShContextSubMenuDirective implements OnInit {
     this.viewRef.clear();
   }
 
-  private onLeaveDelayed() {
-    if ( this.ctxComponent ) {
-      console.log( "subcomp already there" );
-      if ( this.ctxComponent.instance.hasEntered ) {
-        console.log( "  -> has entered!" );
-        this.ctxComponent.instance.hasEntered = false;
-        return;
-      }
-
-      this.closeCurrent();
-    }
-
-  }
 }
