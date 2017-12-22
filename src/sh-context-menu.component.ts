@@ -1,6 +1,7 @@
 import { ShContextService } from './sh-context-service';
-import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit, HostListener } from "@angular/core";
 import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import { ShContextSubMenuDirective } from "./sh-context-sub-menu.directive";
 
 export interface ShContextPosition {
   top: number;
@@ -19,10 +20,13 @@ export interface ShContextPosition {
           <li *ngFor="let item of items"
             [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': !isItemVisible(item)}"
             (click)="onClick(item)">
-              <div *ngIf="!item.divider && !item.subMenu" [sh-html]="item.label">
+              <div *ngIf="!item.divider && !item.subMenu" 
+                   [sh-html]="item.label"
+                   (mouseenter)="onNormalItemMouseEnter()">
               </div> 
               <div *ngIf="item.subMenu"
                 [sh-context-sub-menu]="item.subMenuItems"
+                   [sh-host-comp]="getThis()"
                 [sh-data-context]="dataContext"
                 (closeSubMenu)="close()"
                 [sh-html]="item.label">
@@ -123,6 +127,9 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
 
   @ViewChild('childRef') childRef: ElementRef;
 
+  private currentlyOpenedSubMenu: ShContextSubMenuDirective|undefined;
+
+
   constructor(
     private ctxService: ShContextService
   ) { }
@@ -173,4 +180,24 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
 
     this.position.left = this.position.left - elmRect.width;
   }
+
+  closeCurrentlyOpenedSubMenu() {
+    if ( this.currentlyOpenedSubMenu ) {
+      this.currentlyOpenedSubMenu.closeCurrent();
+      this.currentlyOpenedSubMenu = undefined;
+    }
+  }
+
+  setCurrentlyOpenedSubMenu( sub: ShContextSubMenuDirective ) {
+    this.currentlyOpenedSubMenu = sub;
+  }
+
+  getThis() {
+    return this;
+  }
+
+  onNormalItemMouseEnter() {
+    this.closeCurrentlyOpenedSubMenu();
+  }
+
 }

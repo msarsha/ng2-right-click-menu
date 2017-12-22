@@ -6,7 +6,7 @@
   "typings": "index.d.ts",
   "module": "index.js",
   "scripts": {
-    "build": "ngc -p tsconfig-aot.json && cp package.json README.md ./dist"
+    "build": "ngc -p tsconfig-aot.json && cp package.json README.md ./dist",
   },
   "keywords": [
     "angular",

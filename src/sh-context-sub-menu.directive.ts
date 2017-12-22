@@ -2,7 +2,7 @@ import { Directive, Output, ElementRef, EventEmitter, Input, HostListener, ViewC
 
 import { ShContextMenuComponent, ShContextPosition } from "./sh-context-menu.component";
 import { ShContextService } from "./sh-context-service";
-import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import { IShContextMenuItem, IShContextOptions } from "./sh-context-menu.models";
 
 @Directive({
   selector: '[sh-context-sub-menu]'
@@ -10,6 +10,7 @@ import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
 export class ShContextSubMenuDirective implements OnInit {
   @Input('sh-context-sub-menu') menuItems: IShContextMenuItem[];
   @Input('sh-data-context') dataContext: any;
+  @Input('sh-host-comp') hostComp: ShContextMenuComponent;
   @Output() closeSubMenu = new EventEmitter();
 
   options: IShContextOptions;
@@ -26,14 +27,16 @@ export class ShContextSubMenuDirective implements OnInit {
     this.options = this.ctxService.getOptions();
   }
 
-  @HostListener('mouseover', ['$event'])
-  onMouseOver(event: MouseEvent) {
-    this.closeCurrent();
+  @HostListener('mouseenter', ['$event'])
+  onMouseEnter( event: MouseEvent) {
+    this.hostComp.closeCurrentlyOpenedSubMenu();
     this.ctxComponent = this.createContextComponent();
 
     this.registerBindings();
     this.registerEvents();
     this.setLocation();
+
+    this.hostComp.setCurrentlyOpenedSubMenu( this );
 
     return false;
   }
@@ -75,4 +78,5 @@ export class ShContextSubMenuDirective implements OnInit {
   closeCurrent() {
     this.viewRef.clear();
   }
+
 }
