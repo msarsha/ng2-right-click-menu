@@ -1,5 +1,5 @@
 import { ShContextService } from './sh-context-service';
-import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit, HostListener } from "@angular/core";
 import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
 
 export interface ShContextPosition {
@@ -123,6 +123,8 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
 
   @ViewChild('childRef') childRef: ElementRef;
 
+  hasEntered: boolean = false;
+
   constructor(
     private ctxService: ShContextService
   ) { }
@@ -173,4 +175,13 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
 
     this.position.left = this.position.left - elmRect.width;
   }
+
+  @HostListener('mouseenter', ['$event'])
+  onMouseEnter( event: MouseEvent) {
+    this.hasEntered = true;
+    console.log( "comp enter, pos=" + this.position.left + "/" + this.position.top);
+
+    return false;
+  }
+
 }
