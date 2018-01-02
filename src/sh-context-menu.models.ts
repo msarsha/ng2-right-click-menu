@@ -4,7 +4,7 @@ export const ShContextDefaultOptions: IShContextOptions = {
 };
 
 export interface IShContextMenuItem {
-  label?: string;
+  label?: (context: any) => string | string;
   id?: string;
   divider?: boolean;
   onClick?($event: any): void;

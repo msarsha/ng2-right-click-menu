@@ -19,7 +19,7 @@ export interface ShContextPosition {
           <li *ngFor="let item of items"
             [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': !isItemVisible(item)}"
             (click)="onClick(item)">
-              <div *ngIf="!item.divider && !item.subMenu" [sh-html]="item.label">
+              <div *ngIf="!item.divider && !item.subMenu" [sh-html]="getLabel(item)">
               </div> 
               <div *ngIf="item.subMenu"
                 [sh-context-sub-menu]="item.subMenuItems"
@@ -134,6 +134,15 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
     if (this.options.rtl)
       this.setRtlLocation();
+  }
+  
+  getLabel(item: IShContextMenuItem): string {
+    if (typeof item.label === 'string') {
+      return item.label;
+    } else if (typeof item.label === 'function') {
+      return item.label(this.dataContext);
+    }
+    return '';
   }
 
   close() {
