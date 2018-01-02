@@ -24,7 +24,7 @@ Use the `[sh-data-context]` property to inject a context object of type `any`.
 
 ````typescript
   interface IShContextMenuItem {
-    label?: string; // as of version 0.0.11 this property is rendered as HTML
+    label?: (context: any) => string | string; // as of version 0.0.11 this property is rendered as HTML
     divider?: boolean;
     onClick?($event: any): void;
     visible?(context: any): boolean;
@@ -45,7 +45,7 @@ Example:
       onClick: this.clickEvent
     },
     {
-      label: 'Edit',
+      label: (context) => `Edit ${context.someVariable}`,
       onClick: this.clickEvent
     },
     {
@@ -72,7 +72,7 @@ Example:
       onClick: this.clickEvent
     },
     {
-      label: 'Hidden',
+      label: (context) => `Hide ${context.name}`,
       onClick: this.clickEvent,
       visible: ctx => {
         return ctx.One === 'One';
@@ -84,6 +84,10 @@ Example:
     console.log('clicked ', $event);
   };
 ````
+
+### Passing a function to the label option
+
+You can pass either a string or a function that returns a string (using the data context as a parameter) to the `label` option of menu items. Passing a function allows the label to contain dynamic content.
 
 ### onBeforeMenuOpen (v0.0.14)
 
