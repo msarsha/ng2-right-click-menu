@@ -30,7 +30,7 @@ export class ShContextMenuDirective {
   }
 
   @HostListener('contextmenu', ['$event'])
-  onClick(event: MouseEvent) {
+  onClick(event: MouseEvent): boolean | void {
     this.options = this.ctxService.setOptions(this.options);
 
     this.closeMenu();
