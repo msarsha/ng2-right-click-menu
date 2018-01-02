@@ -1,6 +1,6 @@
-import { ShContextService } from './sh-context-service';
 import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit } from "@angular/core";
-import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import { IShContextMenuItem, IShContextOptions } from "./sh-context-menu.models";
+import { ShContextService } from './sh-context-service';
 
 export interface ShContextPosition {
   top: number;
@@ -145,12 +145,23 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
       return;
 
     if (item.onClick) {
-      item.onClick({
-        menuItem: item,
-        dataContext: this.dataContext
-      });
-      this.close()
+      this.close();
+
+      // invoke the onClick handler with a timeout of 0,
+      // so that the menu gets a chance to be closed before (screen refresh)
+      this.invokeOnClickWithTimeOut( item );
     }
+  }
+
+  private invokeOnClickWithTimeOut( item: IShContextMenuItem ) {
+    setTimeout( () => {
+      if ( item.onClick ) {
+        item.onClick({
+          menuItem: item,
+          dataContext: this.dataContext
+        });
+      }
+    }, 0);
   }
 
   isItemDisabled(item: IShContextMenuItem) {
@@ -173,4 +184,5 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
 
     this.position.left = this.position.left - elmRect.width;
   }
+
 }
