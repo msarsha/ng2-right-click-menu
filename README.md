@@ -24,7 +24,7 @@ Use the `[sh-data-context]` property to inject a context object of type `any`.
 
 ````typescript
   interface IShContextMenuItem {
-    label?: (context: any) => string | string; // as of version 0.0.11 this property is rendered as HTML
+    label?: ((context: any) => string) | string; // as of version 0.0.11 this property is rendered as HTML
     divider?: boolean;
     onClick?($event: any): void;
     visible?(context: any): boolean;
