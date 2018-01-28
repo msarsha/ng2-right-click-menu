@@ -7,7 +7,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng-packagr -p lib/package.json",
+    "build": "ng-packagr -p lib/package.json && cp README.md ./lib-build",
+    "build:win": "ng-packagr -p lib/package.json && copy README.md lib-build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
