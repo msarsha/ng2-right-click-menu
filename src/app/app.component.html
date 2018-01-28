@@ -1,0 +1,6 @@
+<div class="box" [sh-context]="items" [sh-data-context]="dataCtxOne" (onBeforeMenuOpen)="onBefore($event)">
+  <h2>{{title}}</h2>
+</div>
+<div class="box box-right" [sh-context]="itemsRtl" [sh-data-context]="dataCtxTwo" [sh-options]="options">
+  <h2>{{titleRtl}}</h2>
+</div>

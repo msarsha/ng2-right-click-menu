@@ -1,13 +1,17 @@
 {
-  "name": "ng2-right-click-menu",
+  "name": "ng2-right-click-menu-demo",
   "version": "0.0.16",
+  "author": "Matan Sar-Shalom <smatan84@gmail.com>",
   "description": "Right click context menu for Angular 2+",
-  "main": "index.js",
-  "typings": "index.d.ts",
-  "module": "index.js",
+  "license": "MIT",
   "scripts": {
-    "build": "ngc -p tsconfig-aot.json && cp package.json README.md ./dist",
-    "buildwin": "ngc -p tsconfig-aot.json && copy package.json dist && copy README.md dist"
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --prod",
+    "build:lib": "ng-packagr -p lib/package.json",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "keywords": [
     "angular",
@@ -23,19 +27,41 @@
     "type": "git",
     "url": "git+https://github.com/msarsha/ng2-right-click-menu"
   },
-  "author": "Matan Sar-Shalom <smatan84@gmail.com>",
-  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^5.2.0",
+    "@angular/common": "^5.2.0",
+    "@angular/compiler": "^5.2.0",
+    "@angular/core": "^5.2.0",
+    "@angular/forms": "^5.2.0",
+    "@angular/http": "^5.2.0",
+    "@angular/platform-browser": "^5.2.0",
+    "@angular/platform-browser-dynamic": "^5.2.0",
+    "@angular/router": "^5.2.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.5.6",
+    "zone.js": "^0.8.19"
+  },
   "devDependencies": {
-    "@angular/common": "^2.4.7",
-    "@angular/compiler": "^2.4.8",
-    "@angular/compiler-cli": "^2.4.8",
-    "@angular/core": "^2.4.7",
-    "@angular/platform-browser": "^2.4.8",
-    "@angular/platform-server": "^2.4.8",
-    "rollup": "^0.41.4",
-    "rxjs": "^5.1.1",
-    "typescript": "^2.2.1",
-    "uglify-js": "^2.7.5",
-    "zone.js": "^0.7.7"
+    "@angular/cli": "1.6.5",
+    "@angular/compiler-cli": "^5.2.0",
+    "@angular/language-service": "^5.2.0",
+    "@types/jasmine": "~2.8.3",
+    "@types/jasminewd2": "~2.0.2",
+    "@types/node": "~6.0.60",
+    "codelyzer": "^4.0.1",
+    "jasmine-core": "~2.8.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~2.0.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^1.2.1",
+    "karma-jasmine": "~1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "protractor": "~5.1.2",
+    "ts-node": "~4.1.0",
+    "tslint": "~5.9.1",
+    "typescript": "~2.5.3",
+    "ng-packagr": "^1.6.0"
   }
 }
