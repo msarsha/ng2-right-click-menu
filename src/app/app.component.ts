@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-
+import {IShContextMenuItem, IShContextOptions, BeforeMenuEvent} from 'ng2-right-click-menu';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent { 
   title = 'Right Click Me';
   titleRtl = 'Right Click Me (RTL)';
   items: IShContextMenuItem[];

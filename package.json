@@ -1,6 +1,6 @@
 {
   "name": "ng2-right-click-menu-demo",
-  "version": "0.0.16",
+  "version": "0.0.0",
   "author": "Matan Sar-Shalom <smatan84@gmail.com>",
   "description": "Right click context menu for Angular 2+",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
-    "build:lib": "ng-packagr -p lib/package.json",
+    "build:lib": "ng-packagr -p src/lib/package.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

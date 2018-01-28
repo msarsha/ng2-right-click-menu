@@ -135,7 +135,7 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
     if (this.options.rtl)
       this.setRtlLocation();
   }
-  
+
   getLabel(item: IShContextMenuItem): string {
     if (typeof item.label === 'string') {
       return item.label;

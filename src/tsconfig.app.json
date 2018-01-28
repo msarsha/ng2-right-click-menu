@@ -1,15 +1,16 @@
 {
   "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../out-tsc/app",
-    "baseUrl": "./",
-    "module": "es2015",
-    "types": [],
+  "angularCompilerOptions": {
     "paths": {
       "ng2-right-click-menu": [
         "../lib-build"
       ]
     }
+  },
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "module": "es2015",
+    "types": []
   },
   "exclude": [
     "test.ts",
