@@ -3,7 +3,7 @@
   "angularCompilerOptions": {
     "paths": {
       "ng2-right-click-menu": [
-        "../lib-build"
+        "../lib/src/index.ts"
       ]
     }
   },

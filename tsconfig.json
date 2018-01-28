@@ -18,7 +18,7 @@
     ],
     "paths": {
       "ng2-right-click-menu": [
-        "../src/lib/src/index.ts"
+        "../lib/src/index.ts"
       ]
     }
   }
