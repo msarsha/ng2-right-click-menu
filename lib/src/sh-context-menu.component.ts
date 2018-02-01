@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit } from "@angular/core";
-import { IShContextMenuItem, IShContextOptions } from "./sh-context-menu.models";
-import { ShContextService } from './sh-context-service';
+import {Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterContentInit} from "@angular/core";
+import {IShContextMenuItem, IShContextOptions} from "./sh-context-menu.models";
+import {ShContextService} from './sh-context-service';
 
 export interface ShContextPosition {
   top: number;
@@ -11,57 +11,57 @@ export interface ShContextPosition {
   selector: 'sh-context-menu',
   template: `
     <div #childRef class="sh-context--container"
-      [class.dark]="options.theme == 'dark'"
-      [style.left]="position.left + 'px'"
-      [style.top]="position.top + 'px'"
-      [style.direction]="(options.rtl ? 'rtl' : 'ltr' )">
+         [class.dark]="options.theme == 'dark'"
+         [style.left]="position.left + 'px'"
+         [style.top]="position.top + 'px'"
+         [style.direction]="(options.rtl ? 'rtl' : 'ltr' )">
       <ul>
-          <li *ngFor="let item of items"
+        <li *ngFor="let item of items"
             [ngClass]="{'sh-menu-item': !item.divider, 'sh-context-divider': item.divider, 'sh-menu-disabled': isItemDisabled(item), 'sh-menu-hidden': !isItemVisible(item)}"
             (click)="onClick(item)">
-              <div *ngIf="!item.divider && !item.subMenu" [sh-html]="getLabel(item)">
-              </div> 
-              <div *ngIf="item.subMenu"
-                [sh-context-sub-menu]="item.subMenuItems"
-                [sh-data-context]="dataContext"
-                (closeSubMenu)="close()"
-                [sh-html]="item.label">
-               <div [ngClass]="{'right-arrow': !options.rtl, 'left-arrow': options.rtl}"></div>
-              </div>
-          </li>
+          <div *ngIf="!item.divider && !item.subMenu" [sh-html]="getLabel(item)">
+          </div>
+          <div *ngIf="item.subMenu"
+               [sh-context-sub-menu]="item.subMenuItems"
+               [sh-data-context]="dataContext"
+               (closeSubMenu)="close()"
+               [sh-html]="item.label">
+            <div [ngClass]="{'right-arrow': !options.rtl, 'left-arrow': options.rtl}"></div>
+          </div>
+        </li>
       </ul>
     </div>
-`,
+  `,
   styles: [`
-  .sh-context--container{
-    font-family: sans-serif;
-    position: fixed;
-    background: #ececec;
-    min-width: 150px;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 3px;
-    box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
-    z-index: 9999;
-    color: black;
-
-    
-  }
-  .dark{
-      background:#383737 !important;
-      color:white !important;
+    .sh-context--container {
+      font-family: sans-serif;
+      position: fixed;
+      background: #ececec;
+      min-width: 150px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+      box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
+      color: black;
     }
-  .sh-context--container ul{
-    list-style: none;
-    padding: 5px 0;
-    margin: 0;
-  }
 
-  .sh-context--container ul li{
+    .dark {
+      background: #383737 !important;
+      color: white !important;
+    }
+
+    .sh-context--container ul {
+      list-style: none;
+      padding: 5px 0;
+      margin: 0;
+    }
+
+    .sh-context--container ul li {
       padding: 5px 10px 5px 15px;
       transition: all 0.15s;
-  }
+    }
 
-  .sh-context--container ul li.sh-context-divider{
+    .sh-context--container ul li.sh-context-divider {
       height: 1px;
       margin: 1px 1px 8px 1px;
       overflow: hidden;
@@ -69,49 +69,50 @@ export interface ShContextPosition {
       line-height: 10px;
     }
 
-  .sh-context--container ul li.sh-menu-item:hover{
+    .sh-context--container ul li.sh-menu-item:hover {
       cursor: pointer;
       background: #4b8bec;
       color: white;
-  }
- 
-   .sh-context--container.dark ul li.sh-menu-item:hover{
+    }
+
+    .sh-context--container.dark ul li.sh-menu-item:hover {
       cursor: pointer;
       background: #4b8bec;
       color: white;
-  }
-  .sh-context--container ul li.sh-menu-disabled{
+    }
+
+    .sh-context--container ul li.sh-menu-disabled {
       color: #d0d0d0;
-   }
+    }
 
-   .sh-context--container ul li.sh-menu-item.sh-menu-hidden{
+    .sh-context--container ul li.sh-menu-item.sh-menu-hidden {
       display: none;
-   }
+    }
 
-  .sh-context--container ul li.sh-menu-disabled:hover{
+    .sh-context--container ul li.sh-menu-disabled:hover {
       cursor: not-allowed;
       color: #d0d0d0;
       background: #ececec;
-  }
+    }
 
-  .right-arrow{
-    float: right;
-    margin-left: 10px;
-    margin-top: 3px;
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-left: 8px solid black;
-  }
+    .right-arrow {
+      float: right;
+      margin-left: 10px;
+      margin-top: 3px;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 8px solid black;
+    }
 
-  .left-arrow{
-    float: left;
-    margin-right: 10px;
-    margin-top: 3px;
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-right: 8px solid black;
-  }
-`]
+    .left-arrow {
+      float: left;
+      margin-right: 10px;
+      margin-top: 3px;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 8px solid black;
+    }
+  `]
 })
 export class ShContextMenuComponent implements OnInit, AfterContentInit {
   @Input() position: ShContextPosition;
@@ -123,9 +124,8 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
 
   @ViewChild('childRef') childRef: ElementRef;
 
-  constructor(
-    private ctxService: ShContextService
-  ) { }
+  constructor(private ctxService: ShContextService) {
+  }
 
   ngOnInit(): void {
     this.options = this.ctxService.getOptions();
@@ -135,7 +135,7 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
     if (this.options.rtl)
       this.setRtlLocation();
   }
-  
+
   getLabel(item: IShContextMenuItem): string {
     if (typeof item.label === 'string') {
       return item.label;
@@ -158,13 +158,13 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
 
       // invoke the onClick handler with a timeout of 0,
       // so that the menu gets a chance to be closed before (screen refresh)
-      this.invokeOnClickWithTimeOut( item );
+      this.invokeOnClickWithTimeOut(item);
     }
   }
 
-  private invokeOnClickWithTimeOut( item: IShContextMenuItem ) {
-    setTimeout( () => {
-      if ( item.onClick ) {
+  private invokeOnClickWithTimeOut(item: IShContextMenuItem) {
+    setTimeout(() => {
+      if (item.onClick) {
         item.onClick({
           menuItem: item,
           dataContext: this.dataContext
