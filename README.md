@@ -183,70 +183,7 @@ And should return a `boolean` to indicate if the current `IShContextMenuItem` is
 
 
 ### Setting up development env
-1. Fork/Clone the repo.
 
-2. Build:
-  ```
-  $ npm run build
-  ```
-  
-3. From the `/dist` directory, create a symlink in the global node_modules directory to the `dist` directory of your library:
-  ```
-  $ cd dist
-  $ npm link
-  ```
+`npm start` to run the demo application
 
-4. Create a new Angular app.
-  ```
-    $ ng new example
-  ```
-
-5. Navigate to the `example` directory:
-  ```
-  $ cd example
-  ``` 
-  
-6. From the `example` directory, link the global `ng2-right-click-menu` directory to node_modules of the `example` directory:
-  ```
-  $ npm link ng2-right-click-menu
-  ```
-
-7. Import the `ShContextMenuModule` in your `AppModule`:
-
-````typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { ShContextMenuModule } from 'ng2-right-click-menu';
-
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    ShContextMenuModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-
-````
-
-8. If you are using an Angular CLI application make sure to set up a [path mapping](https://github.com/angular/angular-cli/wiki/stories-linked-library#use-typesscript-path-mapping-for-peer-dependencies) in `/src/tsconfig.app.json` of your application:
-  ```typescript
-  {
-    "compilerOptions": {
-      // ...
-      // Note: these paths are relative to `baseUrl` path.
-      "paths": {
-        "@angular/*": [
-          "../node_modules/@angular/*"
-        ]
-      }
-    }
-  }
-  ```
+develop the library under `/lib`
