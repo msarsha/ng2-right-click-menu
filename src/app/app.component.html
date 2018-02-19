@@ -1,6 +1,21 @@
-<div class="box" [sh-context]="items" [sh-data-context]="dataCtxOne" (onBeforeMenuOpen)="onBefore($event)">
+<div class="box" [shContextMenuTriggerFor]="menu" [shMenuData]="items[0]">
   <h2>{{title}}</h2>
 </div>
-<div class="box box-right" [sh-context]="itemsRtl" [sh-data-context]="dataCtxTwo" [sh-options]="options">
-  <h2>{{titleRtl}}</h2>
+
+<div class="box" [shContextMenuTriggerFor]="myMenu" [shMenuData]="items[1]">
+  <h2>{{title}}</h2>
 </div>
+
+<sh-context-menu #menu>
+  <div *shContextMenuItem="let item">
+    one - {{item.label}}
+  </div>
+  <div *shContextMenuItem="let item">
+    two - {{item.label}}
+  </div>
+  <div *shContextMenuItem="let item">
+    three - {{item.label}}
+  </div>
+</sh-context-menu>
+
+<my-menu #myMenu></my-menu>

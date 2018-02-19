@@ -1,5 +1,5 @@
-import {Component, ViewEncapsulation} from '@angular/core';
-import {IShContextMenuItem, IShContextOptions, BeforeMenuEvent} from 'ng2-right-click-menu';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {ShContextMenuComponent} from '../lib/src/shContextMenu';
 
 @Component({
   selector: 'app-root',
@@ -7,14 +7,16 @@ import {IShContextMenuItem, IShContextOptions, BeforeMenuEvent} from 'ng2-right-
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent { 
+export class AppComponent {
   title = 'Right Click Me';
   titleRtl = 'Right Click Me (RTL)';
-  items: IShContextMenuItem[];
-  itemsRtl: IShContextMenuItem[];
+  items: any[];
+  itemsRtl: any[];
   dataCtxOne: any;
   dataCtxTwo: any;
-  options: IShContextOptions;
+  options: any;
+
+  menuKey = 'firstMenu';
 
   constructor() {
     this.dataCtxOne = {
@@ -124,12 +126,27 @@ export class AppComponent {
     };
   }
 
-  onBefore = (event: BeforeMenuEvent) => {
+  onBefore = (event: any) => {
     console.log(event);
     event.open([event.items[0]]);
   };
 
   clickEvent = ($event: any) => {
     console.log('clicked ', $event);
-  }
+  };
+}
+
+@Component({
+  selector: 'my-menu',
+  template: `
+    <div *shContextMenuItem="let item">
+      from comp !! - {{item.label}}
+    </div>
+    <div *shContextMenuItem="let item">
+      from comp !! - {{item.label}}
+    </div>
+  `
+})
+export class MyMenuComponent extends ShContextMenuComponent {
+  @Input() item: any;
 }
