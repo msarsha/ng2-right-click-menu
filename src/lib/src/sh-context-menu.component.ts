@@ -1,26 +1,8 @@
 import {
-  AfterContentInit, Component, ContentChildren, Directive, Input, OnInit, TemplateRef, ViewChildren,
+  AfterContentInit, Component, ContentChildren, OnInit, ViewChildren,
   ViewContainerRef
 } from '@angular/core';
-
-@Directive({
-  selector: '[shContextMenu]'
-})
-export class ShContextMenuDirective {
-  @Input('shContextMenu') shContextMenu;
-
-  constructor() {
-    // console.log(this.data);
-  }
-}
-
-@Directive({
-  selector: '[shContextMenuItem]'
-})
-export class ShContextMenuItemDirective {
-  constructor(public template: TemplateRef<any>) {
-  }
-}
+import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
 
 @Component({
   selector: 'sh-context-menu',

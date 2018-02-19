@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ShContextMenuComponent} from './shContextMenu';
+import {ShContextMenuComponent} from './sh-context-menu.component';
 
 @Injectable()
 export class ShContextMenuService {

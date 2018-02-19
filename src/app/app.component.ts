@@ -1,5 +1,5 @@
 import {Component, Input, ViewEncapsulation} from '@angular/core';
-import {ShContextMenuComponent} from '../lib/src/shContextMenu';
+import {ShContextMenuComponent} from '../lib/src/sh-context-menu.component';
 
 @Component({
   selector: 'app-root',

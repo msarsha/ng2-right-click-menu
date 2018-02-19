@@ -1,3 +1,6 @@
-export {ShContextMenuTriggerDirective} from './shContextMenuTrigger.directive';
 export {ShContextMenuModule} from './sh-context-menu.module';
-export {ShContextMenuComponent, ShContextMenuItemDirective, ShContextMenuDirective} from './shContextMenu';
+export {ShContextMenuComponent} from './sh-context-menu.component';
+export {ShAnchorForDirective} from './sh-anchor-for.directive';
+export {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
+export {ShContextMenuService} from './sh-context-menu.service';
+

@@ -1,20 +1,19 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {ShContextMenuComponent, ShContextMenuDirective, ShContextMenuItemDirective} from './shContextMenu';
-import {ShContextMenuTriggerDirective} from './shContextMenuTrigger.directive';
-import {ShContextMenuService} from './shContextMenu.service';
+import {ShContextMenuComponent} from './sh-context-menu.component';
+import {ShAnchorForDirective} from './sh-anchor-for.directive';
+import {ShContextMenuService} from './sh-context-menu.service';
+import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
 
 @NgModule({
   declarations: [
-    ShContextMenuTriggerDirective,
-    ShContextMenuDirective,
+    ShAnchorForDirective,
     ShContextMenuComponent,
     ShContextMenuItemDirective
   ],
   exports: [
-    ShContextMenuTriggerDirective,
-    ShContextMenuDirective,
+    ShAnchorForDirective,
     ShContextMenuComponent,
     ShContextMenuItemDirective
   ],
