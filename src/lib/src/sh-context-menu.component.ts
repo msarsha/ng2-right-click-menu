@@ -1,27 +1,32 @@
 import {
-  AfterContentInit, Component, ContentChildren, OnInit, ViewChildren,
-  ViewContainerRef
+  AfterContentInit, AfterViewInit, Component, ContentChildren, ElementRef, OnInit, QueryList, ViewChildren,
+  ViewContainerRef, ViewEncapsulation
 } from '@angular/core';
 import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
 
 @Component({
   selector: 'sh-context-menu',
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['overlay.css'],
   template: `
     <ng-content></ng-content>`
 })
-export class ShContextMenuComponent implements OnInit, AfterContentInit {
+export class ShContextMenuComponent implements OnInit, AfterContentInit, AfterViewInit {
 
-  @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) items;
-  @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems;
+  @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) items = new QueryList<ShContextMenuItemDirective>();
+  @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems = new QueryList<ShContextMenuItemDirective>();
 
-  constructor(private vcr: ViewContainerRef) {
+  constructor(public vcr: ViewContainerRef, public elm: ElementRef) {
   }
 
   ngAfterContentInit(): void {
-    console.log(this.items);
+  }
+
+  ngAfterViewInit(): void {
   }
 
   ngOnInit() {
+    console.log('init');
   }
 
   show() {
@@ -33,7 +38,8 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
     }
   }
 
-  private showMenu(items: ShContextMenuItemDirective[]) {
+  private showMenu(items: QueryList<ShContextMenuItemDirective>) {
+    console.log('changes');
     items
       .forEach(
         item => this.vcr.createEmbeddedView(item.template, {
@@ -42,3 +48,4 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit {
       );
   }
 }
+

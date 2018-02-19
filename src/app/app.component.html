@@ -6,12 +6,17 @@
   <h2>{{title}}</h2>
 </div>
 
-<sh-context-menu #menu>
-  <div *shContextMenuItem="let item">
-    one - {{item.label}}
-  </div>
+<sh-context-menu #menu class="my-menu">
+  <ng-container *ngIf="false">
+    <div *shContextMenuItem="let item">
+      one - {{item.label}}
+    </div>
+  </ng-container>
   <div *shContextMenuItem="let item">
     two - {{item.label}}
+  </div>
+  <div *shContextMenuItem>
+    <div class="divider"></div>
   </div>
   <div *shContextMenuItem="let item">
     three - {{item.label}}

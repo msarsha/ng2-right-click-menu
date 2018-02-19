@@ -127,7 +127,6 @@ export class AppComponent {
   }
 
   onBefore = (event: any) => {
-    console.log(event);
     event.open([event.items[0]]);
   };
 
