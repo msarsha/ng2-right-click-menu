@@ -31,7 +31,7 @@ export class ShContextMenuService {
     const componentRef: ComponentRef<ShContextMenuComponent> = overlayRef.attach(menuPortal);
 
     componentRef.instance.viewChildrenItems = menu.viewChildrenItems;
-    componentRef.instance.items = menu.items;
+    componentRef.instance.contentChildrenItems = menu.contentChildrenItems;
 
     componentRef.instance.show(data);
   }
