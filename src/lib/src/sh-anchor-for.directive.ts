@@ -9,11 +9,16 @@ export class ShAnchorForDirective {
   @Input('shAnchorFor') menu: ShContextMenuComponent;
   @Input('shMenuData') data: any;
 
-  constructor(private ctxMenu: ShContextMenuService, private elm: ElementRef) { }
+  constructor(private ctxMenu: ShContextMenuService, private elm: ElementRef) {
+  }
 
   @HostListener('contextmenu', ['$event'])
   openMenu(event: MouseEvent) {
-    event.preventDefault();
-    this.ctxMenu.openMenu(this.menu, event, this.elm);
+    this.ctxMenu.openMenu({
+      menu: this.menu,
+      mouseEvent: event,
+      targetElement: this.elm,
+      data: this.data
+    });
   }
 }

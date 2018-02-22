@@ -3,6 +3,7 @@ import {ShContextMenuComponent} from './sh-context-menu.component';
 import {Overlay} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {ConnectedPositionStrategy} from '@angular/cdk/overlay/typings/position/connected-position-strategy';
+import {ContextMenuEvent} from './sh-context-menu.models';
 
 @Injectable()
 export class ShContextMenuService {
@@ -10,12 +11,16 @@ export class ShContextMenuService {
   constructor(private overlay: Overlay) {
   }
 
-  openMenu(menu: ShContextMenuComponent, event: MouseEvent, elm: ElementRef) {
+  openMenu(ctxEvent: ContextMenuEvent) {
+    const {menu, mouseEvent, targetElement, data} = ctxEvent;
 
-    this.overrideGetBoundingClientRect(elm, event);
+    mouseEvent.preventDefault();
+    mouseEvent.stopPropagation();
+
+    this.overrideGetBoundingClientRect(targetElement, mouseEvent);
 
     const scrollStrategy = this.buildCloseScrollStrategy();
-    const positionStrategy = this.buildConnectedPositionStrategy(elm);
+    const positionStrategy = this.buildConnectedPositionStrategy(targetElement);
 
     const overlayRef = this.overlay.create({
       positionStrategy: positionStrategy,
@@ -30,7 +35,6 @@ export class ShContextMenuService {
 
     componentRef.instance.show();
   }
-
 
   private buildCloseScrollStrategy() {
     return this.overlay.scrollStrategies.close();
