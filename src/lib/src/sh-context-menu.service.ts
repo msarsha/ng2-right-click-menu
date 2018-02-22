@@ -33,7 +33,7 @@ export class ShContextMenuService {
     componentRef.instance.viewChildrenItems = menu.viewChildrenItems;
     componentRef.instance.items = menu.items;
 
-    componentRef.instance.show();
+    componentRef.instance.show(data);
   }
 
   private buildCloseScrollStrategy() {

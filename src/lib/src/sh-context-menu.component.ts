@@ -9,6 +9,7 @@ import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['overlay.css'],
   template: `
+    <div class="test"></div>
     <ng-content></ng-content>`
 })
 export class ShContextMenuComponent implements OnInit, AfterContentInit, AfterViewInit {
@@ -29,21 +30,21 @@ export class ShContextMenuComponent implements OnInit, AfterContentInit, AfterVi
     console.log('init');
   }
 
-  show() {
+  show(data: any) {
     if (this.items.length) {
-      this.showMenu(this.items);
+      this.showMenu(this.items, data);
     }
     if (this.viewChildrenItems.length) {
-      this.showMenu(this.viewChildrenItems);
+      this.showMenu(this.viewChildrenItems, data);
     }
   }
 
-  private showMenu(items: QueryList<ShContextMenuItemDirective>) {
+  private showMenu(items: QueryList<ShContextMenuItemDirective>, data: any) {
     console.log('changes');
     items
       .forEach(
         item => this.vcr.createEmbeddedView(item.template, {
-          $implicit: {label: 'testtt'}
+          $implicit: data
         })
       );
   }
