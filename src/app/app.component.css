@@ -25,3 +25,8 @@ i.menu-icon {
   height: 5px;
   background-color: lightblue;
 }
+
+.sh-context-menu{
+  background-color: lightgray;
+  padding: 20px;
+}

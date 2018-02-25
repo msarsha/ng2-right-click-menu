@@ -15,7 +15,7 @@ class ContextMenuItemWithData extends ShContextMenuItemDirective {
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['overlay.css'],
   template: `
-    <div class="sh-context-menu">
+    <div class="sh-context-menu" *ngIf="items.length">
       <ng-container *ngFor="let item of items">
         <ng-content
           *ngTemplateOutlet="item.template; context: item.context">
@@ -31,9 +31,12 @@ export class ShContextMenuComponent {
   items: ContextMenuItemWithData[] = [];
 
   show(data: any) {
+    // when using the ShContextMenuComponent as menu, the ContentChildren is the source
     if (this.contentChildrenItems.length) {
       this.showMenu(this.contentChildrenItems, data);
     }
+
+    // when using a custom component as menu the ViewChildren is the source
     if (this.viewChildrenItems.length) {
       this.showMenu(this.viewChildrenItems, data);
     }
