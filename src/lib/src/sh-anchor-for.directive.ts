@@ -1,18 +1,24 @@
-import {Directive, ElementRef, HostListener, Input, OnInit} from '@angular/core';
+import {Directive, ElementRef, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {ShContextMenuService} from './sh-context-menu.service';
 import {ShContextMenuComponent} from './sh-context-menu.component';
+import {Subscription} from 'rxjs/Subscription';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 @Directive({
   selector: '[shAnchorFor]'
 })
-export class ShAnchorForDirective {
+export class ShAnchorForDirective implements OnDestroy {
   @Input('shAnchorFor') menu: ShContextMenuComponent;
   @Input('shMenuData') data: any;
 
+  sub: Subscription;
+
   constructor(private ctxMenu: ShContextMenuService, private elm: ElementRef) {
+    this.sub = fromEvent(this.elm.nativeElement, 'contextmenu')
+      .subscribe(this.openMenu.bind(this));
   }
 
-  @HostListener('contextmenu', ['$event'])
+  // @HostListener('contextmenu', ['$event'])
   openMenu(event: MouseEvent) {
     this.ctxMenu.openMenu({
       menu: this.menu,
@@ -20,5 +26,9 @@ export class ShAnchorForDirective {
       targetElement: this.elm,
       data: this.data
     });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }
