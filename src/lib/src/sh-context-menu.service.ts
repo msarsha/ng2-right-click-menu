@@ -4,14 +4,18 @@ import {Overlay} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {ConnectedPositionStrategy} from '@angular/cdk/overlay/typings/position/connected-position-strategy';
 import {ContextMenuEvent} from './sh-context-menu.models';
+import {OverlayRef} from '@angular/cdk/overlay/typings/overlay-ref';
 
 @Injectable()
 export class ShContextMenuService {
+
+  openOverlays: OverlayRef[] = [];
 
   constructor(private overlay: Overlay) {
   }
 
   openMenu(ctxEvent: ContextMenuEvent) {
+    this.closeCurrentOverlays();
     const {menu, mouseEvent, targetElement, data} = ctxEvent;
 
     mouseEvent.preventDefault();
@@ -34,6 +38,8 @@ export class ShContextMenuService {
     componentRef.instance.contentChildrenItems = menu.contentChildrenItems;
 
     componentRef.instance.show(data);
+
+    this.openOverlays.push(overlayRef);
   }
 
   private buildCloseScrollStrategy() {
@@ -70,15 +76,26 @@ export class ShContextMenuService {
     https://github.com/angular/material2/blob/master/src/cdk/overlay/position/connected-position-strategy.ts#L288
    */
   private overrideGetBoundingClientRect(elm: ElementRef, event: MouseEvent) {
+    const {clientX, clientY} = event;
+
     elm.nativeElement.getBoundingClientRect = (): ClientRect => {
       return {
-        bottom: event.clientY,
+        bottom: clientY,
         height: 0,
-        left: event.clientX,
-        right: event.clientX,
-        top: event.clientY,
+        left: clientX,
+        right: clientX,
+        top: clientY,
         width: 0
       };
     };
+  }
+
+  private closeCurrentOverlays() {
+    this.openOverlays.forEach((o) => {
+      o.detach();
+      o.dispose();
+    });
+
+    this.openOverlays = [];
   }
 }
