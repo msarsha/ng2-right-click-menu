@@ -7,22 +7,33 @@
 </div>
 
 <sh-context-menu #menu class="my-menu">
-  <ng-container *ngIf="false">
-    <div *shContextMenuItem="let item">
-      one - {{item.label}}
-    </div>
-  </ng-container>
   <div *shContextMenuItem="let item">
+    one - {{item.label}}
+  </div>
+  <div *shContextMenuItem="let item; subMenu:subMenu" (click)="onClick($event)">
     two - {{item.label}}
   </div>
-  <div *shContextMenuItem>
-    <div class="divider"></div>
+  <div *shContextMenuItem class="sh-divider">
+  </div>
+  <div *shContextMenuItem="let item">
+    one - {{item.label}}
   </div>
   <div *shContextMenuItem="let item">
     <div style="height: 10px; background-color: lightgoldenrodyellow; padding: 10px">
       <input type="text" [value]="item.label">
     </div>
   </div>
+
+  <sh-context-menu #subMenu>
+    <div *shContextMenuItem="let item; subMenu: nestedSubMenu">
+      From Sub Menu - {{item.label}}
+    </div>
+    <sh-context-menu #nestedSubMenu>
+      <div *shContextMenuItem="let item">
+        From Sub Menu Two - {{item.label}}
+      </div>
+    </sh-context-menu>
+  </sh-context-menu>
 </sh-context-menu>
 
 <my-menu #myMenu></my-menu>

@@ -3,10 +3,11 @@ import {ShContextMenuComponent} from './sh-context-menu.component';
 import {CloseScrollStrategy, Overlay} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {ConnectedPositionStrategy} from '@angular/cdk/overlay/typings/position/connected-position-strategy';
-import {ContextMenuEvent} from './sh-context-menu.models';
-import {OverlayRef} from '@angular/cdk/overlay/typings/overlay-ref';
+import {ContextMenuEvent, ContextSubMenuEvent} from './sh-context-menu.models';
+import {OverlayRef} from '@angular/cdk/overlay';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {Subscription} from 'rxjs/Subscription';
+import {merge} from 'rxjs/observable/merge';
 
 @Injectable()
 export class ShContextMenuService implements OnDestroy {
@@ -35,24 +36,47 @@ export class ShContextMenuService implements OnDestroy {
 
     this.openOverlays.push(overlayRef);
 
-    this.registerToBackdropClick(overlayRef);
+    this.registerBackdropEvents(overlayRef);
   }
 
-  private registerToBackdropClick(overlayRef: OverlayRef) {
-    this.backDropSub = fromEvent(overlayRef.backdropElement, 'mousedown')
+  openSubMenu(ctxEvent: ContextSubMenuEvent) {
+    const {menu, mouseEvent, targetElement, data} = ctxEvent;
+
+    mouseEvent.preventDefault();
+    mouseEvent.stopPropagation();
+
+    const scrollStrategy = this.buildCloseScrollStrategy();
+    const positionStrategy = this.buildConnectedPositionStrategyForSubMenu(targetElement);
+    const {overlayRef, componentRef} = this.createAndAttachOverlay(positionStrategy, scrollStrategy, false);
+
+    this.setupComponentBindings(componentRef, menu, data);
+    componentRef.instance.show(data);
+    this.openOverlays.push(overlayRef);
+  }
+
+  private registerBackdropEvents(overlayRef: OverlayRef) {
+    const elm = overlayRef.backdropElement;
+
+    const mouseup$ = fromEvent(elm, 'mouseup');
+    const context$ = fromEvent(elm, 'contextmenu');
+
+    this.backDropSub = merge(mouseup$, context$)
       .subscribe(this.closeCurrentOverlays.bind(this));
   }
 
-  private setupComponentBindings(componentRef: ComponentRef<ShContextMenuComponent>, menu: ShContextMenuComponent, data: any) {
+  private setupComponentBindings(componentRef: ComponentRef<ShContextMenuComponent>,
+                                 menu: ShContextMenuComponent, data: any) {
     componentRef.instance.viewChildrenItems = menu.viewChildrenItems;
     componentRef.instance.contentChildrenItems = menu.contentChildrenItems;
   }
 
-  private createAndAttachOverlay(positionStrategy: ConnectedPositionStrategy, scrollStrategy: CloseScrollStrategy) {
+  private createAndAttachOverlay(positionStrategy: ConnectedPositionStrategy,
+                                 scrollStrategy: CloseScrollStrategy,
+                                 hasBackdrop: boolean = true) {
     const overlayRef = this.overlay.create({
       positionStrategy,
       scrollStrategy,
-      hasBackdrop: true,
+      hasBackdrop: hasBackdrop,
       backdropClass: 'sh-backdrop'
     });
 
@@ -89,6 +113,18 @@ export class ShContextMenuService implements OnDestroy {
       .withFallbackPosition(
         {originX: 'start', originY: 'center'},
         {overlayX: 'end', overlayY: 'center'});
+  }
+
+  private buildConnectedPositionStrategyForSubMenu(elm: ElementRef): ConnectedPositionStrategy {
+    return this
+      .overlay
+      .position()
+      .connectedTo(elm,
+        {originX: 'end', originY: 'bottom'},
+        {overlayX: 'start', overlayY: 'top'})
+      .withFallbackPosition(
+        {originX: 'start', originY: 'top'},
+        {overlayX: 'start', overlayY: 'bottom'});
   }
 
   /*

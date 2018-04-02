@@ -26,6 +26,10 @@ export class AppComponent {
 
   clickEvent = ($event: any) => {
     console.log('clicked ', $event);
+  };
+
+  onClick(evt) {
+    console.log('clicked', evt);
   }
 }
 

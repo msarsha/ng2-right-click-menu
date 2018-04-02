@@ -1,4 +1,3 @@
-
 .box {
   height: 180px;
   width: 180px;
@@ -19,14 +18,4 @@ i.menu-icon {
   margin-right: 3px;
   display: inline-block;
   color: green;
-}
-
-.divider {
-  height: 5px;
-  background-color: lightblue;
-}
-
-.sh-context-menu{
-  background-color: lightgray;
-  padding: 20px;
 }

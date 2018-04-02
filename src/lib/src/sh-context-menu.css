@@ -1,0 +1,49 @@
+@import "~@angular/cdk/overlay-prebuilt.css";
+
+.sh-backdrop {
+  background-color: transparent;
+}
+
+.sh-context-menu {
+  background: #ececec;
+  min-width: 150px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  color: black;
+  padding: 5px 0;
+  margin: 0;
+}
+
+.sh-context-menu--item {
+  padding: 5px 10px 5px 15px;
+  transition: all 0.15s;
+}
+
+.sh-context-menu--item:hover {
+  background-color: #4b8bec;
+  color: white;
+  cursor: pointer;
+}
+
+.sh-context-menu--item .sh-divider {
+  height: 1px;
+  margin: 1px 1px 8px 1px;
+  overflow: hidden;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.sh-context-menu--item.sh-sub-anchor {
+  position: relative;
+}
+
+.sh-sub-anchor:after {
+  content: "";
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  position: absolute;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 8px solid black;
+}

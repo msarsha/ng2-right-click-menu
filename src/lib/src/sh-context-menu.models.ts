@@ -7,3 +7,7 @@ export class ContextMenuEvent {
   targetElement: ElementRef;
   data: any;
 }
+
+export class ContextSubMenuEvent extends ContextMenuEvent{
+  hostMenu: ShContextMenuComponent;
+}

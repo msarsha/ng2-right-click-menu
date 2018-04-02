@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {Directive, ElementRef, Input, OnDestroy} from '@angular/core';
 import {ShContextMenuService} from './sh-context-menu.service';
 import {ShContextMenuComponent} from './sh-context-menu.component';
 import {Subscription} from 'rxjs/Subscription';
@@ -13,14 +13,13 @@ export class ShAnchorForDirective implements OnDestroy {
 
   sub: Subscription;
 
-  constructor(private ctxMenu: ShContextMenuService, private elm: ElementRef) {
+  constructor(private ctxService: ShContextMenuService, private elm: ElementRef) {
     this.sub = fromEvent(this.elm.nativeElement, 'contextmenu')
       .subscribe(this.openMenu.bind(this));
   }
 
-  // @HostListener('contextmenu', ['$event'])
   openMenu(event: MouseEvent) {
-    this.ctxMenu.openMenu({
+    this.ctxService.openMenu({
       menu: this.menu,
       mouseEvent: event,
       targetElement: this.elm,
