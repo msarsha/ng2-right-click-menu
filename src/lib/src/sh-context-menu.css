@@ -35,6 +35,7 @@
 
 .sh-context-menu--item.sh-sub-anchor {
   position: relative;
+  min-width: 160px;
 }
 
 .sh-sub-anchor:after {
