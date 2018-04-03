@@ -13,7 +13,7 @@
   <div *shContextMenuItem="let item; subMenu:subMenu" (click)="onClick($event)">
     two - {{item.label}}
   </div>
-  <div *shContextMenuItem class="sh-divider">
+  <div *shContextMenuItem="let item; divider: true">
   </div>
   <div *shContextMenuItem="let item">
     one - {{item.label}}

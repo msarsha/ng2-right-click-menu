@@ -4,13 +4,10 @@ import {ShContextMenuComponent} from './sh-context-menu.component';
 @Directive({
   selector: '[shContextMenuItem]'
 })
-export class ShContextMenuItemDirective implements OnInit {
+export class ShContextMenuItemDirective {
   @Input('shContextMenuItemSubMenu') subMenu: ShContextMenuComponent;
+  @Input('shContextMenuItemDivider') divider = false;
 
   constructor(public template: TemplateRef<any>) {
-  }
-
-  ngOnInit(): void {
-    console.log(this.subMenu);
   }
 }

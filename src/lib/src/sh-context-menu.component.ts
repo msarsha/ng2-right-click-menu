@@ -21,13 +21,16 @@ class ContextMenuItemWithData extends ShContextMenuItemDirective {
       <div
         *ngFor="let item of items"
         #itemElement
-        [ngClass]="{'sh-sub-anchor': item.subMenu}"
+        [ngClass]="{'sh-sub-anchor': item.subMenu, 'sh-context-menu--item__divider': item.divider}"
         class="sh-context-menu--item"
         (mouseenter)="onEnter($event, item, itemElement)"
         (mouseleave)="onLeave($event, item, itemElement)">
-        <ng-content
-          *ngTemplateOutlet="item.template; context: item.context">
-        </ng-content>
+        <ng-container *ngIf="!item.divider">
+          <ng-content
+            #itemCont
+            *ngTemplateOutlet="item.template; context: item.context">
+          </ng-content>
+        </ng-container>
       </div>
     </div>
   `

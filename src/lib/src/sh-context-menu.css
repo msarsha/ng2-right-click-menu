@@ -26,7 +26,13 @@
   cursor: pointer;
 }
 
-.sh-context-menu--item .sh-divider {
+.sh-context-menu--item.sh-context-menu--item__divider:hover {
+  background-color: #ececec;
+  color: black;
+  cursor: default;
+}
+
+.sh-context-menu--item__divider {
   height: 1px;
   margin: 1px 1px 8px 1px;
   overflow: hidden;
