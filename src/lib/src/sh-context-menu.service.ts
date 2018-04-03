@@ -57,10 +57,7 @@ export class ShContextMenuService implements OnDestroy {
   private registerBackdropEvents(overlayRef: OverlayRef) {
     const elm = overlayRef.backdropElement;
 
-    const mouseup$ = fromEvent(elm, 'mouseup');
-    const context$ = fromEvent(elm, 'contextmenu');
-
-    this.backDropSub = merge(mouseup$, context$)
+    this.backDropSub = fromEvent(elm, 'mousedown')
       .subscribe(this.closeCurrentOverlays.bind(this));
   }
 
