@@ -42,6 +42,14 @@ export class AppComponent {
     <div *shContextMenuItem="let item">
       from comp !! - {{item.label}}
     </div>
+    <!--<div *shContextMenuItem="let item; subMenu: subMenu">-->
+      <!--from comp !! - {{item.label}}-->
+    <!--</div>-->
+    <!--<sh-context-menu #subMenu>-->
+      <!--<div *shContextMenuItem="let item;">-->
+        <!--From Sub Menu - {{item.label}}-->
+      <!--</div>-->
+    <!--</sh-context-menu>-->
   `
 })
 export class MyMenuComponent extends ShContextMenuComponent {

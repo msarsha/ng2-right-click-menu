@@ -11,12 +11,12 @@ import {OverlayModule} from '@angular/cdk/overlay';
   declarations: [
     ShAnchorForDirective,
     ShContextMenuComponent,
-    ShContextMenuItemDirective,
+    ShContextMenuItemDirective
   ],
   exports: [
     ShAnchorForDirective,
     ShContextMenuComponent,
-    ShContextMenuItemDirective,
+    ShContextMenuItemDirective
   ],
   providers: [
     ShContextMenuService

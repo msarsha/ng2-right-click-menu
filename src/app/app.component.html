@@ -6,11 +6,11 @@
   <h2>{{title}}</h2>
 </div>
 
-<sh-context-menu #menu class="my-menu">
+<sh-context-menu #menu>
   <div *shContextMenuItem="let item">
     one - {{item.label}}
   </div>
-  <div *shContextMenuItem="let item; subMenu:subMenu" (click)="onClick($event)">
+  <div *shContextMenuItem="let item with subMenu" (clickme)="onClick($event)">
     two - {{item.label}}
   </div>
   <div *shContextMenuItem="let item; divider: true">
@@ -19,13 +19,11 @@
     one - {{item.label}}
   </div>
   <div *shContextMenuItem="let item">
-    <div style="height: 10px; background-color: lightgoldenrodyellow; padding: 10px">
-      <input type="text" [value]="item.label">
-    </div>
+    <input type="text" [value]="item.label">
   </div>
 
   <sh-context-menu #subMenu>
-    <div *shContextMenuItem="let item; subMenu: nestedSubMenu">
+    <div *shContextMenuItem="let item with nestedSubMenu">
       From Sub Menu - {{item.label}}
     </div>
     <sh-context-menu #nestedSubMenu>

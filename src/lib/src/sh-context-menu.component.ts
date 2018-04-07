@@ -72,7 +72,7 @@ export class ShContextMenuComponent {
 
   onEnter($event: MouseEvent, item: ContextMenuItemWithData, elm: HTMLElement) {
     if (!item.subMenu) {
-      // after small delay - close all child submenus if any
+      // TODO: after small delay - close all child submenus if any
       return;
     }
 
@@ -90,5 +90,12 @@ export class ShContextMenuComponent {
 
   onLeave($event: MouseEvent, item: ContextMenuItemWithData, elm: HTMLElement) {
 
+  }
+
+  onClick($event: MouseEvent, item: ContextMenuItemWithData) {
+    console.log('from component', $event, item);
+    if (!item.divider) {
+      // this.ctxService.close(this);
+    }
   }
 }
