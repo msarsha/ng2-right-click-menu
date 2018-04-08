@@ -1,16 +1,9 @@
 import {
-  Component, ContentChildren, ElementRef, QueryList, ViewChildren,
+  Component, ContentChildren, ElementRef, Input, QueryList, ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
 import {ShContextMenuService} from './sh-context-menu.service';
-
-class ContextMenuItemWithData extends ShContextMenuItemDirective {
-  context: {
-    $implicit: any
-  };
-  open: boolean;
-}
 
 @Component({
   selector: 'sh-context-menu',
@@ -24,7 +17,8 @@ class ContextMenuItemWithData extends ShContextMenuItemDirective {
         [ngClass]="{'sh-sub-anchor': item.subMenu, 'sh-context-menu--item__divider': item.divider}"
         class="sh-context-menu--item"
         (mouseenter)="onEnter($event, item, itemElement)"
-        (mouseleave)="onLeave($event, item, itemElement)">
+        (mouseleave)="onLeave($event, item, itemElement)"
+        (click)="onClick($event, item)">
         <ng-container *ngIf="!item.divider">
           <ng-content
             #itemCont
@@ -36,41 +30,41 @@ class ContextMenuItemWithData extends ShContextMenuItemDirective {
   `
 })
 export class ShContextMenuComponent {
+  @Input() thisContext: any;
+
   @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) contentChildrenItems;
   @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems;
 
-  items: ContextMenuItemWithData[] = [];
+  items: ShContextMenuItemDirective[] = [];
 
   constructor(private ctxService: ShContextMenuService) {
-    this.contentChildrenItems = new QueryList<ContextMenuItemWithData>();
-    this.viewChildrenItems = new QueryList<ContextMenuItemWithData>();
+    this.contentChildrenItems = new QueryList<ShContextMenuItemDirective>();
+    this.viewChildrenItems = new QueryList<ShContextMenuItemDirective>();
   }
 
   get menuItems() {
     // when using the ShContextMenuComponent as menu, the ContentChildren is the source
     if (this.contentChildrenItems.length) {
-      return this.contentChildrenItems;
+      return this.contentChildrenItems.toArray();
     }
 
     // when using a custom component as menu the ViewChildren is the source
-    return this.viewChildrenItems;
+    return this.viewChildrenItems.toArray();
   }
 
-  set menuItems(items: ContextMenuItemWithData[]) {
+  set menuItems(items: ShContextMenuItemDirective[]) {
     this.items = [].concat(items);
   }
 
   show(data: any) {
-    this.menuItems = this.menuItems.map(this.mapItems(data));
+    const cloned = [].concat(this.menuItems);
+    cloned.forEach((item) => {
+      item.context.$implicit = data;
+    });
+    this.menuItems = cloned;
   }
 
-  private mapItems(data) {
-    return (item) => {
-      return {...item, context: {$implicit: data}};
-    };
-  }
-
-  onEnter($event: MouseEvent, item: ContextMenuItemWithData, elm: HTMLElement) {
+  onEnter($event: MouseEvent, item: ShContextMenuItemDirective, elm: HTMLElement) {
     if (!item.subMenu) {
       // TODO: after small delay - close all child submenus if any
       return;
@@ -88,14 +82,23 @@ export class ShContextMenuComponent {
     }
   }
 
-  onLeave($event: MouseEvent, item: ContextMenuItemWithData, elm: HTMLElement) {
+  onLeave($event: MouseEvent, item: ShContextMenuItemDirective, elm: HTMLElement) {
 
   }
 
-  onClick($event: MouseEvent, item: ContextMenuItemWithData) {
-    console.log('from component', $event, item);
-    if (!item.divider) {
-      // this.ctxService.close(this);
+  onClick($event: MouseEvent, item: ShContextMenuItemDirective) {
+    if (item.divider) {
+      return;
     }
+
+    this.ctxService.destroy();
+
+    if (item.on) {
+      this.invokeWithContext(item.on, item, item.context.$implicit);
+    }
+  }
+
+  private invokeWithContext(fn, fallbackContext, ...args) {
+    fn.call(this.thisContext ? this.thisContext : fallbackContext, ...args);
   }
 }

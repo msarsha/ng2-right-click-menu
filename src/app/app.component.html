@@ -1,21 +1,21 @@
-<div class="box" [shAnchorFor]="menu" [shMenuData]="items[0]">
-  <h2>{{title}}</h2>
+<div class="box" *ngFor="let item of items" [shAnchorFor]="menu" [shMenuData]="item">
+  <h2>Menu One</h2>
 </div>
 
-<div class="box" [shAnchorFor]="myMenu" [shMenuData]="items[1]">
-  <h2>{{title}}</h2>
+<div class="box" *ngFor="let item of items" [shAnchorFor]="myMenu" [shMenuData]="item" [shMenuTriggers]="['click']">
+  <h2>Menu Two</h2>
 </div>
 
-<sh-context-menu #menu>
-  <div *shContextMenuItem="let item">
+<sh-context-menu #menu [thisContext]="thisContext">
+  <div *shContextMenuItem="let item on onClick">
     one - {{item.label}}
   </div>
-  <div *shContextMenuItem="let item with subMenu" (clickme)="onClick($event)">
+  <div *shContextMenuItem="let item with subMenu">
     two - {{item.label}}
   </div>
-  <div *shContextMenuItem="let item; divider: true">
+  <div shContextMenuItem [divider]="true">
   </div>
-  <div *shContextMenuItem="let item">
+  <div *shContextMenuItem="let item on onClick">
     one - {{item.label}}
   </div>
   <div *shContextMenuItem="let item">

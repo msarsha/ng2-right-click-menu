@@ -11,25 +11,21 @@ export class AppComponent {
   title = 'Right Click Me';
   items: any[];
 
+  thisContext = this;
+
   constructor() {
     this.items = [
       {
-        label: 'text',
-        onClick: this.clickEvent,
+        label: 'Item One'
       },
       {
-        label: 'Edit',
-        onClick: this.clickEvent
+        label: 'Item Two'
       }
     ];
   }
 
-  clickEvent = ($event: any) => {
-    console.log('clicked ', $event);
-  };
-
-  onClick(evt) {
-    console.log('clicked', evt);
+  onClick(item) {
+    console.log('clicked', this);
   }
 }
 
@@ -43,12 +39,12 @@ export class AppComponent {
       from comp !! - {{item.label}}
     </div>
     <!--<div *shContextMenuItem="let item; subMenu: subMenu">-->
-      <!--from comp !! - {{item.label}}-->
+    <!--from comp !! - {{item.label}}-->
     <!--</div>-->
     <!--<sh-context-menu #subMenu>-->
-      <!--<div *shContextMenuItem="let item;">-->
-        <!--From Sub Menu - {{item.label}}-->
-      <!--</div>-->
+    <!--<div *shContextMenuItem="let item;">-->
+    <!--From Sub Menu - {{item.label}}-->
+    <!--</div>-->
     <!--</sh-context-menu>-->
   `
 })

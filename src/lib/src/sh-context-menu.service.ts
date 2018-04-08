@@ -65,6 +65,7 @@ export class ShContextMenuService implements OnDestroy {
                                  menu: ShContextMenuComponent, data: any) {
     componentRef.instance.viewChildrenItems = menu.viewChildrenItems;
     componentRef.instance.contentChildrenItems = menu.contentChildrenItems;
+    componentRef.instance.thisContext = menu.thisContext;
   }
 
   private createAndAttachOverlay(positionStrategy: ConnectedPositionStrategy,
@@ -153,8 +154,12 @@ export class ShContextMenuService implements OnDestroy {
     this.openOverlays = [];
   }
 
-  ngOnDestroy(): void {
+  destroy() {
     this.closeCurrentOverlays();
     this.backDropSub.unsubscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy();
   }
 }
