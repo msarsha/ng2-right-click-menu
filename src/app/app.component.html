@@ -19,7 +19,7 @@
     one - {{item.label}}
   </div>
   <div *shContextMenuItem="let item">
-    <input type="text" [value]="item.label">
+    <my-content [item]="item"></my-content>
   </div>
 
   <sh-context-menu #subMenu>

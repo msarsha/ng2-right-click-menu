@@ -1,9 +1,10 @@
 import {
-  Component, ContentChildren, ElementRef, Input, QueryList, ViewChildren,
+  Component, ContentChildren, ElementRef, Input, OnDestroy, QueryList, ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
 import {ShContextMenuService} from './sh-context-menu.service';
+import {OverlayRef} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'sh-context-menu',
@@ -29,39 +30,41 @@ import {ShContextMenuService} from './sh-context-menu.service';
     </div>
   `
 })
-export class ShContextMenuComponent {
+export class ShContextMenuComponent implements OnDestroy {
   @Input() thisContext: any;
 
   @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) contentChildrenItems;
   @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems;
 
   items: ShContextMenuItemDirective[] = [];
+  overlayRef: OverlayRef;
+  isSub = false;
 
   constructor(private ctxService: ShContextMenuService) {
     this.contentChildrenItems = new QueryList<ShContextMenuItemDirective>();
     this.viewChildrenItems = new QueryList<ShContextMenuItemDirective>();
   }
 
-  get menuItems() {
+  get menuItems(): QueryList<ShContextMenuItemDirective> {
     // when using the ShContextMenuComponent as menu, the ContentChildren is the source
     if (this.contentChildrenItems.length) {
-      return this.contentChildrenItems.toArray();
+      return this.contentChildrenItems;
     }
 
     // when using a custom component as menu the ViewChildren is the source
-    return this.viewChildrenItems.toArray();
+    return this.viewChildrenItems;
   }
 
-  set menuItems(items: ShContextMenuItemDirective[]) {
-    this.items = [].concat(items);
+  set menuItems(items: QueryList<ShContextMenuItemDirective>) {
+    this.items = items.toArray();
   }
 
   show(data: any) {
-    const cloned = [].concat(this.menuItems);
-    cloned.forEach((item) => {
+    this.menuItems.forEach((item) => {
       item.context.$implicit = data;
     });
-    this.menuItems = cloned;
+
+    this.menuItems = this.menuItems;
   }
 
   onEnter($event: MouseEvent, item: ShContextMenuItemDirective, elm: HTMLElement) {
@@ -70,16 +73,13 @@ export class ShContextMenuComponent {
       return;
     }
 
-    if (!item.open) {
-      item.open = true;
-      this.ctxService.openSubMenu({
-        hostMenu: this,
-        data: item.context.$implicit,
-        targetElement: new ElementRef(elm),
-        menu: item.subMenu,
-        mouseEvent: $event
-      });
-    }
+    this.ctxService.openSubMenu({
+      hostMenu: this,
+      data: item.context.$implicit,
+      targetElement: new ElementRef(elm),
+      menu: item.subMenu,
+      mouseEvent: $event
+    });
   }
 
   onLeave($event: MouseEvent, item: ShContextMenuItemDirective, elm: HTMLElement) {
@@ -87,6 +87,8 @@ export class ShContextMenuComponent {
   }
 
   onClick($event: MouseEvent, item: ShContextMenuItemDirective) {
+    // TODO: handle click in service
+
     if (item.divider) {
       return;
     }
@@ -94,11 +96,15 @@ export class ShContextMenuComponent {
     this.ctxService.destroy();
 
     if (item.on) {
-      this.invokeWithContext(item.on, item, item.context.$implicit);
+      this.callWithContext(item.on, item, item.context.$implicit);
     }
   }
 
-  private invokeWithContext(fn, fallbackContext, ...args) {
+  private callWithContext(fn, fallbackContext, ...args) {
     fn.call(this.thisContext ? this.thisContext : fallbackContext, ...args);
+  }
+
+  ngOnDestroy(): void {
+    // this.menuItems.forEach(i => i.open = false);
   }
 }

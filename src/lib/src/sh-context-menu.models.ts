@@ -8,6 +8,6 @@ export class ContextMenuEvent {
   data: any;
 }
 
-export class ContextSubMenuEvent extends ContextMenuEvent{
+export class ContextSubMenuEvent extends ContextMenuEvent {
   hostMenu: ShContextMenuComponent;
 }

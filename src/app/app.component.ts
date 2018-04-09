@@ -50,3 +50,15 @@ export class AppComponent {
 })
 export class MyMenuComponent extends ShContextMenuComponent {
 }
+
+@Component({
+  selector: 'my-content',
+  template: `
+    <div class="box">
+      <input type="text" [value]="item.label">
+    </div>
+  `
+})
+export class MyContentComponent {
+  @Input() item: any;
+}

@@ -7,7 +7,6 @@ import {ContextMenuEvent, ContextSubMenuEvent} from './sh-context-menu.models';
 import {OverlayRef} from '@angular/cdk/overlay';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {Subscription} from 'rxjs/Subscription';
-import {merge} from 'rxjs/observable/merge';
 
 @Injectable()
 export class ShContextMenuService implements OnDestroy {
@@ -49,8 +48,11 @@ export class ShContextMenuService implements OnDestroy {
     const positionStrategy = this.buildConnectedPositionStrategyForSubMenu(targetElement);
     const {overlayRef, componentRef} = this.createAndAttachOverlay(positionStrategy, scrollStrategy, false);
 
-    this.setupComponentBindings(componentRef, menu, data);
+    this.setupComponentBindings(componentRef, menu, overlayRef);
+
+    componentRef.instance.isSub = true;
     componentRef.instance.show(data);
+
     this.openOverlays.push(overlayRef);
   }
 
@@ -62,10 +64,12 @@ export class ShContextMenuService implements OnDestroy {
   }
 
   private setupComponentBindings(componentRef: ComponentRef<ShContextMenuComponent>,
-                                 menu: ShContextMenuComponent, data: any) {
+                                 menu: ShContextMenuComponent,
+                                 overlayRef: OverlayRef) {
     componentRef.instance.viewChildrenItems = menu.viewChildrenItems;
     componentRef.instance.contentChildrenItems = menu.contentChildrenItems;
     componentRef.instance.thisContext = menu.thisContext;
+    componentRef.instance.overlayRef = overlayRef;
   }
 
   private createAndAttachOverlay(positionStrategy: ConnectedPositionStrategy,
