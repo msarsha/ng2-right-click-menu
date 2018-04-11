@@ -9,5 +9,5 @@ export class ContextMenuEvent {
 }
 
 export class ContextSubMenuEvent extends ContextMenuEvent {
-  hostMenu: ShContextMenuComponent;
+  parentMenu: ShContextMenuComponent;
 }

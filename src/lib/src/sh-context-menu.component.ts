@@ -1,7 +1,8 @@
 import {
   AfterContentInit,
   AfterViewInit,
-  Component, ContentChildren, ElementRef, Input, OnDestroy, QueryList, TemplateRef, ViewChild, ViewChildren, ViewContainerRef,
+  Component, ContentChildren, ElementRef, Host, Input, OnDestroy, Optional, QueryList, TemplateRef, ViewChild, ViewChildren,
+  ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
@@ -24,10 +25,7 @@ import {OverlayRef} from '@angular/cdk/overlay';
           (mouseenter)="onEnter($event, item, itemElement)"
           (click)="onClick($event, item)">
           <ng-container *ngIf="!item.divider">
-            <ng-content
-              #itemContl
-              *ngTemplateOutlet="item.template; context: item.context">
-            </ng-content>
+            <ng-content *ngTemplateOutlet="item.template; context: item.context"></ng-content>
           </ng-container>
         </div>
       </div>
@@ -69,11 +67,11 @@ export class ShContextMenuComponent implements OnDestroy {
     }
 
     this.ctxService.openSubMenu({
-      hostMenu: this,
       data: item.context.$implicit,
       targetElement: new ElementRef(elm),
       menu: item.subMenu,
-      mouseEvent: $event
+      mouseEvent: $event,
+      parentMenu: this
     });
   }
 

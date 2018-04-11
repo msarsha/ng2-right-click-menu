@@ -32,30 +32,26 @@ export class ShContextMenuService implements OnDestroy {
 
     const overlayRef = this.createAndAttachOverlay(positionStrategy, scrollStrategy, menu, true);
     this.activeOverlays.push(overlayRef);
+    this.attachOverlayRef(menu, overlayRef);
 
     this.registerBackdropEvents(overlayRef);
   }
 
   openSubMenu(ctxEvent: ContextSubMenuEvent): any {
-    const {menu, mouseEvent, targetElement, data, hostMenu} = ctxEvent;
+    const {menu, mouseEvent, targetElement, data, parentMenu} = ctxEvent;
 
     mouseEvent.preventDefault();
     mouseEvent.stopPropagation();
 
     const scrollStrategy = this.buildCloseScrollStrategy();
     const positionStrategy = this.buildConnectedPositionStrategyForSubMenu(targetElement);
-    // const {overlayRef, componentRef} = this.createAndAttachOverlay(positionStrategy, scrollStrategy, false);
-    //
-    // this.setupComponentBindings(componentRef, menu, overlayRef);
-    //
-    // componentRef.instance.isSub = true;
-    // componentRef.instance.thisContext = hostMenu.thisContext;
-    // componentRef.instance.items = menu.items;
-    // componentRef.instance.show(data);
-    //
-    // this.activeOverlays.push(overlayRef);
-    //
-    // return componentRef.instance;
+    const overlayRef = this.createAndAttachOverlay(positionStrategy, scrollStrategy, menu, false);
+
+    this.attachContextToItems(menu, data);
+    this.attachThisContext(menu, parentMenu);
+    this.attachOverlayRef(menu, overlayRef);
+
+    this.activeOverlays.push(overlayRef);
   }
 
   private registerBackdropEvents(overlayRef: OverlayRef) {
@@ -119,11 +115,17 @@ export class ShContextMenuService implements OnDestroy {
       .overlay
       .position()
       .connectedTo(elm,
-        {originX: 'end', originY: 'bottom'},
-        {overlayX: 'start', overlayY: 'top'})
+        { originX: 'end', originY: 'top' },
+        { overlayX: 'start', overlayY: 'top' })
       .withFallbackPosition(
-        {originX: 'start', originY: 'top'},
-        {overlayX: 'start', overlayY: 'bottom'});
+        { originX: 'start', originY: 'top' },
+        { overlayX: 'end', overlayY: 'top' })
+      .withFallbackPosition(
+        { originX: 'end', originY: 'bottom' },
+        { overlayX: 'start', overlayY: 'bottom' })
+      .withFallbackPosition(
+        { originX: 'start', originY: 'bottom' },
+        { overlayX: 'end', overlayY: 'bottom' });
   }
 
   /*
@@ -165,15 +167,29 @@ export class ShContextMenuService implements OnDestroy {
   }
 
   closeSubMenus(menu: ShContextMenuComponent) {
-    const overlayRefs = menu
+    const itemsWithSubMenus = menu
       .menuItems
-      .filter(i => !!i.subMenu && !!i.subMenu.overlayRef)
-      .map(i => i.subMenu.overlayRef);
+      .filter(i => !!i.subMenu && !!i.subMenu.overlayRef);
 
-    overlayRefs.forEach(r => r.detach());
+    if (itemsWithSubMenus.length) {
+      itemsWithSubMenus.forEach(sm => this.closeSubMenus(sm.subMenu));
+
+      const overlayRefs = itemsWithSubMenus
+        .map(i => i.subMenu.overlayRef);
+
+      overlayRefs.forEach(r => r.dispose());
+    }
   }
 
   private attachContextToItems(menu: ShContextMenuComponent, data: any) {
     menu.menuItems.forEach(i => i.context.$implicit = data);
+  }
+
+  private attachThisContext(menu: ShContextMenuComponent, parentMenu: ShContextMenuComponent) {
+    menu.thisContext = parentMenu.thisContext;
+  }
+
+  private attachOverlayRef(menu: ShContextMenuComponent, overlayRef: OverlayRef) {
+    menu.overlayRef = overlayRef;
   }
 }

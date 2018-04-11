@@ -3,16 +3,16 @@
 </div>
 
 <!--<div class="box" *ngFor="let item of items" [shAnchorFor]="myMenu" [shMenuData]="item" [shMenuTriggers]="['click']">-->
-  <!--<h2>Menu Two</h2>-->
+<!--<h2>Menu Two</h2>-->
 <!--</div>-->
 
 <sh-context-menu #menu [this]="thisContext">
   <div *shContextMenuItem="let item on onClick">
     one - {{item.label}}
   </div>
-  <!--<div *shContextMenuItem="let item with subMenu">-->
-    <!--two - {{item.label}}-->
-  <!--</div>-->
+  <div *shContextMenuItem="let item with subMenu">
+    two - {{item.label}}
+  </div>
   <div shContextMenuItem [divider]="true">
   </div>
   <div *shContextMenuItem="let item on onClick">
@@ -21,17 +21,22 @@
   <div *shContextMenuItem="let item">
     <my-content [item]="item"></my-content>
   </div>
+  <ng-container *ngIf="false">
+    <div *shContextMenuItem="let item">
+      <my-content [item]="item"></my-content>
+    </div>
+  </ng-container>
 
-  <!--<sh-context-menu #subMenu>-->
-    <!--<div *shContextMenuItem="let item with nestedSubMenu">-->
-      <!--From Sub Menu - {{item.label}}-->
-    <!--</div>-->
-    <!--<sh-context-menu #nestedSubMenu>-->
-      <!--<div *shContextMenuItem="let item">-->
-        <!--From Sub Menu Two - {{item.label}}-->
-      <!--</div>-->
-    <!--</sh-context-menu>-->
-  <!--</sh-context-menu>-->
+  <sh-context-menu #subMenu>
+    <div *shContextMenuItem="let item with nestedSubMenu">
+      From Sub Menu - {{item.label}}
+    </div>
+    <sh-context-menu #nestedSubMenu>
+      <div *shContextMenuItem="let item on onClick">
+        From Sub Menu Two - {{item.label}}
+      </div>
+    </sh-context-menu>
+  </sh-context-menu>
 </sh-context-menu>
 
 <!--<my-menu #myMenu></my-menu>-->
