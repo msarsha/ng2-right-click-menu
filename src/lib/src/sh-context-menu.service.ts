@@ -7,11 +7,14 @@ import {ContextMenuEvent, ContextSubMenuEvent} from './sh-context-menu.models';
 import {OverlayRef} from '@angular/cdk/overlay';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {Subscription} from 'rxjs/Subscription';
+import {tokenReference} from '@angular/compiler';
 
 @Injectable()
 export class ShContextMenuService implements OnDestroy {
   activeOverlays: OverlayRef[] = [];
   backDropSub: Subscription;
+
+  activeMenu: ShContextMenuComponent;
 
   constructor(private overlay: Overlay) {
   }
@@ -19,6 +22,8 @@ export class ShContextMenuService implements OnDestroy {
   openMenu(ctxEvent: ContextMenuEvent) {
     this.closeCurrentOverlays();
     const {menu, mouseEvent, targetElement, data} = ctxEvent;
+
+    this.activeMenu = menu;
 
     mouseEvent.preventDefault();
     mouseEvent.stopPropagation();
@@ -115,17 +120,17 @@ export class ShContextMenuService implements OnDestroy {
       .overlay
       .position()
       .connectedTo(elm,
-        { originX: 'end', originY: 'top' },
-        { overlayX: 'start', overlayY: 'top' })
+        {originX: 'end', originY: 'top'},
+        {overlayX: 'start', overlayY: 'top'})
       .withFallbackPosition(
-        { originX: 'start', originY: 'top' },
-        { overlayX: 'end', overlayY: 'top' })
+        {originX: 'start', originY: 'top'},
+        {overlayX: 'end', overlayY: 'top'})
       .withFallbackPosition(
-        { originX: 'end', originY: 'bottom' },
-        { overlayX: 'start', overlayY: 'bottom' })
+        {originX: 'end', originY: 'bottom'},
+        {overlayX: 'start', overlayY: 'bottom'})
       .withFallbackPosition(
-        { originX: 'start', originY: 'bottom' },
-        { overlayX: 'end', overlayY: 'bottom' });
+        {originX: 'start', originY: 'bottom'},
+        {overlayX: 'end', overlayY: 'bottom'});
   }
 
   /*
@@ -155,6 +160,12 @@ export class ShContextMenuService implements OnDestroy {
     });
 
     this.activeOverlays = [];
+
+    // TODO: create close subject and emit.
+    // subscribe in component
+    if (this.activeMenu) {
+      this.activeMenu.close();
+    }
   }
 
   destroy() {

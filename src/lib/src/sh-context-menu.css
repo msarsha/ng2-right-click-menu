@@ -20,7 +20,7 @@
   transition: all 0.15s;
 }
 
-.sh-context-menu--item:hover {
+.sh-context-menu--item:hover, .sh-context-menu--item__sub-active {
   background-color: #4b8bec;
   color: white;
   cursor: pointer;
