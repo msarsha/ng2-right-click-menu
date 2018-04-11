@@ -35,7 +35,7 @@ import {OverlayRef} from '@angular/cdk/overlay';
   `
 })
 export class ShContextMenuComponent implements OnDestroy {
-  @Input() thisContext: any;
+  @Input('this') thisContext: any;
   @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) contentChildrenItems;
   @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems;
 

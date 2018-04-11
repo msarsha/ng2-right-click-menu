@@ -6,7 +6,7 @@
   <!--<h2>Menu Two</h2>-->
 <!--</div>-->
 
-<sh-context-menu #menu [thisContext]="thisContext">
+<sh-context-menu #menu [this]="thisContext">
   <div *shContextMenuItem="let item on onClick">
     one - {{item.label}}
   </div>
