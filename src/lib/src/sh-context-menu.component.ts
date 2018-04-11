@@ -1,5 +1,7 @@
 import {
-  Component, ContentChildren, ElementRef, Input, OnDestroy, QueryList, ViewChildren,
+  AfterContentInit,
+  AfterViewInit,
+  Component, ContentChildren, ElementRef, Input, OnDestroy, QueryList, TemplateRef, ViewChild, ViewChildren, ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
@@ -11,38 +13,50 @@ import {OverlayRef} from '@angular/cdk/overlay';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['sh-context-menu.css'],
   template: `
-    <div class="sh-context-menu" *ngIf="items.length">
-      <div
-        *ngFor="let item of items"
-        #itemElement
-        [ngClass]="{'sh-sub-anchor': item.subMenu, 'sh-context-menu--item__divider': item.divider}"
-        class="sh-context-menu--item"
-        (mouseenter)="onEnter($event, item, itemElement)"
-        (mouseleave)="onLeave($event, item, itemElement)"
-        (click)="onClick($event, item)">
-        <ng-container *ngIf="!item.divider">
-          <ng-content
-            #itemCont
-            *ngTemplateOutlet="item.template; context: item.context">
-          </ng-content>
-        </ng-container>
+    <ng-container #componentContainer></ng-container>
+    <ng-template #componentTemplate>
+      <div class="sh-context-menu">
+        <div
+          *ngFor="let item of item"
+          #itemElement
+          [ngClass]="{'sh-sub-anchor': item.subMenu, 'sh-context-menu--item__divider': item.divider}"
+          class="sh-context-menu--item"
+          (mouseenter)="onEnter($event, item, itemElement)"
+          (click)="onClick($event, item)">
+          <ng-container *ngIf="!item.divider">
+            <ng-content
+              #itemContl
+              *ngTemplateOutlet="item.template; context: item.context">
+            </ng-content>
+          </ng-container>
+        </div>
       </div>
-    </div>
+    </ng-template>
   `
 })
-export class ShContextMenuComponent implements OnDestroy {
+export class ShContextMenuComponent implements OnDestroy, AfterViewInit, AfterContentInit {
   @Input() thisContext: any;
-
   @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) contentChildrenItems;
   @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems;
 
-  items: ShContextMenuItemDirective[] = [];
+  @ViewChild('componentTemplate', {read: TemplateRef}) cmpTemplate;
+  @ViewChild('componentContainer', {read: ViewContainerRef}) cmpContainer;
+
   overlayRef: OverlayRef;
   isSub = false;
+  items: ShContextMenuItemDirective[];
 
   constructor(private ctxService: ShContextMenuService) {
     this.contentChildrenItems = new QueryList<ShContextMenuItemDirective>();
     this.viewChildrenItems = new QueryList<ShContextMenuItemDirective>();
+  }
+
+  ngAfterViewInit(): void {
+    console.log('view init');
+  }
+
+  ngAfterContentInit(): void {
+    console.log('content init');
   }
 
   get menuItems(): QueryList<ShContextMenuItemDirective> {
@@ -55,21 +69,19 @@ export class ShContextMenuComponent implements OnDestroy {
     return this.viewChildrenItems;
   }
 
-  set menuItems(items: QueryList<ShContextMenuItemDirective>) {
-    this.items = items.toArray();
-  }
-
   show(data: any) {
     this.menuItems.forEach((item) => {
       item.context.$implicit = data;
     });
 
-    this.menuItems = this.menuItems;
+    this.cmpContainer.createEmbeddedView(this.cmpTemplate);
   }
 
   onEnter($event: MouseEvent, item: ShContextMenuItemDirective, elm: HTMLElement) {
+    // TODO: close all child submenus
+    this.ctxService.closeSubMenus(this);
+
     if (!item.subMenu) {
-      // TODO: after small delay - close all child submenus if any
       return;
     }
 
@@ -93,9 +105,8 @@ export class ShContextMenuComponent implements OnDestroy {
       return;
     }
 
-    this.ctxService.destroy();
-
     if (item.on) {
+      this.ctxService.destroy();
       this.callWithContext(item.on, item, item.context.$implicit);
     }
   }
@@ -105,6 +116,7 @@ export class ShContextMenuComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.menuItems.forEach(i => i.open = false);
+    this.cmpContainer.detach();
+    this.overlayRef.detach();
   }
 }

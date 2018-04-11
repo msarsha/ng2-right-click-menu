@@ -30,7 +30,7 @@ export class ShContextMenuService implements OnDestroy {
 
     const {overlayRef, componentRef} = this.createAndAttachOverlay(positionStrategy, scrollStrategy);
 
-    this.setupComponentBindings(componentRef, menu, data);
+    this.setupComponentBindings(componentRef, menu, overlayRef);
     componentRef.instance.show(data);
 
     this.openOverlays.push(overlayRef);
@@ -38,8 +38,8 @@ export class ShContextMenuService implements OnDestroy {
     this.registerBackdropEvents(overlayRef);
   }
 
-  openSubMenu(ctxEvent: ContextSubMenuEvent) {
-    const {menu, mouseEvent, targetElement, data} = ctxEvent;
+  openSubMenu(ctxEvent: ContextSubMenuEvent): ShContextMenuComponent {
+    const {menu, mouseEvent, targetElement, data, hostMenu} = ctxEvent;
 
     mouseEvent.preventDefault();
     mouseEvent.stopPropagation();
@@ -51,9 +51,13 @@ export class ShContextMenuService implements OnDestroy {
     this.setupComponentBindings(componentRef, menu, overlayRef);
 
     componentRef.instance.isSub = true;
+    componentRef.instance.thisContext = hostMenu.thisContext;
+    // componentRef.instance.items = menu.items;
     componentRef.instance.show(data);
 
     this.openOverlays.push(overlayRef);
+
+    return componentRef.instance;
   }
 
   private registerBackdropEvents(overlayRef: OverlayRef) {
@@ -66,8 +70,7 @@ export class ShContextMenuService implements OnDestroy {
   private setupComponentBindings(componentRef: ComponentRef<ShContextMenuComponent>,
                                  menu: ShContextMenuComponent,
                                  overlayRef: OverlayRef) {
-    componentRef.instance.viewChildrenItems = menu.viewChildrenItems;
-    componentRef.instance.contentChildrenItems = menu.contentChildrenItems;
+    componentRef.instance.items = menu.menuItems.toArray();
     componentRef.instance.thisContext = menu.thisContext;
     componentRef.instance.overlayRef = overlayRef;
   }
@@ -83,7 +86,6 @@ export class ShContextMenuService implements OnDestroy {
     });
 
     const menuPortal = new ComponentPortal(ShContextMenuComponent);
-
     const componentRef: ComponentRef<ShContextMenuComponent> = overlayRef.attach(menuPortal);
 
     return {overlayRef, componentRef};
@@ -165,5 +167,14 @@ export class ShContextMenuService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy();
+  }
+
+  closeSubMenus(menu: ShContextMenuComponent) {
+    const overlayRefs = menu
+      .items
+      .filter(i => !!i.subMenu && !!i.subMenu.overlayRef)
+      .map(i => i.subMenu.overlayRef);
+
+    overlayRefs.forEach(r => r.detach());
   }
 }
