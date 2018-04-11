@@ -17,7 +17,7 @@ import {OverlayRef} from '@angular/cdk/overlay';
     <ng-template #componentTemplate>
       <div class="sh-context-menu">
         <div
-          *ngFor="let item of item"
+          *ngFor="let item of menuItems"
           #itemElement
           [ngClass]="{'sh-sub-anchor': item.subMenu, 'sh-context-menu--item__divider': item.divider}"
           class="sh-context-menu--item"
@@ -34,7 +34,7 @@ import {OverlayRef} from '@angular/cdk/overlay';
     </ng-template>
   `
 })
-export class ShContextMenuComponent implements OnDestroy, AfterViewInit, AfterContentInit {
+export class ShContextMenuComponent implements OnDestroy {
   @Input() thisContext: any;
   @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) contentChildrenItems;
   @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems;
@@ -44,19 +44,10 @@ export class ShContextMenuComponent implements OnDestroy, AfterViewInit, AfterCo
 
   overlayRef: OverlayRef;
   isSub = false;
-  items: ShContextMenuItemDirective[];
 
   constructor(private ctxService: ShContextMenuService) {
     this.contentChildrenItems = new QueryList<ShContextMenuItemDirective>();
     this.viewChildrenItems = new QueryList<ShContextMenuItemDirective>();
-  }
-
-  ngAfterViewInit(): void {
-    console.log('view init');
-  }
-
-  ngAfterContentInit(): void {
-    console.log('content init');
   }
 
   get menuItems(): QueryList<ShContextMenuItemDirective> {
@@ -67,14 +58,6 @@ export class ShContextMenuComponent implements OnDestroy, AfterViewInit, AfterCo
 
     // when using a custom component as menu the ViewChildren is the source
     return this.viewChildrenItems;
-  }
-
-  show(data: any) {
-    this.menuItems.forEach((item) => {
-      item.context.$implicit = data;
-    });
-
-    this.cmpContainer.createEmbeddedView(this.cmpTemplate);
   }
 
   onEnter($event: MouseEvent, item: ShContextMenuItemDirective, elm: HTMLElement) {
@@ -99,7 +82,7 @@ export class ShContextMenuComponent implements OnDestroy, AfterViewInit, AfterCo
   }
 
   onClick($event: MouseEvent, item: ShContextMenuItemDirective) {
-    // TODO: handle click in service
+    // TODO: move click handling to service
 
     if (item.divider) {
       return;

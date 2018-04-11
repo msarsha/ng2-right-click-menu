@@ -25,8 +25,8 @@ export class AppComponent {
     ];
   }
 
-  onClick(item) {
-    console.log('clicked', this);
+  onClick(data) {
+    console.log('clicked', this, data);
   }
 }
 
@@ -49,6 +49,8 @@ export class AppComponent {
     <!--</sh-context-menu>-->
   `
 })
+// TODO: this is not possible now (because the use of TemplatePortal instead of ComponentPortal)
+// should later define an interface for using a custom component as context menu
 export class MyMenuComponent extends ShContextMenuComponent {
 }
 

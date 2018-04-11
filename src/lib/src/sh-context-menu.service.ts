@@ -1,7 +1,7 @@
-import {ComponentRef, ElementRef, Injectable, OnDestroy} from '@angular/core';
+import {ElementRef, Injectable, OnDestroy} from '@angular/core';
 import {ShContextMenuComponent} from './sh-context-menu.component';
 import {CloseScrollStrategy, Overlay} from '@angular/cdk/overlay';
-import {ComponentPortal} from '@angular/cdk/portal';
+import {TemplatePortal} from '@angular/cdk/portal';
 import {ConnectedPositionStrategy} from '@angular/cdk/overlay/typings/position/connected-position-strategy';
 import {ContextMenuEvent, ContextSubMenuEvent} from './sh-context-menu.models';
 import {OverlayRef} from '@angular/cdk/overlay';
@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs/Subscription';
 
 @Injectable()
 export class ShContextMenuService implements OnDestroy {
-  openOverlays: OverlayRef[] = [];
+  activeOverlays: OverlayRef[] = [];
   backDropSub: Subscription;
 
   constructor(private overlay: Overlay) {
@@ -28,17 +28,15 @@ export class ShContextMenuService implements OnDestroy {
     const scrollStrategy = this.buildCloseScrollStrategy();
     const positionStrategy = this.buildConnectedPositionStrategy(targetElement);
 
-    const {overlayRef, componentRef} = this.createAndAttachOverlay(positionStrategy, scrollStrategy);
+    this.attachContextToItems(menu, data);
 
-    this.setupComponentBindings(componentRef, menu, overlayRef);
-    componentRef.instance.show(data);
-
-    this.openOverlays.push(overlayRef);
+    const overlayRef = this.createAndAttachOverlay(positionStrategy, scrollStrategy, menu, true);
+    this.activeOverlays.push(overlayRef);
 
     this.registerBackdropEvents(overlayRef);
   }
 
-  openSubMenu(ctxEvent: ContextSubMenuEvent): ShContextMenuComponent {
+  openSubMenu(ctxEvent: ContextSubMenuEvent): any {
     const {menu, mouseEvent, targetElement, data, hostMenu} = ctxEvent;
 
     mouseEvent.preventDefault();
@@ -46,18 +44,18 @@ export class ShContextMenuService implements OnDestroy {
 
     const scrollStrategy = this.buildCloseScrollStrategy();
     const positionStrategy = this.buildConnectedPositionStrategyForSubMenu(targetElement);
-    const {overlayRef, componentRef} = this.createAndAttachOverlay(positionStrategy, scrollStrategy, false);
-
-    this.setupComponentBindings(componentRef, menu, overlayRef);
-
-    componentRef.instance.isSub = true;
-    componentRef.instance.thisContext = hostMenu.thisContext;
+    // const {overlayRef, componentRef} = this.createAndAttachOverlay(positionStrategy, scrollStrategy, false);
+    //
+    // this.setupComponentBindings(componentRef, menu, overlayRef);
+    //
+    // componentRef.instance.isSub = true;
+    // componentRef.instance.thisContext = hostMenu.thisContext;
     // componentRef.instance.items = menu.items;
-    componentRef.instance.show(data);
-
-    this.openOverlays.push(overlayRef);
-
-    return componentRef.instance;
+    // componentRef.instance.show(data);
+    //
+    // this.activeOverlays.push(overlayRef);
+    //
+    // return componentRef.instance;
   }
 
   private registerBackdropEvents(overlayRef: OverlayRef) {
@@ -67,16 +65,9 @@ export class ShContextMenuService implements OnDestroy {
       .subscribe(this.closeCurrentOverlays.bind(this));
   }
 
-  private setupComponentBindings(componentRef: ComponentRef<ShContextMenuComponent>,
-                                 menu: ShContextMenuComponent,
-                                 overlayRef: OverlayRef) {
-    componentRef.instance.items = menu.menuItems.toArray();
-    componentRef.instance.thisContext = menu.thisContext;
-    componentRef.instance.overlayRef = overlayRef;
-  }
-
   private createAndAttachOverlay(positionStrategy: ConnectedPositionStrategy,
                                  scrollStrategy: CloseScrollStrategy,
+                                 menu: ShContextMenuComponent,
                                  hasBackdrop: boolean = true) {
     const overlayRef = this.overlay.create({
       positionStrategy,
@@ -85,10 +76,14 @@ export class ShContextMenuService implements OnDestroy {
       backdropClass: 'sh-backdrop'
     });
 
-    const menuPortal = new ComponentPortal(ShContextMenuComponent);
-    const componentRef: ComponentRef<ShContextMenuComponent> = overlayRef.attach(menuPortal);
+    /*
+     TODO: try passing the TemplatePortal context (data)
+     and then injecting it to the *ngTemplateOutlet in the component template
+    */
+    const menuPortal = new TemplatePortal(menu.cmpTemplate, menu.cmpContainer);
+    overlayRef.attach(menuPortal);
 
-    return {overlayRef, componentRef};
+    return overlayRef;
   }
 
   private buildCloseScrollStrategy() {
@@ -152,12 +147,12 @@ export class ShContextMenuService implements OnDestroy {
   }
 
   private closeCurrentOverlays() {
-    this.openOverlays.forEach((o) => {
+    this.activeOverlays.forEach((o) => {
       o.detach();
       o.dispose();
     });
 
-    this.openOverlays = [];
+    this.activeOverlays = [];
   }
 
   destroy() {
@@ -171,10 +166,14 @@ export class ShContextMenuService implements OnDestroy {
 
   closeSubMenus(menu: ShContextMenuComponent) {
     const overlayRefs = menu
-      .items
+      .menuItems
       .filter(i => !!i.subMenu && !!i.subMenu.overlayRef)
       .map(i => i.subMenu.overlayRef);
 
     overlayRefs.forEach(r => r.detach());
+  }
+
+  private attachContextToItems(menu: ShContextMenuComponent, data: any) {
+    menu.menuItems.forEach(i => i.context.$implicit = data);
   }
 }

@@ -2,9 +2,9 @@
   <h2>Menu One</h2>
 </div>
 
-<div class="box" *ngFor="let item of items" [shAnchorFor]="myMenu" [shMenuData]="item" [shMenuTriggers]="['click']">
-  <h2>Menu Two</h2>
-</div>
+<!--<div class="box" *ngFor="let item of items" [shAnchorFor]="myMenu" [shMenuData]="item" [shMenuTriggers]="['click']">-->
+  <!--<h2>Menu Two</h2>-->
+<!--</div>-->
 
 <sh-context-menu #menu [thisContext]="thisContext">
   <div *shContextMenuItem="let item on onClick">
