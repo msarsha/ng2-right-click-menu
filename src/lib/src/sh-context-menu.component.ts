@@ -16,16 +16,16 @@ import {OverlayRef} from '@angular/cdk/overlay';
     <ng-template #componentTemplate>
       <div class="sh-context-menu">
         <div
-          *ngFor="let item of menuItems"
+          *ngFor="let menuItem of menuItems"
           #itemElement
-          [ngClass]="{'sh-sub-anchor': item.subMenu,
-           'sh-context-menu--item__divider': item.divider,
-           'sh-context-menu--item__sub-active': subActive && item.active}"
+          [ngClass]="{'sh-sub-anchor': menuItem.subMenu,
+           'sh-context-menu--item__divider': menuItem.divider,
+           'sh-context-menu--item__sub-active': subActive && menuItem.active}"
           class="sh-context-menu--item"
-          (mouseenter)="onEnter($event, item, itemElement)"
-          (click)="onClick($event, item)">
-          <ng-container *ngIf="!item.divider">
-            <ng-content *ngTemplateOutlet="item.template; context: item.context"></ng-content>
+          (mouseenter)="onEnter($event, menuItem, itemElement)"
+          (click)="onClick($event, menuItem)">
+          <ng-container *ngIf="!menuItem.divider">
+            <ng-content *ngTemplateOutlet="menuItem.template; context: menuItem.context"></ng-content>
           </ng-container>
         </div>
       </div>
@@ -34,13 +34,14 @@ import {OverlayRef} from '@angular/cdk/overlay';
 })
 export class ShContextMenuComponent implements OnDestroy {
   @Input('this') thisContext: any;
+
   @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) contentChildrenItems;
   @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems;
+
   @ViewChild('componentTemplate', {read: TemplateRef}) cmpTemplate;
-
   @ViewChild('componentContainer', {read: ViewContainerRef}) cmpContainer;
-  overlayRef: OverlayRef;
 
+  public overlayRef: OverlayRef;
   private subActive: boolean;
 
   constructor(private ctxService: ShContextMenuService) {
@@ -80,10 +81,6 @@ export class ShContextMenuComponent implements OnDestroy {
   private setActive(item: ShContextMenuItemDirective) {
     item.setActive();
     this.subActive = true;
-  }
-
-  onLeave($event: MouseEvent, item: ShContextMenuItemDirective, elm: HTMLElement) {
-
   }
 
   onClick($event: MouseEvent, item: ShContextMenuItemDirective) {

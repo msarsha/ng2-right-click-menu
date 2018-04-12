@@ -7,7 +7,6 @@ import {ContextMenuEvent, ContextSubMenuEvent} from './sh-context-menu.models';
 import {OverlayRef} from '@angular/cdk/overlay';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {Subscription} from 'rxjs/Subscription';
-import {tokenReference} from '@angular/compiler';
 
 @Injectable()
 export class ShContextMenuService implements OnDestroy {
@@ -36,7 +35,6 @@ export class ShContextMenuService implements OnDestroy {
     this.attachContextToItems(menu, data);
 
     const overlayRef = this.createAndAttachOverlay(positionStrategy, scrollStrategy, menu, true);
-    this.activeOverlays.push(overlayRef);
     this.attachOverlayRef(menu, overlayRef);
 
     this.registerBackdropEvents(overlayRef);
@@ -55,8 +53,6 @@ export class ShContextMenuService implements OnDestroy {
     this.attachContextToItems(menu, data);
     this.attachThisContext(menu, parentMenu);
     this.attachOverlayRef(menu, overlayRef);
-
-    this.activeOverlays.push(overlayRef);
   }
 
   private registerBackdropEvents(overlayRef: OverlayRef) {
@@ -70,6 +66,7 @@ export class ShContextMenuService implements OnDestroy {
                                  scrollStrategy: CloseScrollStrategy,
                                  menu: ShContextMenuComponent,
                                  hasBackdrop: boolean = true) {
+
     const overlayRef = this.overlay.create({
       positionStrategy,
       scrollStrategy,
@@ -83,6 +80,8 @@ export class ShContextMenuService implements OnDestroy {
     */
     const menuPortal = new TemplatePortal(menu.cmpTemplate, menu.cmpContainer);
     overlayRef.attach(menuPortal);
+
+    this.activeOverlays.push(overlayRef);
 
     return overlayRef;
   }
