@@ -1,5 +1,6 @@
-import {Directive, Input, Optional, TemplateRef} from '@angular/core';
+import {Directive, Input, OnInit, Optional, TemplateRef} from '@angular/core';
 import {ShContextMenuComponent} from './sh-context-menu.component';
+import {ContextMenuClickEvent} from './sh-context-menu.models';
 
 export class MenuItemContext {
   $implicit: any;
@@ -14,10 +15,11 @@ export class MenuItemContext {
 })
 export class ShContextMenuItemDirective {
   @Input('shContextMenuItemWith') subMenu: ShContextMenuComponent;
-  @Input('shContextMenuItemOn') on: (data) => {};
+  @Input('shContextMenuItemOn') on: (data: ContextMenuClickEvent) => {};
   @Input() divider = false;
 
   context: MenuItemContext = new MenuItemContext();
+
   private active: boolean;
 
   constructor(@Optional() public template: TemplateRef<MenuItemContext>) {

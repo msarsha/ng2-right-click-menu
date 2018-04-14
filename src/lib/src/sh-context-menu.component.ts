@@ -92,12 +92,12 @@ export class ShContextMenuComponent implements OnDestroy {
 
     if (item.on) {
       this.ctxService.destroy();
-      this.callWithContext(item.on, item, item.context.$implicit);
+      this.callWithContext(item.on, item, item.context.$implicit, $event);
     }
   }
 
-  private callWithContext(fn, fallbackContext, ...args) {
-    fn.call(this.thisContext ? this.thisContext : fallbackContext, ...args);
+  private callWithContext(fn, fallbackContext, data, event) {
+    fn.call(this.thisContext ? this.thisContext : fallbackContext, {data, event});
   }
 
   close(): void {

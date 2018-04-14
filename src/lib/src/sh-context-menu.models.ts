@@ -11,3 +11,8 @@ export class ContextMenuEvent {
 export class ContextSubMenuEvent extends ContextMenuEvent {
   parentMenu: ShContextMenuComponent;
 }
+
+export class ContextMenuClickEvent {
+  data: any;
+  event: MouseEvent;
+}

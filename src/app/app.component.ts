@@ -13,6 +13,7 @@ export class AppComponent {
   items: any[];
 
   thisContext = this;
+  itemVisible = false;
 
   constructor() {
     this.items = [

@@ -21,13 +21,21 @@
   <div *shContextMenuItem="let item">
     <my-content [item]="item"></my-content>
   </div>
-  <ng-container *ngIf="false">
-    <div *shContextMenuItem="let item">
-      <my-content [item]="item"></my-content>
+  <ng-container *ngIf="itemVisible">
+    <div *shContextMenuItem="let item on onClick">
+      <h4>Hi !</h4>
     </div>
   </ng-container>
 
   <sh-context-menu #subMenu>
+    <div *shContextMenuItem="let item with nestedSubMenu">
+      From Sub Menu - {{item.label}}
+    </div>
+    <div shContextMenuItem [divider]="true">
+    </div>
+    <div *shContextMenuItem="let item on onClick">
+      one - {{item.label}}
+    </div>
     <div *shContextMenuItem="let item with nestedSubMenu">
       From Sub Menu - {{item.label}}
     </div>
@@ -38,5 +46,8 @@
     </sh-context-menu>
   </sh-context-menu>
 </sh-context-menu>
+
+<button (click)="itemVisible = !itemVisible">Toggle Visible</button>
+{{itemVisible}}
 
 <!--<my-menu #myMenu></my-menu>-->
