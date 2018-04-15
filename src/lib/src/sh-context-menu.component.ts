@@ -12,8 +12,8 @@ import {OverlayRef} from '@angular/cdk/overlay';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['sh-context-menu.css'],
   template: `
-    <ng-container #componentContainer></ng-container>
-    <ng-template #componentTemplate>
+    <ng-container #menuContainer></ng-container>
+    <ng-template #menuTemplate>
       <div class="sh-context-menu">
         <div
           *ngFor="let menuItem of menuItems"
@@ -22,6 +22,7 @@ import {OverlayRef} from '@angular/cdk/overlay';
            'sh-context-menu--item__divider': menuItem.divider,
            'sh-context-menu--item__sub-active': subActive && menuItem.active}"
           class="sh-context-menu--item"
+          [style.display]="isVisible(menuItem) ? 'block' : 'none'"
           (mouseenter)="onEnter($event, menuItem, itemElement)"
           (click)="onClick($event, menuItem)">
           <ng-container *ngIf="!menuItem.divider">
@@ -38,8 +39,8 @@ export class ShContextMenuComponent implements OnDestroy {
   @ContentChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) contentChildrenItems;
   @ViewChildren(ShContextMenuItemDirective, {read: ShContextMenuItemDirective}) viewChildrenItems;
 
-  @ViewChild('componentTemplate', {read: TemplateRef}) cmpTemplate;
-  @ViewChild('componentContainer', {read: ViewContainerRef}) cmpContainer;
+  @ViewChild('menuTemplate', {read: TemplateRef}) menuTemplate;
+  @ViewChild('menuContainer', {read: ViewContainerRef}) menuContainer;
 
   public overlayRef: OverlayRef;
   private subActive: boolean;
@@ -83,26 +84,28 @@ export class ShContextMenuComponent implements OnDestroy {
     this.subActive = true;
   }
 
-  onClick($event: MouseEvent, item: ShContextMenuItemDirective) {
+  onClick(event: MouseEvent, item: ShContextMenuItemDirective) {
     // TODO: move click handling to service
 
     if (item.divider) {
       return;
     }
 
-    if (item.on) {
-      this.ctxService.destroy();
-      this.callWithContext(item.on, item, item.context.$implicit, $event);
-    }
+    this.ctxService.destroy();
+    // this.callWithContext(item.click, item, item.context.$implicit, $event);
+    item.click.emit({
+      data: item.context.$implicit,
+      event
+    });
   }
 
   private callWithContext(fn, fallbackContext, data, event) {
-    fn.call(this.thisContext ? this.thisContext : fallbackContext, {data, event});
+    return fn.call(this.thisContext ? this.thisContext : fallbackContext, {data, event});
   }
 
   close(): void {
     this.setNotActive();
-    this.cmpContainer.detach();
+    this.menuContainer.detach();
     this.overlayRef.detach();
   }
 
@@ -113,5 +116,13 @@ export class ShContextMenuComponent implements OnDestroy {
   setNotActive() {
     this.subActive = false;
     this.menuItems.forEach(i => i.setNotActive());
+  }
+
+  isVisible(item: ShContextMenuItemDirective) {
+    if (!item.visible) {
+      return true;
+    }
+
+    return this.callWithContext(item.visible, this, item.context.$implicit, null);
   }
 }

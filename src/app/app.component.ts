@@ -29,6 +29,11 @@ export class AppComponent {
   onClick(data) {
     console.log('clicked', this, data);
   }
+
+  isVisible(data) {
+    console.log('isVisible', this, data);
+    return true;
+  }
 }
 
 @Component({

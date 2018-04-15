@@ -3,7 +3,7 @@ import {ShContextMenuComponent} from './sh-context-menu.component';
 import {CloseScrollStrategy, Overlay} from '@angular/cdk/overlay';
 import {TemplatePortal} from '@angular/cdk/portal';
 import {ConnectedPositionStrategy} from '@angular/cdk/overlay/typings/position/connected-position-strategy';
-import {ContextMenuEvent, ContextSubMenuEvent} from './sh-context-menu.models';
+import {ShContextMenuEvent, ShContextSubMenuEvent} from './sh-context-menu.models';
 import {OverlayRef} from '@angular/cdk/overlay';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {Subscription} from 'rxjs/Subscription';
@@ -18,7 +18,7 @@ export class ShContextMenuService implements OnDestroy {
   constructor(private overlay: Overlay) {
   }
 
-  openMenu(ctxEvent: ContextMenuEvent) {
+  openMenu(ctxEvent: ShContextMenuEvent) {
     this.closeCurrentOverlays();
     const {menu, mouseEvent, targetElement, data} = ctxEvent;
 
@@ -40,7 +40,7 @@ export class ShContextMenuService implements OnDestroy {
     this.registerBackdropEvents(overlayRef);
   }
 
-  openSubMenu(ctxEvent: ContextSubMenuEvent): any {
+  openSubMenu(ctxEvent: ShContextSubMenuEvent): any {
     const {menu, mouseEvent, targetElement, data, parentMenu} = ctxEvent;
 
     mouseEvent.preventDefault();
@@ -78,7 +78,7 @@ export class ShContextMenuService implements OnDestroy {
      TODO: try passing the TemplatePortal context (data)
      and then injecting it to the *ngTemplateOutlet in the component template
     */
-    const menuPortal = new TemplatePortal(menu.cmpTemplate, menu.cmpContainer);
+    const menuPortal = new TemplatePortal(menu.menuTemplate, menu.menuContainer);
     overlayRef.attach(menuPortal);
 
     this.activeOverlays.push(overlayRef);

@@ -1,6 +1,6 @@
-import {Directive, Input, OnInit, Optional, TemplateRef} from '@angular/core';
+import {Directive, EventEmitter, Input, Optional, Output, TemplateRef} from '@angular/core';
 import {ShContextMenuComponent} from './sh-context-menu.component';
-import {ContextMenuClickEvent} from './sh-context-menu.models';
+import {ShContextMenuClickEvent} from './sh-context-menu.models';
 
 export class MenuItemContext {
   $implicit: any;
@@ -14,25 +14,27 @@ export class MenuItemContext {
   selector: '[shContextMenuItem]'
 })
 export class ShContextMenuItemDirective {
-  @Input('shContextMenuItemWith') subMenu: ShContextMenuComponent;
-  @Input('shContextMenuItemOn') on: (data: ContextMenuClickEvent) => {};
+  @Input() subMenu: ShContextMenuComponent;
   @Input() divider = false;
+  @Input() visible: (event: ShContextMenuClickEvent) => boolean;
+
+  @Output() click = new EventEmitter<ShContextMenuClickEvent>();
 
   context: MenuItemContext = new MenuItemContext();
 
-  private active: boolean;
+  private _active: boolean;
 
   constructor(@Optional() public template: TemplateRef<MenuItemContext>) {
   }
 
   setNotActive() {
-    this.active = false;
+    this._active = false;
     if (this.subMenu) {
       this.subMenu.setNotActive();
     }
   }
 
   setActive() {
-    this.active = true;
+    this._active = true;
   }
 }
