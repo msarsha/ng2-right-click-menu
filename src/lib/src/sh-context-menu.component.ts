@@ -60,7 +60,6 @@ export class ShContextMenuComponent implements OnDestroy {
   }
 
   onEnter($event: MouseEvent, item: ShContextMenuItemDirective, elm: HTMLElement) {
-    // TODO: close all child submenus
     this.ctxService.closeSubMenus(this);
     this.setNotActive();
 
@@ -92,7 +91,7 @@ export class ShContextMenuComponent implements OnDestroy {
 
     if (!item.subMenu && item.closeOnClick) {
       this.ctxService.destroy();
-      // this.callWithContext(item.click, item, item.context.$implicit, $event);
+
       item.click.emit({
         data: item.context.$implicit,
         event

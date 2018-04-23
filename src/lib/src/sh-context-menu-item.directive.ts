@@ -1,4 +1,4 @@
-import {Directive, EventEmitter, HostBinding, Input, Optional, Output, TemplateRef} from '@angular/core';
+import {Directive, EventEmitter, Input, Optional, Output, TemplateRef} from '@angular/core';
 import {ShContextMenuComponent} from './sh-context-menu.component';
 import {ShContextMenuClickEvent} from './sh-context-menu.models';
 
@@ -17,6 +17,7 @@ export class ShContextMenuItemDirective {
   @Input() subMenu: ShContextMenuComponent;
   @Input() divider: boolean;
   @Input() visible: (event: ShContextMenuClickEvent) => boolean;
+  @Input() disabled: (event: ShContextMenuClickEvent) => boolean;
   @Input() closeOnClick = true;
 
   @Output() click = new EventEmitter<ShContextMenuClickEvent>();
