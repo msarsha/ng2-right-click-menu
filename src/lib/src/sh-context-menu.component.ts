@@ -22,10 +22,9 @@ import {OverlayRef} from '@angular/cdk/overlay';
            'sh-context-menu--item__divider': menuItem.divider,
            'sh-context-menu--item__sub-active': subActive && menuItem.active}"
           class="sh-context-menu--item"
-          [style.display]="isVisible(menuItem) ? 'block' : 'none'"
           (mouseenter)="onEnter($event, menuItem, itemElement)"
           (click)="onClick($event, menuItem)">
-          <ng-container *ngIf="!menuItem.divider">
+          <ng-container *ngIf="!menuItem.divider || !isVisible(menuItem)">
             <ng-content *ngTemplateOutlet="menuItem.template; context: menuItem.context"></ng-content>
           </ng-container>
         </div>
@@ -91,12 +90,14 @@ export class ShContextMenuComponent implements OnDestroy {
       return;
     }
 
-    this.ctxService.destroy();
-    // this.callWithContext(item.click, item, item.context.$implicit, $event);
-    item.click.emit({
-      data: item.context.$implicit,
-      event
-    });
+    if (!item.subMenu && item.closeOnClick) {
+      this.ctxService.destroy();
+      // this.callWithContext(item.click, item, item.context.$implicit, $event);
+      item.click.emit({
+        data: item.context.$implicit,
+        event
+      });
+    }
   }
 
   private callWithContext(fn, fallbackContext, data, event) {

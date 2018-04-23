@@ -19,7 +19,7 @@
       one - {{item.label}}
     </div>
   </ng-template>
-  <ng-template shContextMenuItem let-item>
+  <ng-template shContextMenuItem let-item [closeOnClick]="false">
     <my-content [item]="item"></my-content>
   </ng-template>
   <ng-container *ngIf="itemVisible">

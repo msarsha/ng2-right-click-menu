@@ -26,12 +26,11 @@ export class AppComponent {
     ];
   }
 
-  onClick(data) {
-    console.log('clicked', this, data);
+  onClick(event) {
+    console.log('clicked', this, event);
   }
 
-  isVisible(data) {
-    console.log('isVisible', this, data);
+  isVisible(event) {
     return true;
   }
 }

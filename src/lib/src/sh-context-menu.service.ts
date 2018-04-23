@@ -55,6 +55,30 @@ export class ShContextMenuService implements OnDestroy {
     this.attachOverlayRef(menu, overlayRef);
   }
 
+  destroy() {
+    this.closeCurrentOverlays();
+    this.backDropSub.unsubscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy();
+  }
+
+  closeSubMenus(menu: ShContextMenuComponent) {
+    const itemsWithSubMenus = menu
+      .menuItems
+      .filter(i => !!i.subMenu && !!i.subMenu.overlayRef);
+
+    if (itemsWithSubMenus.length) {
+      itemsWithSubMenus.forEach(sm => this.closeSubMenus(sm.subMenu));
+
+      const overlayRefs = itemsWithSubMenus
+        .map(i => i.subMenu.overlayRef);
+
+      overlayRefs.forEach(r => r.dispose());
+    }
+  }
+
   private registerBackdropEvents(overlayRef: OverlayRef) {
     const elm = overlayRef.backdropElement;
 
@@ -164,30 +188,6 @@ export class ShContextMenuService implements OnDestroy {
     // subscribe in component
     if (this.activeMenu) {
       this.activeMenu.close();
-    }
-  }
-
-  destroy() {
-    this.closeCurrentOverlays();
-    this.backDropSub.unsubscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy();
-  }
-
-  closeSubMenus(menu: ShContextMenuComponent) {
-    const itemsWithSubMenus = menu
-      .menuItems
-      .filter(i => !!i.subMenu && !!i.subMenu.overlayRef);
-
-    if (itemsWithSubMenus.length) {
-      itemsWithSubMenus.forEach(sm => this.closeSubMenus(sm.subMenu));
-
-      const overlayRefs = itemsWithSubMenus
-        .map(i => i.subMenu.overlayRef);
-
-      overlayRefs.forEach(r => r.dispose());
     }
   }
 
