@@ -2,7 +2,7 @@
   "name": "ng2-right-click-menu",
   "version": "1.0.0",
   "author": "Matan Sar-Shalom <smatan84@gmail.com>",
-  "description": "Right click context menu for Angular 2+",
+  "description": "Right click context menu for Angular",
   "license": "MIT",
   "private": false,
   "keywords": [
