@@ -2,19 +2,19 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {ShContextMenuComponent} from './sh-context-menu.component';
-import {ShAnchorForDirective} from './sh-anchor-for.directive';
+import {ShAttachMenuDirective} from './sh-anchor-for.directive';
 import {ShContextMenuService} from './sh-context-menu.service';
 import {ShContextMenuItemDirective} from './sh-context-menu-item.directive';
 import {OverlayModule} from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
-    ShAnchorForDirective,
+    ShAttachMenuDirective,
     ShContextMenuComponent,
     ShContextMenuItemDirective
   ],
   exports: [
-    ShAnchorForDirective,
+    ShAttachMenuDirective,
     ShContextMenuComponent,
     ShContextMenuItemDirective
   ],

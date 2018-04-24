@@ -6,10 +6,10 @@ import {fromEvent} from 'rxjs/observable/fromEvent';
 import {merge} from 'rxjs/observable/merge';
 
 @Directive({
-  selector: '[shAnchorFor]'
+  selector: '[shAttachMenu]'
 })
-export class ShAnchorForDirective implements OnDestroy, OnInit {
-  @Input('shAnchorFor') menu: ShContextMenuComponent;
+export class ShAttachMenuDirective implements OnDestroy, OnInit {
+  @Input('shAttachMenu') menu: ShContextMenuComponent;
   @Input('shMenuTriggers') triggers: string[];
   @Input('shMenuData') data: any;
   sub: Subscription;

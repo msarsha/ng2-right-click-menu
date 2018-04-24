@@ -1,6 +1,5 @@
 import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {ShContextMenuComponent} from '../lib/src/sh-context-menu.component';
-import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-root',
@@ -44,14 +43,6 @@ export class AppComponent {
     <div *shContextMenuItem="let item">
       from comp !! - {{item.label}}
     </div>
-    <!--<div *shContextMenuItem="let item; subMenu: subMenu">-->
-    <!--from comp !! - {{item.label}}-->
-    <!--</div>-->
-    <!--<sh-context-menu #subMenu>-->
-    <!--<div *shContextMenuItem="let item;">-->
-    <!--From Sub Menu - {{item.label}}-->
-    <!--</div>-->
-    <!--</sh-context-menu>-->
   `
 })
 // TODO: this is not possible now (because the use of TemplatePortal instead of ComponentPortal)

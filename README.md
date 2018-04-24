@@ -1,24 +1,63 @@
-### WIP !
-
 # ng2-right-click-menu
 _Right click context menu for Angular 2+_
 
 __DEMO__ https://msarsha.github.io/ng2-right-click-menu/
 
-## How to use
+### Dependencies
 
-- `npm install --save ng2-right-click-menu`
-- import `ShContextMenuModule` into your app module
+`@angular/cdk`
 
-Add the `[sh-context]` directive to the desired element and bind an `IShContextMenuItem` array.
+`@angular/cdk/overlay-prebuilt.css"`
 
-Use the `[sh-data-context]` property to inject a context object of type `any`.
+### Setup
+
+`npm install --save ng2-right-click-menu @angular/cdk`
+
+import `ShContextMenuModule`
+
+````typescript
+import {ShContextMenuModule} from 'ng2-right-click-menu'
+
+@NgModule({
+  //...
+  imports: [ShContextMenuModule]
+  //...
+})
+````
+
+import css file in your `styles.css`:
+
+````css
+  @import "~@angular/cdk/overlay-prebuilt.css";
+````
+
+## Usage
+
+#### Defining a Basic Menu Template
+
+The menu template is built using the `sh-context-menu` component as the menu wrapper,
+and nesting `ng-template` with the `shContextMenuItem` directive for every menu item:
+
+The `shContextMenuItem` directive provide a template variable (`let-data`) that gives you access to the data object attached to the menu.
 
 ````html
-<div class="box" [sh-context]="menuItems" [sh-data-context]="dataObject">
-  // content
-</div>
+<sh-context-menu #menu>
+  <ng-template shContextMenuItem let-data>
+    <div>
+      Menu Item - {{data.label}}
+    </div>
+  </ng-template>
+</sh-context-menu>
 ````
+
+#### Attaching The Menu To An Element
+
+Attaching works by using the `shMenu` directive and providing the `#menu` template variable:
+
+```html
+<div [shAnchorFor]="menu" [shMenuData]="data">Right Click Me</div>
+```
+
 
 ### `[sh-context]` (`IShContextMenuItem[]`)
 

@@ -1,5 +1,3 @@
-@import "~@angular/cdk/overlay-prebuilt.css";
-
 .sh-backdrop {
   background-color: transparent;
 }
