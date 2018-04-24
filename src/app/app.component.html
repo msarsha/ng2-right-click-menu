@@ -1,6 +1,85 @@
-<div class="box" [sh-context]="items" [sh-data-context]="dataCtxOne" (onBeforeMenuOpen)="onBefore($event)">
-  <h2>{{title}}</h2>
+<div class="box" *ngFor="let item of items" [shAttachMenu]="menu" [shMenuData]="item">
+  <h2>Menu One</h2>
 </div>
-<div class="box box-right" [sh-context]="itemsRtl" [sh-data-context]="dataCtxTwo" [sh-options]="options">
-  <h2>{{titleRtl}}</h2>
-</div>
+
+<!--<div class="box" *ngFor="let item of items" [shAnchorFor]="myMenu" [shMenuData]="item" [shMenuTriggers]="['click']">-->
+<!--<h2>Menu Two</h2>-->
+<!--</div>-->
+
+<sh-context-menu #menu [this]="thisContext">
+  <ng-template shContextMenuItem let-item [subMenu]="subMenu" [visible]="isVisible">
+    <div>
+      two - {{item.label}}
+    </div>
+  </ng-template>
+  <div shContextMenuItem [divider]="true">
+  </div>
+  <ng-template shContextMenuItem let-item (click)="onClick($event)">
+    <div>
+      one - {{item.label}}
+    </div>
+  </ng-template>
+  <ng-template shContextMenuItem let-item [closeOnClick]="false">
+    <my-content [item]="item"></my-content>
+  </ng-template>
+  <ng-container *ngIf="itemVisible">
+    <ng-template shContextMenuItem let-item (click)="onClick($event)">
+      <h4>Hi !</h4>
+    </ng-template>
+  </ng-container>
+
+  <sh-context-menu #subMenu>
+    <ng-template shContextMenuItem let-item [subMenu]="nestedSubMenu">
+      <div>
+        From Sub Menu - {{item.label}}
+      </div>
+    </ng-template>
+    <ng-template shContextMenuItem [divider]="true">
+    </ng-template>
+    <ng-template shContextMenuItem let-item (click)="onClick($event)">
+      <div>
+        one - {{item.label}}
+      </div>
+    </ng-template>
+    <ng-template shContextMenuItem let-item [subMenu]="nestedSubMenu">
+      <div>
+        From Sub Menu - {{item.label}}
+      </div>
+    </ng-template>
+
+    <sh-context-menu #nestedSubMenu>
+      <ng-template shContextMenuItem let-item (click)="onClick($event)">
+        From Sub Menu Two - {{item.label}}
+      </ng-template>
+    </sh-context-menu>
+  </sh-context-menu>
+</sh-context-menu>
+
+<button (click)="itemVisible = !itemVisible">Toggle Visible</button>
+{{itemVisible}}
+
+<!--<my-menu #myMenu></my-menu>-->
+
+
+<!--<sh-context-menu #menu>-->
+  <!--<ng-template shContextMenuItem let-item>-->
+    <!--<div>-->
+      <!--Menu Item - {{item.label}}-->
+    <!--</div>-->
+  <!--</ng-template>-->
+<!--</sh-context-menu>-->
+  <!--<div shContextMenuItem [divider]="true">-->
+  <!--</div>-->
+  <!--<ng-template shContextMenuItem let-item (click)="onClick($event)">-->
+    <!--<div>-->
+      <!--one - {{item.label}}-->
+    <!--</div>-->
+  <!--</ng-template>-->
+  <!--<ng-template shContextMenuItem let-item [closeOnClick]="false">-->
+    <!--<my-content [item]="item"></my-content>-->
+  <!--</ng-template>-->
+  <!--<ng-container *ngIf="itemVisible">-->
+    <!--<ng-template shContextMenuItem let-item (click)="onClick($event)">-->
+      <!--<h4>Hi !</h4>-->
+    <!--</ng-template>-->
+  <!--</ng-container>-->

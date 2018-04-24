@@ -1,5 +1,5 @@
-import {Component, ViewEncapsulation} from '@angular/core';
-import {IShContextMenuItem, IShContextOptions, BeforeMenuEvent} from 'ng2-right-click-menu';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {ShContextMenuComponent} from '../lib/src/sh-context-menu.component';
 
 @Component({
   selector: 'app-root',
@@ -7,129 +7,57 @@ import {IShContextMenuItem, IShContextOptions, BeforeMenuEvent} from 'ng2-right-
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent { 
+export class AppComponent {
   title = 'Right Click Me';
-  titleRtl = 'Right Click Me (RTL)';
-  items: IShContextMenuItem[];
-  itemsRtl: IShContextMenuItem[];
-  dataCtxOne: any;
-  dataCtxTwo: any;
-  options: IShContextOptions;
+  items: any[];
+
+  thisContext = this;
+  itemVisible = false;
 
   constructor() {
-    this.dataCtxOne = {
-      One: 'One'
-    };
-
-    this.dataCtxTwo = {
-      Two: 'Two'
-    };
-
     this.items = [
       {
-        label: '<i class="fa fa-floppy-o menu-icon"></i> Save Me On Your HD',
-        onClick: this.clickEvent,
+        label: 'Item One'
       },
       {
-        label: 'Edit',
-        onClick: this.clickEvent
-      },
-      {
-        label: '<i class="fa fa-home"></i> <b>Sub</b> Menu',
-        subMenu: true,
-        subMenuItems: [
-          {
-            label: 'Save',
-            onClick: this.clickEvent
-          },
-          {
-            label: 'Edit',
-            onClick: this.clickEvent
-          },
-          {
-            label: 'Another Sub Menu',
-            subMenu: true,
-            subMenuItems: [
-              {
-                label: 'Save',
-                onClick: this.clickEvent
-              },
-              {
-                label: 'Edit',
-                onClick: this.clickEvent
-              }]
-          }
-        ]
-      },
-      {
-        divider: true
-      },
-      {
-        label: 'Remove',
-        disabled: ctx => {
-          return ctx.Two === 'Two';
-        },
-        onClick: this.clickEvent
-      },
-      {
-        label: 'Hidden',
-        onClick: this.clickEvent,
-        visible: ctx => {
-          return ctx.One === 'One';
-        }
+        label: 'Item Two'
       }
     ];
-
-    this.itemsRtl = [
-      {
-        label: 'שמור',
-        onClick: this.clickEvent
-      },
-      {
-        label: 'ערוך',
-        onClick: this.clickEvent
-      },
-      {
-        label: 'תפריט נוסף',
-        subMenu: true,
-        subMenuItems: [
-          {
-            label: 'שמור',
-            onClick: this.clickEvent
-          },
-          {
-            label: 'ערוך',
-            onClick: this.clickEvent
-          },
-          {
-            label: 'עוד תפריט נוסף',
-            subMenu: true,
-            subMenuItems: [
-              {
-                label: 'שמור',
-                onClick: this.clickEvent
-              },
-              {
-                label: 'ערוך',
-                onClick: this.clickEvent
-              }]
-          }
-        ]
-      }
-    ];
-
-    this.options = {
-      rtl: true,
-      theme: 'dark'
-    };
   }
 
-  onBefore = (event: BeforeMenuEvent) => {
-    console.log(event);
-    event.open([event.items[0]]);
-  };
-
-  clickEvent = ($event: any) => {
-    console.log('clicked ', $event);
+  onClick(event) {
+    console.log('clicked', this, event);
   }
+
+  isVisible(event) {
+    return true;
+  }
+}
+
+@Component({
+  selector: 'my-menu',
+  template: `
+    <div *shContextMenuItem="let item">
+      from comp !! - {{item.label}}
+    </div>
+    <div *shContextMenuItem="let item">
+      from comp !! - {{item.label}}
+    </div>
+  `
+})
+// TODO: this is not possible now (because the use of TemplatePortal instead of ComponentPortal)
+// should later define an interface for using a custom component as context menu
+export class MyMenuComponent extends ShContextMenuComponent {
+}
+
+@Component({
+  selector: 'my-content',
+  template: `
+    <div class="box">
+      <input type="text" [value]="item.label">
+    </div>
+  `
+})
+export class MyContentComponent {
+  @Input() item: any;
 }

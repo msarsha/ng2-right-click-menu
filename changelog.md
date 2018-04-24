@@ -1,3 +1,7 @@
+### 1.0.0 - BREAKING CHANGES
+
+new api using ng-template [#fc09e66](https://github.com/msarsha/ng2-right-click-menu/commit/fc09e6687ce7ca376708386b8841d5336b3ac82a)
+
 ### 0.0.16
 
 z-index increased to bring menu to foreground [#fc09e66](https://github.com/msarsha/ng2-right-click-menu/commit/fc09e6687ce7ca376708386b8841d5336b3ac82a)
