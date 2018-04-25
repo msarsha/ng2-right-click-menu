@@ -99,7 +99,7 @@ Name | Type | Default | Description
 [divider]|boolean|false|render a divider
 [closeOnClick]|boolean|true|should the menu close on click
 [visible]|(event: ShContextMenuClickEvent) => boolean|null|function to determine if a item is visible
-(click)|ShContextMenuClickEvent|null|click handler
+(click)|(event: ShContextMenuClickEvent) => void|null|click handler
 
 #### shAttachMenu
 
