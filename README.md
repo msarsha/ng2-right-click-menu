@@ -7,7 +7,7 @@ __DEMO__ https://msarsha.github.io/ng2-right-click-menu/
 
 `@angular/cdk`
 
-`@angular/cdk/overlay-prebuilt.css"`
+`@angular/cdk/overlay-prebuilt.css`
 
 ### Setup
 
@@ -101,6 +101,13 @@ Name | Type | Default | Description
 [visible]|(event: ShContextMenuClickEvent) => boolean|null|function to determine if a item is visible
 (click)|ShContextMenuClickEvent|null|click handler
 
+#### shAttachMenu
+
+Name | Type | Default | Description
+:---:|:---:|:---:|:---:
+[shAttachMenu]|ShContextMenuComponent|null|the menu that will be attached to the element
+[shMenuTriggers]|string[]|null|list of event names that will trigger the menu
+[shMenuData]|any|null|the data object that will be injected to the menu item's template
 
 ### Setting up development env
 
