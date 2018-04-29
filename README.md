@@ -68,7 +68,7 @@ The `[subMenu]` input is provided with a `sh-context-menu`'s template variable (
 
 ````html
 <sh-context-menu #menu>
-  <ng-template shContextMenuItem [subMenu]="#nestedMenu">
+  <ng-template shContextMenuItem let-data [subMenu]="#nestedMenu">
     <div>
       Menu Item - {{data.label}}
     </div>
@@ -85,13 +85,13 @@ The `[subMenu]` input is provided with a `sh-context-menu`'s template variable (
 
 ## API
 
-#### sh-context-menu
+#### sh-context-menu (component)
 
 Name | Type | Default | Description
 :---:|:---:|:---:|:---:
 [this]|any|null|the `this` context for input callbacks (visible) - typically the menu's host component
 
-#### shContextMenuItem
+#### shContextMenuItem (directive)
 
 Name | Type | Default | Description
 :---:|:---:|:---:|:---:
@@ -101,7 +101,7 @@ Name | Type | Default | Description
 [visible]|(event: ShContextMenuClickEvent) => boolean|null|function to determine if a item is visible
 (click)|(event: ShContextMenuClickEvent) => void|null|click handler
 
-#### shAttachMenu
+#### shAttachMenu (directive)
 
 Name | Type | Default | Description
 :---:|:---:|:---:|:---:
