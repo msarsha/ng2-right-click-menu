@@ -106,7 +106,9 @@ export class ShContextMenuComponent implements OnDestroy {
   close(): void {
     this.setNotActive();
     this.menuContainer.detach();
-    this.overlayRef.detach();
+    if(this.overlayRef) {
+       this.overlayRef.detach();
+    }
   }
 
   ngOnDestroy(): void {
