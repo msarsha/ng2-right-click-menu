@@ -1,6 +1,25 @@
 {
   "name": "ng2-right-click-menu",
-  "version": "0.0.1",
+  "version": "1.1.0",
+  "author": "Matan Sar-Shalom <smatan84@gmail.com>",
+  "description": "Right click context menu for Angular",
+  "license": "MIT",
+  "private": false,
+  "keywords": [
+    "angular",
+    "angular2",
+    "ng2",
+    "context",
+    "menu",
+    "right",
+    "click",
+    "menu",
+    "contextmenu"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msarsha/ng2-right-click-menu"
+  },
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0",
