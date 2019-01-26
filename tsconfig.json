@@ -1,24 +1,29 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
-    "baseUrl": "src",
     "sourceMap": true,
     "declaration": false,
+    "module": "es2015",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "importHelpers": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2017",
+      "es2018",
       "dom"
     ],
     "paths": {
       "ng2-right-click-menu": [
-        "./lib/src/index.ts"
+        "dist/ng2-right-click-menu"
+      ],
+      "ng2-right-click-menu/*": [
+        "dist/ng2-right-click-menu/*"
       ]
     }
   }
