@@ -42,7 +42,7 @@ export class ShContextMenuComponent implements OnDestroy {
   @ViewChild('menuContainer', {read: ViewContainerRef}) menuContainer;
 
   public overlayRef: OverlayRef;
-  private subActive: boolean;
+  subActive: boolean;
 
   constructor(private ctxService: ShContextMenuService) {
     this.contentChildrenItems = new QueryList<ShContextMenuItemDirective>();
