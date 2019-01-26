@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve ng2-right-click-menu-demo",
-    "copy-readme": "copy .\\README.md .\\dist\\ng-example-library",
+    "copy-readme": "cp .\\README.md .\\dist\\ng2-right-click-menu",
     "build:lib": "ng build ng2-right-click-menu",
     "build:lib:watch": "ng build ng2-right-click-menu --watch",
     "pack:lib": "cd ./dist/ng2-right-click-menu && npm pack",
