@@ -1,7 +1,7 @@
 .box {
   height: 180px;
   width: 180px;
-  background-color: #e3e4c2;
+  background-color: rgba(199,255,248,0.57);
   line-height: 140px;
   text-align: center;
   box-shadow: 6px 6px 15px 2px rgba(0, 0, 0, .3);

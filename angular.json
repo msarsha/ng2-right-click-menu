@@ -7,7 +7,7 @@
       "root": "projects/ng2-right-click-menu",
       "sourceRoot": "projects/ng2-right-click-menu/src",
       "projectType": "library",
-      "prefix": "lib",
+      "prefix": "ng2rcm",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
