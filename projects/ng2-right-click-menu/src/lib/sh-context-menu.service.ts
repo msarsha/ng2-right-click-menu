@@ -1,8 +1,12 @@
 import {ElementRef, Injectable, OnDestroy} from '@angular/core';
 import {ShContextMenuComponent} from './sh-context-menu.component';
-import {CloseScrollStrategy, Overlay} from '@angular/cdk/overlay';
+import {
+  CloseScrollStrategy, ConnectionPositionPair,
+  FlexibleConnectedPositionStrategy,
+  GlobalPositionStrategy,
+  Overlay
+} from '@angular/cdk/overlay';
 import {TemplatePortal} from '@angular/cdk/portal';
-import {ConnectedPositionStrategy} from '@angular/cdk/overlay/typings/position/connected-position-strategy';
 import {ShContextMenuEvent, ShContextSubMenuEvent} from './sh-context-menu.models';
 import {OverlayRef} from '@angular/cdk/overlay';
 import {fromEvent, Subscription} from 'rxjs';
@@ -11,25 +15,24 @@ import {fromEvent, Subscription} from 'rxjs';
 export class ShContextMenuService implements OnDestroy {
   activeOverlays: OverlayRef[] = [];
   backDropSub: Subscription;
-
   activeMenu: ShContextMenuComponent;
+  anchorElement: HTMLElement;
 
   constructor(private overlay: Overlay) {
   }
 
   openMenu(ctxEvent: ShContextMenuEvent) {
     this.closeCurrentOverlays();
-    const {menu, mouseEvent, targetElement, data} = ctxEvent;
+    const {menu, mouseEvent, data} = ctxEvent;
 
     this.activeMenu = menu;
 
     mouseEvent.preventDefault();
     mouseEvent.stopPropagation();
 
-    this.overrideGetBoundingClientRect(targetElement, mouseEvent);
-
+    this.anchorElement = this.createAnchorElement();
     const scrollStrategy = this.buildCloseScrollStrategy();
-    const positionStrategy = this.buildConnectedPositionStrategy(targetElement);
+    const positionStrategy = this.buildPositionStrategy(this.anchorElement, mouseEvent);
 
     this.attachContextToItems(menu, data);
 
@@ -46,7 +49,7 @@ export class ShContextMenuService implements OnDestroy {
     mouseEvent.stopPropagation();
 
     const scrollStrategy = this.buildCloseScrollStrategy();
-    const positionStrategy = this.buildConnectedPositionStrategyForSubMenu(targetElement);
+    const positionStrategy = this.buildPositionStrategyForSubMenu(targetElement);
     const overlayRef = this.createAndAttachOverlay(positionStrategy, scrollStrategy, menu, false);
 
     this.attachContextToItems(menu, data);
@@ -85,7 +88,7 @@ export class ShContextMenuService implements OnDestroy {
       .subscribe(this.closeCurrentOverlays.bind(this));
   }
 
-  private createAndAttachOverlay(positionStrategy: ConnectedPositionStrategy,
+  private createAndAttachOverlay(positionStrategy: GlobalPositionStrategy | FlexibleConnectedPositionStrategy,
                                  scrollStrategy: CloseScrollStrategy,
                                  menu: ShContextMenuComponent,
                                  hasBackdrop: boolean = true) {
@@ -113,69 +116,35 @@ export class ShContextMenuService implements OnDestroy {
     return this.overlay.scrollStrategies.close();
   }
 
-  private buildConnectedPositionStrategy(elm: ElementRef): ConnectedPositionStrategy {
-    return this
-      .overlay
-      .position()
-      .connectedTo(elm,
-        {originX: 'start', originY: 'bottom'},
-        {overlayX: 'start', overlayY: 'top'})
-      .withFallbackPosition(
-        {originX: 'start', originY: 'top'},
-        {overlayX: 'start', overlayY: 'bottom'})
-      .withFallbackPosition(
-        {originX: 'end', originY: 'top'},
-        {overlayX: 'start', overlayY: 'top'})
-      .withFallbackPosition(
-        {originX: 'start', originY: 'top'},
-        {overlayX: 'end', overlayY: 'top'})
-      .withFallbackPosition(
-        {originX: 'end', originY: 'center'},
-        {overlayX: 'start', overlayY: 'center'})
-      .withFallbackPosition(
-        {originX: 'start', originY: 'center'},
-        {overlayX: 'end', overlayY: 'center'});
-  }
-
-  private buildConnectedPositionStrategyForSubMenu(elm: ElementRef): ConnectedPositionStrategy {
-    return this
-      .overlay
-      .position()
-      .connectedTo(elm,
-        {originX: 'end', originY: 'top'},
-        {overlayX: 'start', overlayY: 'top'})
-      .withFallbackPosition(
-        {originX: 'start', originY: 'top'},
-        {overlayX: 'end', overlayY: 'top'})
-      .withFallbackPosition(
-        {originX: 'end', originY: 'bottom'},
-        {overlayX: 'start', overlayY: 'bottom'})
-      .withFallbackPosition(
-        {originX: 'start', originY: 'bottom'},
-        {overlayX: 'end', overlayY: 'bottom'});
-  }
-
-  /*
-    we need to override getBoundingClientRect() to return the position of the menu.
-    this is done because @angular/cdk use this function internally to determine where the overlay should be positioned
-    https://github.com/angular/material2/blob/master/src/cdk/overlay/position/connected-position-strategy.ts#L288
-   */
-  private overrideGetBoundingClientRect(elm: ElementRef, event: MouseEvent) {
+  private buildPositionStrategy(ele: HTMLElement, event: MouseEvent): FlexibleConnectedPositionStrategy {
     const {clientX, clientY} = event;
 
-    elm.nativeElement.getBoundingClientRect = (): ClientRect => {
-      return {
-        bottom: clientY,
-        height: 0,
-        left: clientX,
-        right: clientX,
-        top: clientY,
-        width: 0
-      };
-    };
+    return this
+      .overlay
+      .position()
+      .flexibleConnectedTo(ele)
+      .withDefaultOffsetX(clientX)
+      .withDefaultOffsetY(clientY)
+      .withPositions(this.buildPositions())
+      .withFlexibleDimensions(false)
+      .withPush(true);
+  }
+
+  private buildPositionStrategyForSubMenu(elm: ElementRef): FlexibleConnectedPositionStrategy {
+    return this
+      .overlay
+      .position()
+      .flexibleConnectedTo(elm)
+      .withPositions(this.buildSubMenuPositions())
+      .withFlexibleDimensions(false)
+      .withPush(true);
   }
 
   private closeCurrentOverlays() {
+    if (this.anchorElement) {
+      this.anchorElement.remove();
+    }
+
     this.activeOverlays.forEach((o) => {
       o.detach();
       o.dispose();
@@ -200,5 +169,76 @@ export class ShContextMenuService implements OnDestroy {
 
   private attachOverlayRef(menu: ShContextMenuComponent, overlayRef: OverlayRef) {
     menu.overlayRef = overlayRef;
+  }
+
+  private createAnchorElement(): HTMLElement {
+    const div = document.createElement('div');
+    div.style.position = 'absolute';
+    div.style.top = '0';
+    div.style.bottom = '0';
+    div.style.left = '0';
+    div.style.right = '0';
+
+    document.body.appendChild(div);
+
+    return div;
+  }
+
+  private buildSubMenuPositions(): ConnectionPositionPair[] {
+    return [
+      {
+        originX: 'end',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'top'
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'end',
+        overlayY: 'top'
+      },
+      {
+        originX: 'end',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'bottom'
+      },
+      {
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'end',
+        overlayY: 'bottom'
+      },
+    ];
+  }
+
+  private buildPositions(): ConnectionPositionPair[] {
+    return [
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'top'
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'end',
+        overlayY: 'top'
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom'
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'end',
+        overlayY: 'bottom'
+      },
+    ];
   }
 }
