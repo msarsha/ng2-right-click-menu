@@ -1,6 +1,6 @@
 ### 1.1.0 - Angular 7
 
-packae updated to work with Angular v7 [#845c259](https://github.com/msarsha/ng2-right-click-menu/commit/919a69d93bd6489ceeda93a5e9e4955ff845c259)
+package updated to work with Angular v7 [#845c259](https://github.com/msarsha/ng2-right-click-menu/commit/919a69d93bd6489ceeda93a5e9e4955ff845c259)
 
 ### 1.0.0 - BREAKING CHANGES
 
