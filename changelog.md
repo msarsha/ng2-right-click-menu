@@ -1,3 +1,7 @@
+### 1.1.0 - BREAKING CHANGES
+
+packae updated to work with Angular v7 [#845c259](https://github.com/msarsha/ng2-right-click-menu/commit/919a69d93bd6489ceeda93a5e9e4955ff845c259)
+
 ### 1.0.0 - BREAKING CHANGES
 
 new api using ng-template [#fc09e66](https://github.com/msarsha/ng2-right-click-menu/commit/fc09e6687ce7ca376708386b8841d5336b3ac82a)
