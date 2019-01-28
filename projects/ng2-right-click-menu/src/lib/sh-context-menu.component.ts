@@ -20,7 +20,7 @@ import {OverlayRef} from '@angular/cdk/overlay';
           #itemElement
           [ngClass]="{'sh-sub-anchor': menuItem.subMenu,
            'sh-context-menu--item__divider': menuItem.divider,
-           'sh-context-menu--item__sub-active': subActive && menuItem.active}"
+           'sh-context-menu--item__sub-active': subActive && menuItem.active}" 
           class="sh-context-menu--item"
           (mouseenter)="onEnter($event, menuItem, itemElement)"
           (click)="onClick($event, menuItem)">
