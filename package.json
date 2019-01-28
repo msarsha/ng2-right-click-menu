@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve ng2-right-click-menu-demo",
+    "start": "ng serve ng2-right-click-menu-demo --vendorSourceMap",
     "copy-readme": "cp README.md ./dist/ng2-right-click-menu",
     "build:lib": "ng build ng2-right-click-menu",
     "build:lib:watch": "ng build ng2-right-click-menu --watch",

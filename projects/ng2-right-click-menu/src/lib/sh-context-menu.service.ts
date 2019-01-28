@@ -82,10 +82,8 @@ export class ShContextMenuService implements OnDestroy {
   }
 
   private registerBackdropEvents(overlayRef: OverlayRef) {
-    const elm = overlayRef.backdropElement;
-
-    this.backDropSub = fromEvent(elm, 'mousedown')
-      .subscribe(this.closeCurrentOverlays.bind(this));
+    this.backDropSub = overlayRef.backdropClick().subscribe(this.closeCurrentOverlays.bind(this));
+    this.backDropSub.add(overlayRef.detachments().subscribe(this.closeCurrentOverlays.bind(this)));
   }
 
   private createAndAttachOverlay(positionStrategy: GlobalPositionStrategy | FlexibleConnectedPositionStrategy,
@@ -141,6 +139,7 @@ export class ShContextMenuService implements OnDestroy {
   }
 
   private closeCurrentOverlays() {
+    console.log('detached');
     if (this.anchorElement) {
       this.anchorElement.remove();
     }
