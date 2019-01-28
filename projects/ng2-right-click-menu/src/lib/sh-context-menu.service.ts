@@ -1,10 +1,10 @@
 import {ElementRef, Injectable, OnDestroy} from '@angular/core';
 import {ShContextMenuComponent} from './sh-context-menu.component';
 import {
-  CloseScrollStrategy, ConnectionPositionPair,
+  ConnectionPositionPair,
   FlexibleConnectedPositionStrategy,
   GlobalPositionStrategy,
-  Overlay
+  Overlay, ScrollStrategy
 } from '@angular/cdk/overlay';
 import {TemplatePortal} from '@angular/cdk/portal';
 import {ShContextMenuEvent, ShContextSubMenuEvent} from './sh-context-menu.models';
@@ -31,7 +31,7 @@ export class ShContextMenuService implements OnDestroy {
     mouseEvent.stopPropagation();
 
     this.anchorElement = this.createAnchorElement();
-    const scrollStrategy = this.buildCloseScrollStrategy();
+    const scrollStrategy = this.buildScrollStrategy();
     const positionStrategy = this.buildPositionStrategy(this.anchorElement, mouseEvent);
 
     this.attachContextToItems(menu, data);
@@ -48,7 +48,7 @@ export class ShContextMenuService implements OnDestroy {
     mouseEvent.preventDefault();
     mouseEvent.stopPropagation();
 
-    const scrollStrategy = this.buildCloseScrollStrategy();
+    const scrollStrategy = this.buildScrollStrategy();
     const positionStrategy = this.buildPositionStrategyForSubMenu(targetElement);
     const overlayRef = this.createAndAttachOverlay(positionStrategy, scrollStrategy, menu, false);
 
@@ -89,7 +89,7 @@ export class ShContextMenuService implements OnDestroy {
   }
 
   private createAndAttachOverlay(positionStrategy: GlobalPositionStrategy | FlexibleConnectedPositionStrategy,
-                                 scrollStrategy: CloseScrollStrategy,
+                                 scrollStrategy: ScrollStrategy,
                                  menu: ShContextMenuComponent,
                                  hasBackdrop: boolean = true) {
 
@@ -112,8 +112,8 @@ export class ShContextMenuService implements OnDestroy {
     return overlayRef;
   }
 
-  private buildCloseScrollStrategy() {
-    return this.overlay.scrollStrategies.close();
+  private buildScrollStrategy(): ScrollStrategy {
+    return this.overlay.scrollStrategies.reposition({autoClose: true});
   }
 
   private buildPositionStrategy(ele: HTMLElement, event: MouseEvent): FlexibleConnectedPositionStrategy {
