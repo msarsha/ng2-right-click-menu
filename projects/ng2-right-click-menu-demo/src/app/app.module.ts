@@ -1,18 +1,14 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {AppComponent, MyContentComponent, MyMenuComponent} from './app.component';
-import {ShContextMenuModule} from 'ng2-right-click-menu';
+import {AppComponent} from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    MyMenuComponent,
-    MyContentComponent
+    AppComponent
   ],
   imports: [
-    BrowserModule,
-    ShContextMenuModule
+    BrowserModule
   ],
   providers: [],
   bootstrap: [AppComponent]
