@@ -14,7 +14,7 @@ import {fromEvent, Subscription} from 'rxjs';
 @Injectable()
 export class ShContextMenuService implements OnDestroy {
   activeOverlays: OverlayRef[] = [];
-  backDropSub: Subscription;
+  subs: Subscription;
   activeMenu: ShContextMenuComponent;
   anchorElement: HTMLElement;
 
@@ -39,7 +39,7 @@ export class ShContextMenuService implements OnDestroy {
     const overlayRef = this.createAndAttachOverlay(positionStrategy, scrollStrategy, menu, true);
     this.attachOverlayRef(menu, overlayRef);
 
-    this.registerBackdropEvents(overlayRef);
+    this.registerDetachEvents(overlayRef);
   }
 
   openSubMenu(ctxEvent: ShContextSubMenuEvent): any {
@@ -59,7 +59,7 @@ export class ShContextMenuService implements OnDestroy {
 
   destroy() {
     this.closeCurrentOverlays();
-    this.backDropSub.unsubscribe();
+    this.subs.unsubscribe();
   }
 
   ngOnDestroy(): void {
@@ -81,9 +81,9 @@ export class ShContextMenuService implements OnDestroy {
     }
   }
 
-  private registerBackdropEvents(overlayRef: OverlayRef) {
-    this.backDropSub = overlayRef.backdropClick().subscribe(this.closeCurrentOverlays.bind(this));
-    this.backDropSub.add(overlayRef.detachments().subscribe(this.closeCurrentOverlays.bind(this)));
+  private registerDetachEvents(overlayRef: OverlayRef) {
+    this.subs = overlayRef.backdropClick().subscribe(this.closeCurrentOverlays.bind(this));
+    this.subs.add(overlayRef.detachments().subscribe(this.closeCurrentOverlays.bind(this)));
   }
 
   private createAndAttachOverlay(positionStrategy: GlobalPositionStrategy | FlexibleConnectedPositionStrategy,
@@ -139,7 +139,6 @@ export class ShContextMenuService implements OnDestroy {
   }
 
   private closeCurrentOverlays() {
-    console.log('detached');
     if (this.anchorElement) {
       this.anchorElement.remove();
     }
