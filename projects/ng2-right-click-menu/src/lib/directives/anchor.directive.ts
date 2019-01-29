@@ -1,13 +1,21 @@
-import {Directive, Input, TemplateRef} from '@angular/core';
+import { Directive, HostListener, Input } from '@angular/core';
+import { MenuDirective } from './menu.directive';
+import { Ng2rcmMenuService } from '../services/ng2rcmMenu.service';
 
 @Directive({
-  selector: '[ng2rcmAnchor]'
+	selector: '[ng2rcmAnchor]'
 })
 export class AnchorDirective {
+	@Input() ng2rcmAnchor: MenuDirective;
 
-  @Input() ng2rcmAnchor: TemplateRef<any>;
+	constructor(private service: Ng2rcmMenuService) {}
 
-  constructor() {
-  }
-
+	@HostListener('contextmenu', ['$event'])
+	onRightClick(event: MouseEvent) {
+		event.preventDefault();
+		this.service.open({
+			event,
+			menu: this.ng2rcmAnchor
+		});
+	}
 }

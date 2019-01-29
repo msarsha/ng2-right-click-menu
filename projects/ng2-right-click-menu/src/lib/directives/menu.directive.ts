@@ -1,10 +1,12 @@
-import {Directive, TemplateRef} from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[ng2rcmMenu]'
+	selector: '[ng2rcmMenu]',
+	exportAs: 'ng2rcmMenu'
 })
 export class MenuDirective {
-
-  constructor(public templateRef: TemplateRef<any>) { }
-
+	constructor(
+		public templateRef: TemplateRef<any>,
+		public vcRef: ViewContainerRef
+	) {}
 }

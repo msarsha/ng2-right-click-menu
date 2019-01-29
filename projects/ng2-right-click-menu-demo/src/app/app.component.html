@@ -1,10 +1,7 @@
 <div class="box" *ngFor="let item of items" [ng2rcmAnchor]="menu">
-  <h2>Menu One</h2>
+	<h2>Menu One</h2>
 </div>
 
-
-<ng-template ng2rcmMenu #menu>
-
+<ng-template ng2rcmMenu #menu="ng2rcmMenu">
+	<h2>Menu !</h2>
 </ng-template>
-
-
