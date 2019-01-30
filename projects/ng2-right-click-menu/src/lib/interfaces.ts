@@ -7,3 +7,5 @@ export class ContextMenuRef {
 		public overlayRef: OverlayRef
 	) {}
 }
+
+export interface ContextMenu {}

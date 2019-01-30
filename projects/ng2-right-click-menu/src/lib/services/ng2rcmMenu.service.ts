@@ -27,9 +27,9 @@ export class Ng2rcmMenuService {
 		const menuOverlayRef = this.menuOverlay.create(event);
 
 		this.attachDestroyEvents(menuOverlayRef);
-
 		const menuRef = new ContextMenuRef(menu.template, menuOverlayRef);
 		const menuInjector = this.createInjector(menuRef, this.injector);
+
 		const portal = new ComponentPortal(
 			MenuWrapperComponent,
 			menu.vcRef,
