@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { MenuComponent } from '../menu/menu.component';
+import { Component, Injector, Input } from '@angular/core';
 
 @Component({
 	selector: 'ng2rcm-menu-item',
@@ -8,7 +7,5 @@ import { MenuComponent } from '../menu/menu.component';
 export class MenuItemComponent {
 	@Input() data: any;
 
-	constructor(public parent: MenuComponent) {
-		console.log(parent);
-	}
+	constructor() {}
 }

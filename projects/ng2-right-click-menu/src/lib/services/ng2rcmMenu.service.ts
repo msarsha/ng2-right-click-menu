@@ -1,14 +1,14 @@
 import { Injectable, Injector, TemplateRef } from '@angular/core';
 import { Ng2rcmOverlayService } from './ng2rcmOverlay.service';
-import { MenuDirective } from '../directives/menu.directive';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { MenuComponent } from '../components/menu/menu.component';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { ContextMenuRef } from '../interfaces';
+import { MenuWrapperComponent } from '../components/menu-wrapper/menu-wrapper.component';
 
 export interface Ng2rcmMenuOptions {
 	event: MouseEvent;
-	menu: MenuDirective;
+	menu: MenuComponent;
 	data?: any;
 }
 
@@ -28,9 +28,13 @@ export class Ng2rcmMenuService {
 
 		this.attachDestroyEvents(menuOverlayRef);
 
-		const menuRef = new ContextMenuRef(menu.templateRef, menuOverlayRef);
+		const menuRef = new ContextMenuRef(menu.template, menuOverlayRef);
 		const menuInjector = this.createInjector(menuRef, this.injector);
-		const portal = new ComponentPortal(MenuComponent, menu.vcRef, menuInjector);
+		const portal = new ComponentPortal(
+			MenuWrapperComponent,
+			menu.vcRef,
+			menuInjector
+		);
 
 		menuOverlayRef.attach(portal);
 	}

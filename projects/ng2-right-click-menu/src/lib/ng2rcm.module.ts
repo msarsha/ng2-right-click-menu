@@ -5,6 +5,7 @@ import { MenuDirective } from './directives/menu.directive';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MenuComponent } from './components/menu/menu.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
+import { MenuWrapperComponent } from './components/menu-wrapper/menu-wrapper.component';
 
 @NgModule({
 	imports: [CommonModule, OverlayModule],
@@ -12,10 +13,11 @@ import { MenuItemComponent } from './components/menu-item/menu-item.component';
 		AnchorDirective,
 		MenuDirective,
 		MenuComponent,
-		MenuItemComponent
+		MenuItemComponent,
+		MenuWrapperComponent
 	],
 	providers: [],
-	exports: [AnchorDirective, MenuDirective, MenuItemComponent],
-	entryComponents: [MenuComponent]
+	exports: [AnchorDirective, MenuItemComponent, MenuComponent],
+	entryComponents: [MenuWrapperComponent]
 })
 export class Ng2rcmModule {}

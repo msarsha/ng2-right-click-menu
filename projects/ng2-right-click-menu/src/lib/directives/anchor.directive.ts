@@ -1,12 +1,12 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { MenuDirective } from './menu.directive';
 import { Ng2rcmMenuService } from '../services/ng2rcmMenu.service';
+import { MenuComponent } from '../components/menu/menu.component';
 
 @Directive({
 	selector: '[ng2rcmAnchor]'
 })
 export class AnchorDirective {
-	@Input() ng2rcmAnchor: MenuDirective;
+	@Input() ng2rcmAnchor: MenuComponent;
 
 	constructor(private service: Ng2rcmMenuService) {}
 
