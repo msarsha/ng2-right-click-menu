@@ -6,7 +6,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MenuComponent } from './components/menu/menu.component';
 import { MenuItemComponent } from './components/menu-item/menu-item.component';
 import { MenuWrapperComponent } from './components/menu-wrapper/menu-wrapper.component';
-import { MenuItemDirective } from './directives/MenuItemDirective';
+import { MenuItemDirective } from './directives/menuItemDirective';
 
 @NgModule({
 	imports: [CommonModule, OverlayModule],
