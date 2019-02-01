@@ -1,4 +1,9 @@
-import { Injectable, Injector, TemplateRef } from '@angular/core';
+import {
+	Injectable,
+	Injector,
+	TemplateRef,
+	ViewContainerRef
+} from '@angular/core';
 import { Ng2rcmOverlayService } from './ng2rcmOverlay.service';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { MenuComponent } from '../components/menu/menu.component';
@@ -8,7 +13,8 @@ import { MenuWrapperComponent } from '../components/menu-wrapper/menu-wrapper.co
 
 export interface Ng2rcmMenuOptions {
 	event: MouseEvent;
-	menu: MenuComponent;
+	menu?: TemplateRef<any>;
+	vcRef?: ViewContainerRef;
 	data?: any;
 }
 
@@ -16,27 +22,35 @@ export interface Ng2rcmMenuOptions {
 	providedIn: 'root'
 })
 export class Ng2rcmMenuService {
+	private _menuRef: ContextMenuRef;
+
 	constructor(
 		private menuOverlay: Ng2rcmOverlayService,
 		private injector: Injector
 	) {}
 
 	open(options: Ng2rcmMenuOptions) {
-		const { event, menu } = options;
+		const { event, menu, data, vcRef } = options;
 
 		const menuOverlayRef = this.menuOverlay.create(event);
 
 		this.attachDestroyEvents(menuOverlayRef);
-		const menuRef = new ContextMenuRef(menu.template, menuOverlayRef);
-		const menuInjector = this.createInjector(menuRef, this.injector);
+		this._menuRef = new ContextMenuRef(menu, menuOverlayRef, data);
+		const menuInjector = this.createInjector(this._menuRef, this.injector);
 
 		const portal = new ComponentPortal(
 			MenuWrapperComponent,
-			menu.vcRef,
+			null,
 			menuInjector
 		);
 
 		menuOverlayRef.attach(portal);
+	}
+
+	close($event: MouseEvent) {
+		if (this._menuRef) {
+			this._menuRef.overlayRef.dispose();
+		}
 	}
 
 	private attachDestroyEvents(menuOverlayRef: OverlayRef) {

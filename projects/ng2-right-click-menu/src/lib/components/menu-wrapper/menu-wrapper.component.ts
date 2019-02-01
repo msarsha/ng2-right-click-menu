@@ -6,8 +6,13 @@ import { ContextMenuRef } from '../../interfaces';
 })
 export class MenuWrapperComponent {
 	template: TemplateRef<any>;
+	context: any;
 
 	constructor(public menuRef: ContextMenuRef) {
+		this.context = {
+			$implicit: menuRef.data
+		};
+
 		this.template = menuRef.template;
 	}
 }

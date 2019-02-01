@@ -4,8 +4,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
 export class ContextMenuRef {
 	constructor(
 		public template: TemplateRef<any>,
-		public overlayRef: OverlayRef
+		public overlayRef: OverlayRef,
+		public data: any
 	) {}
 }
-
-export interface ContextMenu {}

@@ -1,11 +1,10 @@
-<div class="box" *ngFor="let item of items" [ng2rcmAnchor]="menu">
+<div class="box" *ngFor="let item of items" [ng2rcmAnchor]="menu" [data]="item">
 	<h2>Menu One</h2>
 </div>
 
-<ng2rcm-menu #menu>
-	<h2>Menu !</h2>
-	<ng2rcm-menu-item menuItem>
-		<span>One</span>
+<ng-template #menu let-data>
+	<ng2rcm-menu-item (click)="onClick($event, data)">
+		<span>{{ data.label }}</span>
 	</ng2rcm-menu-item>
 	<ng2rcm-menu-item>
 		<span>Two</span>
@@ -13,4 +12,4 @@
 	<ng2rcm-menu-item>
 		<span>Three</span>
 	</ng2rcm-menu-item>
-</ng2rcm-menu>
+</ng-template>
