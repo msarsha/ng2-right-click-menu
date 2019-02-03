@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Ng2rcmMenuService } from '../../services/ng2rcmMenu.service';
 
-export interface MenuCloseEvent {
+export interface MenuClickEvent {
 	event: MouseEvent;
 	preventClose: () => void;
 }
@@ -11,7 +11,7 @@ export interface MenuCloseEvent {
 	templateUrl: './menu-item.component.html'
 })
 export class MenuItemComponent {
-	@Output() click = new EventEmitter<MenuCloseEvent>();
+	@Output() click = new EventEmitter<MenuClickEvent>();
 
 	@Input() closeOnClick = true;
 

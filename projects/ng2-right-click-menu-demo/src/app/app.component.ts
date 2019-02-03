@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { MenuCloseEvent } from '../../../ng2-right-click-menu/src/lib/components/menu-item/menu-item.component';
+import { MenuClickEvent } from '../../../ng2-right-click-menu/src/lib/components/menu-item/menu-item.component';
 
 @Component({
 	selector: 'app-root',
@@ -21,7 +21,7 @@ export class AppComponent {
 		];
 	}
 
-	onClick(event: MenuCloseEvent, data) {
+	onClick(event: MenuClickEvent, data) {
 		console.log('clicked', event, data);
 	}
 
@@ -29,7 +29,7 @@ export class AppComponent {
 		return true;
 	}
 
-	onOpen($event) {}
+	onOpen($event, data) {}
 
 	open($event: MouseEvent, item: any) {}
 }

@@ -1,5 +1,7 @@
 import {
 	Component,
+	EventEmitter,
+	Output,
 	TemplateRef,
 	ViewChild,
 	ViewContainerRef
@@ -11,6 +13,7 @@ import {
 	templateUrl: './menu.component.html'
 })
 export class MenuComponent {
-	@ViewChild('tmpl') template: TemplateRef<any>;
-	constructor(public vcRef: ViewContainerRef) {}
+	@Output() open = new EventEmitter();
+
+	constructor() {}
 }

@@ -3,13 +3,15 @@
 </div>
 
 <ng-template #menu let-data>
-	<ng2rcm-menu-item (click)="onClick($event, data)">
-		<span>{{ data.label }}</span>
-	</ng2rcm-menu-item>
-	<ng2rcm-menu-item>
-		<span>Two</span>
-	</ng2rcm-menu-item>
-	<ng2rcm-menu-item>
-		<span>Three</span>
-	</ng2rcm-menu-item>
+	<ng2rcm-menu (open)="onOpen($event, data)">
+		<ng2rcm-menu-item (click)="onClick($event, data)">
+			<span>{{ data.label }}</span>
+		</ng2rcm-menu-item>
+		<ng2rcm-menu-item>
+			<span>Two</span>
+		</ng2rcm-menu-item>
+		<ng2rcm-menu-item>
+			<span>Three</span>
+		</ng2rcm-menu-item>
+	</ng2rcm-menu>
 </ng-template>

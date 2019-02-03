@@ -6,7 +6,6 @@ import {
 } from '@angular/core';
 import { Ng2rcmOverlayService } from './ng2rcmOverlay.service';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
-import { MenuComponent } from '../components/menu/menu.component';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { ContextMenuRef } from '../interfaces';
 import { MenuWrapperComponent } from '../components/menu-wrapper/menu-wrapper.component';
@@ -30,7 +29,7 @@ export class Ng2rcmMenuService {
 	) {}
 
 	open(options: Ng2rcmMenuOptions) {
-		const { event, menu, data, vcRef } = options;
+		const { event, menu, data } = options;
 
 		const menuOverlayRef = this.menuOverlay.create(event);
 
