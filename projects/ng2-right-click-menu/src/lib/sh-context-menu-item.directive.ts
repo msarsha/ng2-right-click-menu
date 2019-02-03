@@ -1,42 +1,48 @@
-import {Directive, EventEmitter, Input, Optional, Output, TemplateRef} from '@angular/core';
-import {ShContextMenuComponent} from './sh-context-menu.component';
-import {ShContextMenuClickEvent} from './sh-context-menu.models';
+import {
+	Directive,
+	EventEmitter,
+	Input,
+	Optional,
+	Output,
+	TemplateRef
+} from '@angular/core';
+import { ShContextMenuComponent } from './sh-context-menu.component';
+import { ShContextMenuClickEvent } from './sh-context-menu.models';
 
 export class MenuItemContext {
-  $implicit: any;
+	$implicit: any;
 
-  constructor() {
-    this.$implicit = {};
-  }
+	constructor() {
+		this.$implicit = {};
+	}
 }
 
 @Directive({
-  selector: '[shContextMenuItem]'
+	selector: '[shContextMenuItem]'
 })
 export class ShContextMenuItemDirective {
-  @Input() subMenu: ShContextMenuComponent;
-  @Input() divider: boolean;
-  @Input() visible: (event: ShContextMenuClickEvent) => boolean;
-  @Input() disabled: (event: ShContextMenuClickEvent) => boolean;
-  @Input() closeOnClick = true;
+	@Input() subMenu: ShContextMenuComponent;
+	@Input() divider: boolean;
+	@Input() visible: (event: ShContextMenuClickEvent) => boolean;
+	@Input() disabled: (event: ShContextMenuClickEvent) => boolean;
+	@Input() closeOnClick = true;
 
-  @Output() click = new EventEmitter<ShContextMenuClickEvent>();
+	@Output() click = new EventEmitter<ShContextMenuClickEvent>();
 
-  context: MenuItemContext = new MenuItemContext();
+	context: MenuItemContext = new MenuItemContext();
 
-  private _active: boolean;
+	private _active: boolean;
 
-  constructor(@Optional() public template: TemplateRef<MenuItemContext>) {
-  }
+	constructor(@Optional() public template: TemplateRef<MenuItemContext>) {}
 
-  setNotActive() {
-    this._active = false;
-    if (this.subMenu) {
-      this.subMenu.setNotActive();
-    }
-  }
+	setNotActive() {
+		this._active = false;
+		if (this.subMenu) {
+			this.subMenu.setNotActive();
+		}
+	}
 
-  setActive() {
-    this._active = true;
-  }
+	setActive() {
+		this._active = true;
+	}
 }
