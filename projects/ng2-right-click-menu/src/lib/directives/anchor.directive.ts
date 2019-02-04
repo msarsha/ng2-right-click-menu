@@ -25,7 +25,8 @@ export class AnchorDirective {
 		this.service.open({
 			event,
 			data: this.data,
-			menu: this.ng2rcmAnchor
+			menu: this.ng2rcmAnchor,
+			vcRef: this.vcRef
 		});
 	}
 }
