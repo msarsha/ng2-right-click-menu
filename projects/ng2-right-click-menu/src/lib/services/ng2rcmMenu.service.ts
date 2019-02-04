@@ -39,7 +39,6 @@ export class Ng2rcmMenuService {
 
 		this.attachDestroyEvents(menuOverlayRef);
 		this._menuRef = new ContextMenuRef(menu, menuOverlayRef, data);
-		const menuInjector = this.createInjector(this._menuRef, this.injector);
 
 		const portal = new TemplatePortal(menu, vcRef, { $implicit: data });
 
@@ -56,10 +55,5 @@ export class Ng2rcmMenuService {
 		menuOverlayRef.backdropClick().subscribe(() => {
 			menuOverlayRef.detach();
 		});
-	}
-
-	private createInjector(menuRef: ContextMenuRef, injector: Injector) {
-		const tokens = new WeakMap([[ContextMenuRef, menuRef]]);
-		return new PortalInjector(injector, tokens);
 	}
 }
