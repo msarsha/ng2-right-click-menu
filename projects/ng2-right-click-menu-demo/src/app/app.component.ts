@@ -1,5 +1,6 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { ShContextMenuComponent } from 'ng2-right-click-menu';
+import { ContextOpenEvent } from '../../../ng2-right-click-menu/src/lib/sh-attach-menu.directive';
 
 @Component({
 	selector: 'app-root',
@@ -23,6 +24,13 @@ export class AppComponent {
 				label: 'Item Two'
 			}
 		];
+	}
+
+	onOpen(event: ContextOpenEvent) {
+		if (event.data.label === 'Item One') {
+			console.log('preventOpen called');
+			event.preventOpen();
+		}
 	}
 
 	onClick(event) {

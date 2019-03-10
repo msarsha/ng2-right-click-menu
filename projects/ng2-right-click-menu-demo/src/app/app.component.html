@@ -3,6 +3,7 @@
 	*ngFor="let item of items"
 	[shAttachMenu]="menu"
 	[shMenuData]="item"
+	(open)="onOpen($event)"
 >
 	<h2>Menu One</h2>
 </div>

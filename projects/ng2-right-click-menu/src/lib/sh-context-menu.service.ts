@@ -30,9 +30,6 @@ export class ShContextMenuService implements OnDestroy {
 
 		this.activeMenu = menu;
 
-		mouseEvent.preventDefault();
-		mouseEvent.stopPropagation();
-
 		this.anchorElement = this.createAnchorElement();
 		const scrollStrategy = this.buildScrollStrategy();
 		const positionStrategy = this.buildPositionStrategy(
