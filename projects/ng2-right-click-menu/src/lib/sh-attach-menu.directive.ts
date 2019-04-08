@@ -25,6 +25,7 @@ export class ShAttachMenuDirective implements OnDestroy, OnInit {
 	@Input('shMenuTriggers') triggers: string[];
 	@Input('shMenuData') data: any;
 	@Output() open = new EventEmitter<ContextOpenEvent>();
+	@Output() close = new EventEmitter<ContextOpenEvent>();
 	sub: Subscription;
 
 	constructor(
@@ -75,6 +76,7 @@ export class ShAttachMenuDirective implements OnDestroy, OnInit {
 
 	ngOnDestroy(): void {
 		if (this.sub) {
+		  this.close.emit();
 			this.sub.unsubscribe();
 		}
 	}
