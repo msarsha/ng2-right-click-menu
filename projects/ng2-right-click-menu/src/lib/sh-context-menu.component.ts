@@ -57,8 +57,9 @@ export class ShContextMenuComponent implements OnDestroy {
 	})
 	viewChildrenItems;
 
-	@ViewChild('menuTemplate', { read: TemplateRef }) menuTemplate;
-	@ViewChild('menuContainer', { read: ViewContainerRef }) menuContainer;
+	@ViewChild('menuTemplate', { read: TemplateRef, static: true }) menuTemplate;
+	@ViewChild('menuContainer', { read: ViewContainerRef, static: true })
+	menuContainer;
 
 	public overlayRef: OverlayRef;
 	subActive: boolean;
