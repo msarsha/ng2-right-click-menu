@@ -166,8 +166,8 @@ export class ShContextMenuService implements OnDestroy {
 	}
 
 	private closeCurrentOverlays() {
-		if (this.anchorElement) {
-			this.anchorElement.remove();
+		if (this.anchorElement && this.anchorElement.parentNode) {
+			this.anchorElement.parentNode.removeChild(this.anchorElement);
 		}
 
 		this.activeOverlays.forEach(o => {
