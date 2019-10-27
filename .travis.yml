@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - "12"
+branches:
+  only:
+    - master
+cache:
+  directories:
+    - node_modules
+install:
+  - npm install
+script:
+  - npm run pre-deploy:app
+  - mv ./dist/ng2-right-click-menu-demo/index.html ./dist/ng2-right-click-menu-demo/404.html
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  local_dir: ./dist/ng2-right-click-menu-demo
+  on:
+    branch: master

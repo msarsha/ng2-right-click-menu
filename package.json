@@ -5,10 +5,13 @@
 		"ng": "ng",
 		"start": "ng serve ng2-right-click-menu-demo --vendorSourceMap",
 		"copy-readme": "cp README.md ./dist/ng2-right-click-menu",
+		"build:app": "ng build ng2-right-click-menu-demo",
+		"build:app:deploy": "ng build ng2-right-click-menu-demo --base-href=https://msarsha.github.io/ng2-right-click-menu-demo",
 		"build:lib": "ng build ng2-right-click-menu",
 		"build:lib:watch": "ng build ng2-right-click-menu --watch",
 		"pack:lib": "cd ./dist/ng2-right-click-menu && npm pack",
 		"package": "npm run build:lib && npm run copy-readme && npm run pack:lib",
+		"pre-deploy:app": "npm run build:lib && npm run build:app:deploy",
 		"test": "ng test",
 		"lint": "ng lint",
 		"e2e": "ng e2e"
