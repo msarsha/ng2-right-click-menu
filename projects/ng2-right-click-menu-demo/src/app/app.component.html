@@ -35,7 +35,7 @@
 		<ng-template shContextMenuItem let-item [subMenu]="nestedSubMenu">
 			<div>From Sub Menu - {{ item.label }}</div>
 		</ng-template>
-		<ng-template shContextMenuItem [divider]="true"> </ng-template>
+		<ng-template shContextMenuItem [divider]="true"></ng-template>
 		<ng-template shContextMenuItem let-item (click)="onClick($event)">
 			<div>one - {{ item.label }}</div>
 		</ng-template>
@@ -53,6 +53,22 @@
 
 <button (click)="itemVisible = !itemVisible">Toggle Visible</button>
 {{ itemVisible }}
+
+<div class="tall-wrapper">
+	<div style="text-align: center"><span>Scroll Down</span></div>
+	<div class="tall">
+		<div class="space"></div>
+		<div
+			class="box"
+			*ngFor="let item of items"
+			[shAttachMenu]="menu"
+			[shMenuData]="item"
+			(open)="onOpen($event)"
+		>
+			<h2>Menu One</h2>
+		</div>
+	</div>
+</div>
 
 <!--<my-menu #myMenu></my-menu>-->
 
