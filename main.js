@@ -271,12 +271,12 @@ var ShContextMenuService = /** @class */ (function () {
      * @return {?}
      */
     function (ele, event) {
-        var clientX = event.clientX, clientY = event.clientY;
+        var x = event.x, y = event.y;
         return this.overlay
             .position()
             .flexibleConnectedTo(ele)
-            .withDefaultOffsetX(clientX)
-            .withDefaultOffsetY(clientY)
+            .withDefaultOffsetX(x)
+            .withDefaultOffsetY(y)
             .withPositions(this.buildPositions())
             .withFlexibleDimensions(false)
             .withPush(true);
@@ -828,7 +828,7 @@ var ShContextMenuModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div\n\tclass=\"box\"\n\t*ngFor=\"let item of items\"\n\t[shAttachMenu]=\"menu\"\n\t[shMenuData]=\"item\"\n\t(open)=\"onOpen($event)\"\n>\n\t<h2>Menu One</h2>\n</div>\n\n<!--<div class=\"box\" *ngFor=\"let item of items\" [shAnchorFor]=\"myMenu\" [shMenuData]=\"item\" [shMenuTriggers]=\"['click']\">-->\n<!--<h2>Menu Two</h2>-->\n<!--</div>-->\n\n<sh-context-menu #menu [this]=\"thisContext\">\n\t<ng-template\n\t\tshContextMenuItem\n\t\tlet-item\n\t\t[subMenu]=\"subMenu\"\n\t\t[visible]=\"isVisible\"\n\t>\n\t\t<div>two - {{ item.label }}</div>\n\t</ng-template>\n\t<div shContextMenuItem [divider]=\"true\"></div>\n\t<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">\n\t\t<div>one - {{ item.label }}</div>\n\t</ng-template>\n\t<ng-container *ngIf=\"itemVisible\">\n\t\t<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">\n\t\t\t<h4>Hi !</h4>\n\t\t</ng-template>\n\t</ng-container>\n\n\t<sh-context-menu #subMenu>\n\t\t<ng-template shContextMenuItem let-item [subMenu]=\"nestedSubMenu\">\n\t\t\t<div>From Sub Menu - {{ item.label }}</div>\n\t\t</ng-template>\n\t\t<ng-template shContextMenuItem [divider]=\"true\"> </ng-template>\n\t\t<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">\n\t\t\t<div>one - {{ item.label }}</div>\n\t\t</ng-template>\n\t\t<ng-template shContextMenuItem let-item [subMenu]=\"nestedSubMenu\">\n\t\t\t<div>From Sub Menu - {{ item.label }}</div>\n\t\t</ng-template>\n\n\t\t<sh-context-menu #nestedSubMenu>\n\t\t\t<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">\n\t\t\t\tFrom Sub Menu Two - {{ item.label }}\n\t\t\t</ng-template>\n\t\t</sh-context-menu>\n\t</sh-context-menu>\n</sh-context-menu>\n\n<button (click)=\"itemVisible = !itemVisible\">Toggle Visible</button>\n{{ itemVisible }}\n\n<!--<my-menu #myMenu></my-menu>-->\n\n<!--<sh-context-menu #menu>-->\n<!--<ng-template shContextMenuItem let-item>-->\n<!--<div>-->\n<!--Menu Item - {{item.label}}-->\n<!--</div>-->\n<!--</ng-template>-->\n<!--</sh-context-menu>-->\n<!--<div shContextMenuItem [divider]=\"true\">-->\n<!--</div>-->\n<!--<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">-->\n<!--<div>-->\n<!--one - {{item.label}}-->\n<!--</div>-->\n<!--</ng-template>-->\n<!--<ng-template shContextMenuItem let-item [closeOnClick]=\"false\">-->\n<!--<my-content [item]=\"item\"></my-content>-->\n<!--</ng-template>-->\n<!--<ng-container *ngIf=\"itemVisible\">-->\n<!--<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">-->\n<!--<h4>Hi !</h4>-->\n<!--</ng-template>-->\n<!--</ng-container>-->\n"
+module.exports = "<div\n\tclass=\"box\"\n\t*ngFor=\"let item of items\"\n\t[shAttachMenu]=\"menu\"\n\t[shMenuData]=\"item\"\n\t(open)=\"onOpen($event)\"\n>\n\t<h2>Menu One</h2>\n</div>\n\n<!--<div class=\"box\" *ngFor=\"let item of items\" [shAnchorFor]=\"myMenu\" [shMenuData]=\"item\" [shMenuTriggers]=\"['click']\">-->\n<!--<h2>Menu Two</h2>-->\n<!--</div>-->\n\n<sh-context-menu #menu [this]=\"thisContext\">\n\t<ng-template\n\t\tshContextMenuItem\n\t\tlet-item\n\t\t[subMenu]=\"subMenu\"\n\t\t[visible]=\"isVisible\"\n\t>\n\t\t<div>two - {{ item.label }}</div>\n\t</ng-template>\n\t<div shContextMenuItem [divider]=\"true\"></div>\n\t<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">\n\t\t<div>one - {{ item.label }}</div>\n\t</ng-template>\n\t<ng-container *ngIf=\"itemVisible\">\n\t\t<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">\n\t\t\t<h4>Hi !</h4>\n\t\t</ng-template>\n\t</ng-container>\n\n\t<sh-context-menu #subMenu>\n\t\t<ng-template shContextMenuItem let-item [subMenu]=\"nestedSubMenu\">\n\t\t\t<div>From Sub Menu - {{ item.label }}</div>\n\t\t</ng-template>\n\t\t<ng-template shContextMenuItem [divider]=\"true\"></ng-template>\n\t\t<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">\n\t\t\t<div>one - {{ item.label }}</div>\n\t\t</ng-template>\n\t\t<ng-template shContextMenuItem let-item [subMenu]=\"nestedSubMenu\">\n\t\t\t<div>From Sub Menu - {{ item.label }}</div>\n\t\t</ng-template>\n\n\t\t<sh-context-menu #nestedSubMenu>\n\t\t\t<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">\n\t\t\t\tFrom Sub Menu Two - {{ item.label }}\n\t\t\t</ng-template>\n\t\t</sh-context-menu>\n\t</sh-context-menu>\n</sh-context-menu>\n\n<button (click)=\"itemVisible = !itemVisible\">Toggle Visible</button>\n{{ itemVisible }}\n\n<div class=\"tall-wrapper\">\n\t<div style=\"text-align: center\"><span>Scroll Down</span></div>\n\t<div class=\"tall\">\n\t\t<div class=\"space\"></div>\n\t\t<div\n\t\t\tclass=\"box\"\n\t\t\t*ngFor=\"let item of items\"\n\t\t\t[shAttachMenu]=\"menu\"\n\t\t\t[shMenuData]=\"item\"\n\t\t\t(open)=\"onOpen($event)\"\n\t\t>\n\t\t\t<h2>Menu One</h2>\n\t\t</div>\n\t</div>\n</div>\n\n<!--<my-menu #myMenu></my-menu>-->\n\n<!--<sh-context-menu #menu>-->\n<!--<ng-template shContextMenuItem let-item>-->\n<!--<div>-->\n<!--Menu Item - {{item.label}}-->\n<!--</div>-->\n<!--</ng-template>-->\n<!--</sh-context-menu>-->\n<!--<div shContextMenuItem [divider]=\"true\">-->\n<!--</div>-->\n<!--<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">-->\n<!--<div>-->\n<!--one - {{item.label}}-->\n<!--</div>-->\n<!--</ng-template>-->\n<!--<ng-template shContextMenuItem let-item [closeOnClick]=\"false\">-->\n<!--<my-content [item]=\"item\"></my-content>-->\n<!--</ng-template>-->\n<!--<ng-container *ngIf=\"itemVisible\">-->\n<!--<ng-template shContextMenuItem let-item (click)=\"onClick($event)\">-->\n<!--<h4>Hi !</h4>-->\n<!--</ng-template>-->\n<!--</ng-container>-->\n"
 
 /***/ }),
 
@@ -862,7 +862,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".box {\n\theight: 180px;\n\twidth: 180px;\n\tbackground-color: #e3e4c2;\n\tline-height: 140px;\n\ttext-align: center;\n\tbox-shadow: 6px 6px 15px 2px rgba(0, 0, 0, 0.3);\n\tdisplay: inline-block;\n\tmargin: 20px;\n}\n\n.box.box-right {\n\tfloat: right;\n\twidth: 240px;\n}\n\ni.menu-icon {\n\tmargin-right: 3px;\n\tdisplay: inline-block;\n\tcolor: green;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInByb2plY3RzL25nMi1yaWdodC1jbGljay1tZW51LWRlbW8vc3JjL2FwcC9hcHAuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtDQUNDLGFBQWE7Q0FDYixZQUFZO0NBQ1oseUJBQXlCO0NBQ3pCLGtCQUFrQjtDQUNsQixrQkFBa0I7Q0FDbEIsK0NBQStDO0NBQy9DLHFCQUFxQjtDQUNyQixZQUFZO0FBQ2I7O0FBRUE7Q0FDQyxZQUFZO0NBQ1osWUFBWTtBQUNiOztBQUVBO0NBQ0MsaUJBQWlCO0NBQ2pCLHFCQUFxQjtDQUNyQixZQUFZO0FBQ2IiLCJmaWxlIjoicHJvamVjdHMvbmcyLXJpZ2h0LWNsaWNrLW1lbnUtZGVtby9zcmMvYXBwL2FwcC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmJveCB7XG5cdGhlaWdodDogMTgwcHg7XG5cdHdpZHRoOiAxODBweDtcblx0YmFja2dyb3VuZC1jb2xvcjogI2UzZTRjMjtcblx0bGluZS1oZWlnaHQ6IDE0MHB4O1xuXHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdGJveC1zaGFkb3c6IDZweCA2cHggMTVweCAycHggcmdiYSgwLCAwLCAwLCAwLjMpO1xuXHRkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG5cdG1hcmdpbjogMjBweDtcbn1cblxuLmJveC5ib3gtcmlnaHQge1xuXHRmbG9hdDogcmlnaHQ7XG5cdHdpZHRoOiAyNDBweDtcbn1cblxuaS5tZW51LWljb24ge1xuXHRtYXJnaW4tcmlnaHQ6IDNweDtcblx0ZGlzcGxheTogaW5saW5lLWJsb2NrO1xuXHRjb2xvcjogZ3JlZW47XG59XG4iXX0= */"
+module.exports = ".box {\n\theight: 180px;\n\twidth: 180px;\n\tbackground-color: #e3e4c2;\n\tline-height: 140px;\n\ttext-align: center;\n\tbox-shadow: 6px 6px 15px 2px rgba(0, 0, 0, 0.3);\n\tdisplay: inline-block;\n\tmargin: 20px;\n}\n\n.box.box-right {\n\tfloat: right;\n\twidth: 240px;\n}\n\ni.menu-icon {\n\tmargin-right: 3px;\n\tdisplay: inline-block;\n\tcolor: green;\n}\n\n.tall-wrapper {\n\toverflow: scroll;\n\theight: 500px;\n\twidth: 600px;\n\tmargin-top: 20px;\n}\n\n.space {\n\theight: 500px;\n\twidth: 600px;\n}\n\n.tall-wrapper .tall {\n\theight: 2000px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInByb2plY3RzL25nMi1yaWdodC1jbGljay1tZW51LWRlbW8vc3JjL2FwcC9hcHAuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtDQUNDLGFBQWE7Q0FDYixZQUFZO0NBQ1oseUJBQXlCO0NBQ3pCLGtCQUFrQjtDQUNsQixrQkFBa0I7Q0FDbEIsK0NBQStDO0NBQy9DLHFCQUFxQjtDQUNyQixZQUFZO0FBQ2I7O0FBRUE7Q0FDQyxZQUFZO0NBQ1osWUFBWTtBQUNiOztBQUVBO0NBQ0MsaUJBQWlCO0NBQ2pCLHFCQUFxQjtDQUNyQixZQUFZO0FBQ2I7O0FBRUE7Q0FDQyxnQkFBZ0I7Q0FDaEIsYUFBYTtDQUNiLFlBQVk7Q0FDWixnQkFBZ0I7QUFDakI7O0FBRUE7Q0FDQyxhQUFhO0NBQ2IsWUFBWTtBQUNiOztBQUVBO0NBQ0MsY0FBYztBQUNmIiwiZmlsZSI6InByb2plY3RzL25nMi1yaWdodC1jbGljay1tZW51LWRlbW8vc3JjL2FwcC9hcHAuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ib3gge1xuXHRoZWlnaHQ6IDE4MHB4O1xuXHR3aWR0aDogMTgwcHg7XG5cdGJhY2tncm91bmQtY29sb3I6ICNlM2U0YzI7XG5cdGxpbmUtaGVpZ2h0OiAxNDBweDtcblx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRib3gtc2hhZG93OiA2cHggNnB4IDE1cHggMnB4IHJnYmEoMCwgMCwgMCwgMC4zKTtcblx0ZGlzcGxheTogaW5saW5lLWJsb2NrO1xuXHRtYXJnaW46IDIwcHg7XG59XG5cbi5ib3guYm94LXJpZ2h0IHtcblx0ZmxvYXQ6IHJpZ2h0O1xuXHR3aWR0aDogMjQwcHg7XG59XG5cbmkubWVudS1pY29uIHtcblx0bWFyZ2luLXJpZ2h0OiAzcHg7XG5cdGRpc3BsYXk6IGlubGluZS1ibG9jaztcblx0Y29sb3I6IGdyZWVuO1xufVxuXG4udGFsbC13cmFwcGVyIHtcblx0b3ZlcmZsb3c6IHNjcm9sbDtcblx0aGVpZ2h0OiA1MDBweDtcblx0d2lkdGg6IDYwMHB4O1xuXHRtYXJnaW4tdG9wOiAyMHB4O1xufVxuXG4uc3BhY2Uge1xuXHRoZWlnaHQ6IDUwMHB4O1xuXHR3aWR0aDogNjAwcHg7XG59XG5cbi50YWxsLXdyYXBwZXIgLnRhbGwge1xuXHRoZWlnaHQ6IDIwMDBweDtcbn1cbiJdfQ== */"
 
 /***/ }),
 
@@ -870,18 +870,14 @@ module.exports = ".box {\n\theight: 180px;\n\twidth: 180px;\n\tbackground-color:
 /*!**********************************!*\
   !*** ./src/app/app.component.ts ***!
   \**********************************/
-/*! exports provided: AppComponent, MyMenuComponent, MyContentComponent */
+/*! exports provided: AppComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MyMenuComponent", function() { return MyMenuComponent; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MyContentComponent", function() { return MyContentComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var ng2_right_click_menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ng2-right-click-menu */ "../../dist/ng2-right-click-menu/fesm5/ng2-right-click-menu.js");
-
 
 
 var AppComponent = /** @class */ (function () {
@@ -900,7 +896,6 @@ var AppComponent = /** @class */ (function () {
     }
     AppComponent.prototype.onOpen = function (event) {
         if (event.data.label === 'Item One') {
-            console.log('preventOpen called');
             event.preventOpen();
         }
     };
@@ -922,40 +917,28 @@ var AppComponent = /** @class */ (function () {
     return AppComponent;
 }());
 
-var MyMenuComponent = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MyMenuComponent, _super);
-    // TODO: this is not possible now (because the use of TemplatePortal instead of ComponentPortal)
-    // should later define an interface for using a custom component as context menu
-    function MyMenuComponent() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MyMenuComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: 'my-menu',
-            template: "\n\t\t<div *shContextMenuItem=\"let item\">from comp !! - {{ item.label }}</div>\n\t\t<div *shContextMenuItem=\"let item\">from comp !! - {{ item.label }}</div>\n\t"
-        })
-        // TODO: this is not possible now (because the use of TemplatePortal instead of ComponentPortal)
-        // should later define an interface for using a custom component as context menu
-    ], MyMenuComponent);
-    return MyMenuComponent;
-}(ng2_right_click_menu__WEBPACK_IMPORTED_MODULE_2__["ShContextMenuComponent"]));
-
-var MyContentComponent = /** @class */ (function () {
-    function MyContentComponent() {
-    }
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
-    ], MyContentComponent.prototype, "item", void 0);
-    MyContentComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-            selector: 'my-content',
-            template: "\n\t\t<div class=\"box\">\n\t\t\t<input type=\"text\" [value]=\"item.label\" />\n\t\t</div>\n\t"
-        })
-    ], MyContentComponent);
-    return MyContentComponent;
-}());
-
+// @Component({
+// 	selector: 'my-menu',
+// 	template: `
+// 		<div *shContextMenuItem="let item">from comp !! - {{ item.label }}</div>
+// 		<div *shContextMenuItem="let item">from comp !! - {{ item.label }}</div>
+// 	`
+// })
+// TODO: this is not possible now (because the use of TemplatePortal instead of ComponentPortal)
+// should later define an interface for using a custom component as context menu
+// export class MyMenuComponent extends ShContextMenuComponent {}
+//
+// @Component({
+// 	selector: 'my-content',
+// 	template: `
+// 		<div class="box">
+// 			<input type="text" [value]="item.label" />
+// 		</div>
+// 	`
+// })
+// export class MyContentComponent {
+// 	@Input() item: any;
+// }
 
 
 /***/ }),
@@ -985,7 +968,7 @@ var AppModule = /** @class */ (function () {
     }
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
-            declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"], _app_component__WEBPACK_IMPORTED_MODULE_3__["MyMenuComponent"], _app_component__WEBPACK_IMPORTED_MODULE_3__["MyContentComponent"]],
+            declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]],
             imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], ng2_right_click_menu__WEBPACK_IMPORTED_MODULE_4__["ShContextMenuModule"]],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
