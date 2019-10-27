@@ -1,5 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { ShContextMenuComponent } from 'ng2-right-click-menu';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ContextOpenEvent } from '../../../ng2-right-click-menu/src/lib/sh-attach-menu.directive';
 
 @Component({
@@ -28,7 +27,6 @@ export class AppComponent {
 
 	onOpen(event: ContextOpenEvent) {
 		if (event.data.label === 'Item One') {
-			console.log('preventOpen called');
 			event.preventOpen();
 		}
 	}
@@ -42,25 +40,25 @@ export class AppComponent {
 	}
 }
 
-@Component({
-	selector: 'my-menu',
-	template: `
-		<div *shContextMenuItem="let item">from comp !! - {{ item.label }}</div>
-		<div *shContextMenuItem="let item">from comp !! - {{ item.label }}</div>
-	`
-})
+// @Component({
+// 	selector: 'my-menu',
+// 	template: `
+// 		<div *shContextMenuItem="let item">from comp !! - {{ item.label }}</div>
+// 		<div *shContextMenuItem="let item">from comp !! - {{ item.label }}</div>
+// 	`
+// })
 // TODO: this is not possible now (because the use of TemplatePortal instead of ComponentPortal)
 // should later define an interface for using a custom component as context menu
-export class MyMenuComponent extends ShContextMenuComponent {}
-
-@Component({
-	selector: 'my-content',
-	template: `
-		<div class="box">
-			<input type="text" [value]="item.label" />
-		</div>
-	`
-})
-export class MyContentComponent {
-	@Input() item: any;
-}
+// export class MyMenuComponent extends ShContextMenuComponent {}
+//
+// @Component({
+// 	selector: 'my-content',
+// 	template: `
+// 		<div class="box">
+// 			<input type="text" [value]="item.label" />
+// 		</div>
+// 	`
+// })
+// export class MyContentComponent {
+// 	@Input() item: any;
+// }

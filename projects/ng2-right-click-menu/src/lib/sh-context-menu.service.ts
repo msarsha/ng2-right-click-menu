@@ -142,13 +142,13 @@ export class ShContextMenuService implements OnDestroy {
 		ele: HTMLElement,
 		event: MouseEvent
 	): FlexibleConnectedPositionStrategy {
-		const { clientX, clientY } = event;
+		const { x, y } = event;
 
 		return this.overlay
 			.position()
 			.flexibleConnectedTo(ele)
-			.withDefaultOffsetX(clientX)
-			.withDefaultOffsetY(clientY)
+			.withDefaultOffsetX(x)
+			.withDefaultOffsetY(y)
 			.withPositions(this.buildPositions())
 			.withFlexibleDimensions(false)
 			.withPush(true);
