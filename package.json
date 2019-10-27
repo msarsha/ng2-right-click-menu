@@ -6,7 +6,7 @@
 		"start": "ng serve ng2-right-click-menu-demo --vendorSourceMap",
 		"copy-readme": "cp README.md ./dist/ng2-right-click-menu",
 		"build:app": "ng build ng2-right-click-menu-demo",
-		"build:app:deploy": "ng build ng2-right-click-menu-demo --base-href=https://msarsha.github.io/ng2-right-click-menu",
+		"build:app:deploy": "ng build ng2-right-click-menu-demo --base-href=https://msarsha.github.io/ng2-right-click-menu/",
 		"build:lib": "ng build ng2-right-click-menu",
 		"build:lib:watch": "ng build ng2-right-click-menu --watch",
 		"pack:lib": "cd ./dist/ng2-right-click-menu && npm pack",
